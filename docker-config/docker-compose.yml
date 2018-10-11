@@ -1,0 +1,33 @@
+version: "3"
+
+services:
+  nodejs:
+    image: node
+    container_name: NodeJsRunTime
+    volumes:
+      - ${APP_HOST_DIR}:/app/
+    ports:
+      - "${APP_HOST_PORT}:${APP_HOST_PORT}"
+    tty: true
+    networks:
+      - nodejs-dev
+    depends_on:
+      - postgres-docker
+  
+  postgres-docker:
+    image: postgres
+    container_name: DockerPostgres
+    volumes:
+      - ./initpg.sql:/docker-entrypoint-initdb.d/1-init.sql
+    ports:
+      - "${POSTGRES_PORT}:${POSTGRES_PORT}"
+    environment:
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+    networks:
+      - nodejs-dev
+
+networks:
+  nodejs-dev:
+    driver: bridge
