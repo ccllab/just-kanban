@@ -275,4 +275,3 @@ __pycache__/
 #env file
 **/.*.env
 **/.env
-**/.env.*
