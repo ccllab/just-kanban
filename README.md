@@ -1,4 +1,4 @@
-﻿# ts-mvc
+﻿# just-kanban
 
 
 ```sh
