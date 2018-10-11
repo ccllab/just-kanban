@@ -25,7 +25,7 @@ services:
       - justkanban-dev
 
 networks:
-  nodejs-dev:
+  justkanban-dev:
     driver: bridge
 
 volumes:
