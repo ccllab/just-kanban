@@ -28,14 +28,20 @@
     @Component
     export default class KanbanBoard extends Vue {
 
-        @Prop(Array) public stages: Array<any>;
+        /**
+         * The stage for kanban board
+         */
+        @Prop(Array) public stages: Array<string>;
 
-        @Prop(Array) public blocks: Array<any>;
+        /**
+         * The blocks in kanban board
+         */
+        @Prop(Array) public blocks: Array<any>; // todo Change any to specified type
 
         /**
          * computed, get blocks
          */
-        public get localBlocks(): Array<any> {
+        public get localBlocks(): Array<any> { // todo Change any to specified type
 
             return this.blocks;
         }
@@ -45,7 +51,7 @@
          * @param status Blocks status
          * @return blocks after filter
          */
-        public getBlocks(status: string): Array<any> {
+        public getBlocks(status: string): Array<any> { // todo Change any to specified type
 
             return this.localBlocks.filter(block => block.status === status);
         }
