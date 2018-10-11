@@ -49,7 +49,7 @@
         /**
          * The array for storage block.
          */
-        public blocks: Array<any> = [];
+        public blocks: Array<any> = []; // todo Change any to specified type
 
         /**
          * push fake data to blocks when mounted
@@ -58,6 +58,8 @@
 
             // fake data
             for (let i = 0; i <= 10; i += 1) {
+
+                // todo Block need to change to use model class.
                 this.blocks.push({
                     id: i,
                     status: this.statuses[Math.floor(Math.random() * 4)],
