@@ -63,7 +63,7 @@
 
             // create Dragula instance
             let drag: Dragula.Drake = Dragula({
-                containers: (this.$refs.list) as any
+                containers: (this.$refs.list) as Element[]
             });
 
             // bind drag event
