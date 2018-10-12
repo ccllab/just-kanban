@@ -30,6 +30,7 @@
     import * as faker from 'faker';
     import {debounce} from 'lodash';
     import KanbanBoard from './components/KanbanBoard';
+    import {BoardCard} from "./models/BoardCard";
 
     /**
      * Vue app
@@ -49,7 +50,7 @@
         /**
          * The array for storage block.
          */
-        public blocks: Array<any> = []; // todo Change any to specified type
+        public blocks: Array<BoardCard> = [];
 
         /**
          * push fake data to blocks when mounted
@@ -59,12 +60,13 @@
             // fake data
             for (let i = 0; i <= 10; i += 1) {
 
-                // todo Block need to change to use model class.
-                this.blocks.push({
-                    id: i,
-                    status: this.statuses[Math.floor(Math.random() * 4)],
-                    title: faker.company.bs()
-                });
+                let item: BoardCard = new BoardCard();
+
+                item.id = i.toString();
+                item.status = this.statuses[Math.floor(Math.random() * 4)];
+                item.title = faker.company.bs();
+
+                this.blocks.push(item);
             }
         }
 
@@ -80,7 +82,7 @@
              * @param status The updated status.
              */
             let callback = (id, status) => {
-                this.blocks.find(b => b.id === Number(id)).status = status;
+                this.blocks.find(b => b.id === id).status = status;
             };
 
             return debounce(callback, 500);
