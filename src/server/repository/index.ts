@@ -1,4 +1,5 @@
 export * from './entity/User.entity';
+export * from './entity/BoardCard.entity';
 
 export * from './repositories/infrastructure/IGenericRepository';
 export * from './repositories/interfaces/IUserRepository';

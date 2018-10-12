@@ -24,6 +24,7 @@
 <script lang="ts">
     import {Component, Prop, Vue} from 'vue-property-decorator';
     import * as Dragula from 'dragula';
+    import {BoardCard} from "../models/BoardCard";
 
     @Component
     export default class KanbanBoard extends Vue {
@@ -36,12 +37,12 @@
         /**
          * The blocks in kanban board
          */
-        @Prop(Array) public blocks: Array<any>; // todo Change any to specified type
+        @Prop(Array) public blocks: Array<BoardCard>;
 
         /**
          * computed, get blocks
          */
-        public get localBlocks(): Array<any> { // todo Change any to specified type
+        public get localBlocks(): Array<BoardCard> {
 
             return this.blocks;
         }
@@ -51,7 +52,7 @@
          * @param status Blocks status
          * @return blocks after filter
          */
-        public getBlocks(status: string): Array<any> { // todo Change any to specified type
+        public getBlocks(status: string): Array<BoardCard> {
 
             return this.localBlocks.filter(block => block.status === status);
         }
