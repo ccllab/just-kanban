@@ -10,24 +10,23 @@ services:
       - "${APP_HOST_PORT}:${APP_HOST_PORT}"
     tty: true
     networks:
-      - nodejs-dev
+      - justkanban-dev
     depends_on:
-      - postgres-docker
-  
-  postgres-docker:
-    image: postgres
-    container_name: DockerPostgres
+      - mongodb-docker
+
+  mongodb-docker:
+    image: mongo:latest
+    container_name: DockerMongoDB
     volumes:
-      - ./initpg.sql:/docker-entrypoint-initdb.d/1-init.sql
+      - data-volume:/data/db
     ports:
-      - "${POSTGRES_PORT}:${POSTGRES_PORT}"
-    environment:
-      - POSTGRES_DB=${POSTGRES_DB}
-      - POSTGRES_USER=${POSTGRES_USER}
-      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - "${MONGODB_PORT}:${MONGODB_PORT}"
     networks:
-      - nodejs-dev
+      - justkanban-dev
 
 networks:
-  nodejs-dev:
+  justkanban-dev:
     driver: bridge
+
+volumes:
+  data-volume:
