@@ -7,7 +7,7 @@ module.exports = {
     "host": env.DB_HOST,
     "port": env.DB_PORT,
     "database": env.DB_DATABASE,
-    "logging": true,
+    "logging": false,
     "logger": "file",
     "entities": [
         "build/src/server/repository/entity/*.js"
