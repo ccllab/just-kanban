@@ -1,4 +1,4 @@
-import {BaseEntity, Column, Entity, ObjectID, ObjectIdColumn} from "typeorm";
+import {BaseEntity, Column, Entity, ObjectIdColumn} from "typeorm";
 
 @Entity()
 export class BoardCardEntity extends BaseEntity {
@@ -7,7 +7,7 @@ export class BoardCardEntity extends BaseEntity {
      * pk 編號
      */
     @ObjectIdColumn()
-    public id: ObjectID;
+    public id: string;
 
     /**
      * Board block title
