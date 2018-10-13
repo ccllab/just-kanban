@@ -5,4 +5,4 @@ COPY package.json /usr/src/app/
 RUN npm install
 COPY . /usr/src/app
 EXPOSE 8080
-CMD ["npm", "run", "build-dev", "&&", "npm", "run", "start"]
+CMD ["npm", "run", "docker-start"]
