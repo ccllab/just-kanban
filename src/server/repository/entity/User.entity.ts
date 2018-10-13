@@ -2,7 +2,7 @@ import {
     BaseEntity,
     Column,
     CreateDateColumn,
-    Entity, ObjectID,
+    Entity,
     ObjectIdColumn,
     UpdateDateColumn
 } from 'typeorm';
@@ -18,7 +18,7 @@ export class User extends BaseEntity {
      * pk 編號
      */
     @ObjectIdColumn()
-    public id: ObjectID;
+    public id: string;
 
     /**
      * 名稱
