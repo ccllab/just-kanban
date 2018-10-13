@@ -1,11 +1,12 @@
 version: "3"
 
 services:
-  nodejs:
-    image: node
-    container_name: NodeJsRunTime
-    volumes:
-      - ${APP_HOST_DIR}:/app/
+  app:
+    container_name: JustKanbanDev
+    image: justkanban:dev
+    build:
+      context: ../
+      dockerfile: ./Dockerfile
     ports:
       - "${APP_HOST_PORT}:${APP_HOST_PORT}"
     tty: true

@@ -10,6 +10,7 @@
     "start": "node build/src/server/main.js",
     "build-dev": "npm run tsc && npm run webpack-dev",
     "build-prod": "npm run tsc && npm run webpack-prod",
+    "docker-start": "npm run build-dev && npm run start",
     "tsc": "tsc",
     "webpack-dev": "webpack --config webpack.dev.js",
     "webpack-prod": "webpack --config webpack.prod.js",
