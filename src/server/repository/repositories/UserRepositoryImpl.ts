@@ -37,7 +37,7 @@ export class UserRepositoryImpl extends GenericMongoRepository<User> implements 
      */
     public getRepo(): Repository<User> {
 
-        return this.dbConnection.getMongoRepository(User) as any;
+        return this.dbConnection.getMongoRepository(User) as Repository<User>;
     }
 
     /**
