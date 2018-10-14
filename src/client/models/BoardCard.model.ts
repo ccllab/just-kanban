@@ -1,4 +1,4 @@
-export class BoardCard {
+export class BoardCardModel {
 
     /**
      * pk 編號
