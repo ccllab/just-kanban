@@ -14,12 +14,7 @@
                 </h2>
             </div>
             <div v-for="item in blocks" :slot="item.id" :key="item.id">
-                <div>
-                    <strong>id:</strong> {{ item.id }}
-                </div>
-                <div>
-                    {{ item.title }}
-                </div>
+                <BoardCard :boardCard="item"></BoardCard>
             </div>
         </KanbanBoard>
     </div>
@@ -30,14 +25,16 @@
     import * as faker from 'faker';
     import {debounce} from 'lodash';
     import KanbanBoard from './components/KanbanBoard';
-    import {BoardCard} from "./models/BoardCard";
+    import BoardCard from './components/BoardCard';
+    import {BoardCardModel} from "./models/BoardCard.model";
 
     /**
      * Vue app
      */
     @Component({
         components: {
-            KanbanBoard
+            KanbanBoard,
+            BoardCard
         },
     })
     export default class App extends Vue {
@@ -50,7 +47,7 @@
         /**
          * The array for storage block.
          */
-        public blocks: Array<BoardCard> = [];
+        public blocks: Array<BoardCardModel> = [];
 
         /**
          * push fake data to blocks when mounted
@@ -60,7 +57,7 @@
             // fake data
             for (let i = 0; i <= 10; i += 1) {
 
-                let item: BoardCard = new BoardCard();
+                let item: BoardCardModel = new BoardCardModel();
 
                 item.id = i.toString();
                 item.status = this.statuses[Math.floor(Math.random() * 4)];

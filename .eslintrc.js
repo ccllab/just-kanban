@@ -102,5 +102,6 @@ module.exports = {
         ],
         "typescript/no-array-constructor": "warn", // Array 的建構子強制使用泛型參數
         "typescript/no-use-before-define": "warn", // 禁止使用未定義之變數
+        "typescript/no-explicit-any": "warn",
     }
 };

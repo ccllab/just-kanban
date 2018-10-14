@@ -2,11 +2,11 @@
     <div class="drag-container">
         <ul class="drag-list">
             <li v-for="stage in stages" class="drag-column" :class="{['drag-column-' + stage]: true}" :key="stage">
-        <span class="drag-column-header">
-          <slot :name="stage">
-            <h2>{{ stage }}</h2>
-          </slot>
-        </span>
+                <span class="drag-column-header">
+                  <slot :name="stage">
+                    <h2>{{ stage }}</h2>
+                  </slot>
+                </span>
                 <div class="drag-options"></div>
                 <ul class="drag-inner-list" ref="list" :data-status="stage">
                     <li class="drag-item" v-for="block in getBlocks(stage)" :data-block-id="block.id" :key="block.id">
@@ -24,7 +24,7 @@
 <script lang="ts">
     import {Component, Prop, Vue} from 'vue-property-decorator';
     import * as Dragula from 'dragula';
-    import {BoardCard} from "../models/BoardCard";
+    import {BoardCardModel} from "../models/BoardCard.model";
 
     @Component
     export default class KanbanBoard extends Vue {
@@ -37,12 +37,12 @@
         /**
          * The blocks in kanban board
          */
-        @Prop(Array) public blocks: Array<BoardCard>;
+        @Prop(Array) public blocks: Array<BoardCardModel>;
 
         /**
          * computed, get blocks
          */
-        public get localBlocks(): Array<BoardCard> {
+        public get localBlocks(): Array<BoardCardModel> {
 
             return this.blocks;
         }
@@ -52,7 +52,7 @@
          * @param status Blocks status
          * @return blocks after filter
          */
-        public getBlocks(status: string): Array<BoardCard> {
+        public getBlocks(status: string): Array<BoardCardModel> {
 
             return this.localBlocks.filter(block => block.status === status);
         }
