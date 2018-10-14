@@ -82,7 +82,7 @@
                     }
                 }
 
-                this.$emit('update-block', block.classList.blockId, list.dataset.status, index);
+                this.$emit('update-block', block.dataset.blockId, list.dataset.status, index);
             });
 
             // bind dragend event

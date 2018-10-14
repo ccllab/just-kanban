@@ -68,21 +68,15 @@
         }
 
         /**
-         *  Update block
-         * @return debounce
+         * Update block
+         * @param id The id for updating block.
+         * @param status The status for updating block.
          */
-        public updateBlock(): void | _.Cancelable {
+        public updateBlock(id: string, status: string): void {
 
-            /**
-             * For update specified block's status.
-             * @param id The id for updated block
-             * @param status The updated status.
-             */
-            let callback = (id, status) => {
+            debounce(() => {
                 this.blocks.find(b => b.id === id).status = status;
-            };
-
-            return debounce(callback, 500);
+            }, 500)(); // need invoke.
         }
     }
 </script>
