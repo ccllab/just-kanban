@@ -26,7 +26,18 @@ export class UserRepositoryImpl extends GenericMongoRepository<User> implements 
      */
     private static injectNewToken(user: User): User {
 
-        user.authToken = sign({email: user.email, name: user.username}, '9913c4d1-5d90-4ccc-87e9-706cf709ba0bn');
+        const secretKey: string = process.env.SECRET_KEY;
+
+        user.authToken = sign(
+            {
+                username: user.username,
+                email: user.email
+            },
+            secretKey,
+            {
+                expiresIn: 86400
+            }
+        );
 
         return user;
     }

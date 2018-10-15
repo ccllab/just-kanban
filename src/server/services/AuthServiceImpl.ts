@@ -1,5 +1,5 @@
 import {IAuthService} from "./interfaces/IAuthService";
-import {IUserRepository, User} from "../repository";
+import {IUserRepository, JwtPayload, User} from "../repository";
 import {inject, injectable} from "inversify";
 import {verify} from "jsonwebtoken";
 import {TYPES} from "../ioc";
@@ -46,11 +46,16 @@ export class AuthServiceImpl implements IAuthService {
             throw new AuthError('This token is expired.');
         }
 
-        let payload = verify(
-            accessToken,
-            '9913c4d1-5d90-4ccc-87e9-706cf709ba0bn') as any;
+        const secretKey: string = process.env.SECRET_KEY;
 
-        return await this.userRepository.getBy({email: payload.email});
+        let payload: JwtPayload = verify(
+            accessToken,
+            secretKey) as JwtPayload;
+
+        return await this.userRepository.getBy({
+            email: payload.email,
+            username: payload.username
+        });
     }
 
     /**
