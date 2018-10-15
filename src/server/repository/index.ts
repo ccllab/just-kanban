@@ -14,4 +14,6 @@ export * from './repositories/infrastructure/GenericRepositoryImpl';
 export * from './repositories/infrastructure/GenericMongoRepository';
 export * from './repositories/UserRepositoryImpl';
 
+export * from './JwtPayload';
+
 export * from './typeRegistrar';
