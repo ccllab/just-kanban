@@ -26,16 +26,16 @@ export class AuthServiceImpl implements IAuthService {
      */
     private static injectNewToken(user: User, isLongExpiration: boolean): User {
 
-        const secretKey: string = process.env.SECRET_KEY;
+        const {SECRET_KEY, LONG_EXPIRATION, NORMAL_EXPIRATION} = process.env;
 
         user.authToken = sign(
             {
                 username: user.username,
                 email: user.email
             },
-            secretKey,
+            SECRET_KEY,
             {
-                expiresIn: isLongExpiration ? 604800 : 86400
+                expiresIn: isLongExpiration ? parseInt(LONG_EXPIRATION) : parseInt(NORMAL_EXPIRATION)
             }
         );
 
