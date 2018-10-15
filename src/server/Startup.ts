@@ -9,7 +9,8 @@ import {createConnections} from 'typeorm';
 import {DependencyResolverImpl, TYPES} from './ioc';
 import {ILogger} from './utils';
 import {InversifyExpressServer} from 'inversify-express-utils';
-import './controllers'; // declare metadata by @controller annotation
+import './controllers';
+import {AppAuthProvider} from "./services/providers/AppAuthProvider"; // declare metadata by @controller annotation
 
 /**
  * Node.js 伺服器啟動類別
@@ -80,7 +81,14 @@ export default class Startup {
      */
     private configExpress(): void {
 
-        const expressServer: InversifyExpressServer = new InversifyExpressServer(this.container);
+        const expressServer: InversifyExpressServer =
+            new InversifyExpressServer(
+                this.container,
+                null,
+                null,
+                null,
+                AppAuthProvider
+            );
         const staticFolderPath = path.join(__dirname, '..', '..', '..', 'public');
 
         // 設定 express application
