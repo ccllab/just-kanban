@@ -10,20 +10,22 @@ import {
 } from 'typeorm';
 
 /**
- * 泛型資料儲存庫基底類別
- * @param <TEntity> 實體資料型別
+ * The base and generic class for repository,
+ *
+ * Implement CRUD
+ * @param <TEntity> Entity type
  */
 @injectable()
 export abstract class GenericRepositoryImpl<TEntity extends DeepPartial<TEntity>> implements IGenericRepository<TEntity> {
 
     /**
-     * db 連線
+     * db connection
      */
     protected dbConnection: Connection;
 
     /**
-     * 建構子
-     * @param dbProvider db 來源
+     * constructor
+     * @param dbProvider The provider for database
      */
     protected constructor(dbProvider: IDbProvider) {
 
@@ -31,8 +33,8 @@ export abstract class GenericRepositoryImpl<TEntity extends DeepPartial<TEntity>
     }
 
     /**
-     * 取得該表所有資料
-     * @returns 所有資料
+     * The all entity for specified table(collection)
+     * @returns all entity
      */
     public getAll(): Promise<TEntity[]> {
 
@@ -40,9 +42,9 @@ export abstract class GenericRepositoryImpl<TEntity extends DeepPartial<TEntity>
     }
 
     /**
-     * 新增一筆資料
-     * @param entity 欲新增的實體資料
-     * @returns 新增成功的資料
+     * Add one entity to table(collection)
+     * @param entity The entity for adding
+     * @returns The entity that added
      */
     public add(entity: TEntity): Promise<TEntity> {
 
@@ -50,9 +52,9 @@ export abstract class GenericRepositoryImpl<TEntity extends DeepPartial<TEntity>
     }
 
     /**
-     * 更新一筆資料
-     * @param entity 欲更新的實體資料
-     * @returns 更新成功的資料
+     * Update one entity to table(collection)
+     * @param entity The entity for updating
+     * @returns The entity that updated
      */
     public update(entity: TEntity): Promise<TEntity> {
 
@@ -60,9 +62,9 @@ export abstract class GenericRepositoryImpl<TEntity extends DeepPartial<TEntity>
     }
 
     /**
-     * 由 id 取得指定資料
-     * @param id 實體資料 pk
-     * @returns 實體資料
+     * Get entity by specified pk
+     * @param id pk
+     * @returns entity
      */
     public get(id: string | number | Date | ObjectID): Promise<TEntity> {
 
@@ -70,9 +72,9 @@ export abstract class GenericRepositoryImpl<TEntity extends DeepPartial<TEntity>
     }
 
     /**
-     * 由指定欄位取得單筆實體資料
-     * @param conditions 指定過濾欄位
-     * @return 實體資料
+     * Get entity by specified conditions
+     * @param conditions The conditions for filtering
+     * @return entity
      */
     public getBy(conditions: FindConditions<TEntity>): Promise<TEntity> {
 
@@ -80,9 +82,9 @@ export abstract class GenericRepositoryImpl<TEntity extends DeepPartial<TEntity>
     }
 
     /**
-     * 刪除一筆資料
-     * @param entity 欲刪除的實體資料
-     * @returns 刪除成功的資料
+     * Remove one entity
+     * @param entity The entity removing.
+     * @returns The entity removed.
      */
     public delete(entity: TEntity): Promise<TEntity> {
 
@@ -90,23 +92,23 @@ export abstract class GenericRepositoryImpl<TEntity extends DeepPartial<TEntity>
     }
 
     /**
-     * 使用交易機制操作儲存庫
-     * @param runInTransaction 交易機制中的操作委派
-     * @param {IsolationLevel} [isolationLevel=IsolationLevel.ReadUncommitted] 交易隔離等級
+     * Run operating in database transaction, not support in MongoDB.
+     * @param runInTransaction The operating callback
+     * @param {IsolationLevel} [isolationLevel=IsolationLevel.ReadUncommitted] The isolation level.
      * @return Promise
      */
     public useTransaction(
         runInTransaction: (entityManager: EntityManager) => Promise<TEntity>,
         isolationLevel: IsolationLevel = IsolationLevel.ReadUncommitted): Promise<TEntity> {
 
-        // TODO 待 typeorm 發布 0.2.8 後傳入參數 isolationLevel
+        // todo wait for typeorm 0.2.8, then pass isolation level to transaction()
         return this.dbConnection.manager.transaction(runInTransaction);
     }
 
     /**
-     * 使用 sql 語法直接查詢
-     * @param rawSql sql 查詢語法
-     * @param parameters 參數
+     * Querying in raw sql
+     * @param rawSql sql statement
+     * @param parameters The parameter for raw sql.
      * @return Promise
      */
     public query<TModel>(rawSql: string, parameters?: any[]): Promise<TModel> {
@@ -115,8 +117,8 @@ export abstract class GenericRepositoryImpl<TEntity extends DeepPartial<TEntity>
     }
 
     /**
-     * 取得儲存庫
-     * @returns 該實體資料表之儲存庫
+     * Get repository for database table(collection)
+     * @returns The repository for specified table(collection).
      */
     public abstract getRepo(): Repository<TEntity>;
 }

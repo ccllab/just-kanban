@@ -13,20 +13,18 @@ export class ConsoleLogger implements ILogger {
     private loggerInstance: Console;
 
     /**
-     * 建構子
+     * constructor
      */
     public constructor() {
-
         this.loggerInstance = console;
     }
 
     /**
      * Log debug
-     * @param message 訊息
-     * @param optionalParams 傳遞參數
+     * @param message The message for log
+     * @param optionalParams The optional parameters
      */
     public debug(message?: any, ...optionalParams: any[]): void {
-
         optionalParams.length === 0 ?
             this.loggerInstance.debug(message) :
             this.loggerInstance.debug(message, optionalParams);
@@ -34,11 +32,10 @@ export class ConsoleLogger implements ILogger {
 
     /**
      * Log error
-     * @param message 訊息
-     * @param optionalParams 傳遞參數
+     * @param message The message for log
+     * @param optionalParams The optional parameters
      */
     public error(message?: any, ...optionalParams: any[]): void {
-
         optionalParams.length === 0 ?
             this.loggerInstance.error(message) :
             this.loggerInstance.error(message, optionalParams);
@@ -46,11 +43,10 @@ export class ConsoleLogger implements ILogger {
 
     /**
      * Log info
-     * @param message 訊息
-     * @param optionalParams 傳遞參數
+     * @param message The message for log
+     * @param optionalParams The optional parameters
      */
     public info(message?: any, ...optionalParams: any[]): void {
-
         optionalParams.length === 0 ?
             this.loggerInstance.info(message) :
             this.loggerInstance.info(message, optionalParams);
@@ -58,11 +54,10 @@ export class ConsoleLogger implements ILogger {
 
     /**
      * Log trace
-     * @param message 訊息
-     * @param optionalParams 傳遞參數
+     * @param message The message for log
+     * @param optionalParams The optional parameters
      */
     public trace(message?: any, ...optionalParams: any[]): void {
-
         optionalParams.length === 0 ?
             this.loggerInstance.trace(message) :
             this.loggerInstance.trace(message, optionalParams);
@@ -70,11 +65,10 @@ export class ConsoleLogger implements ILogger {
 
     /**
      * Log warn
-     * @param message 訊息
-     * @param optionalParams 傳遞參數
+     * @param message The message for log
+     * @param optionalParams The optional parameters
      */
     public warn(message?: any, ...optionalParams: any[]): void {
-
         optionalParams.length === 0 ?
             this.loggerInstance.warn(message) :
             this.loggerInstance.warn(message, optionalParams);
@@ -82,11 +76,10 @@ export class ConsoleLogger implements ILogger {
 
     /**
      * Default logging
-     * @param message 訊息
-     * @param optionalParams 傳遞參數
+     * @param message The message for log
+     * @param optionalParams The optional parameters
      */
     public log(message?: any, ...optionalParams: any[]): void {
-
         optionalParams.length === 0 ?
             this.loggerInstance.log(message) :
             this.loggerInstance.log(message, optionalParams);

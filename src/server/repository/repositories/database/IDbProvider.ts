@@ -1,17 +1,17 @@
 import {Connection} from 'typeorm';
 
 /**
- * DB 連線來源介面
+ * The interface for DbProvider.
  */
 export interface IDbProvider {
 
     /**
-     * 連線名稱
+     * The name of connection.
      */
     connectionName: string
 
     /**
-     * 取得指定連線
+     * Get specified db connection by connection name.
      */
     getDb(): Connection;
 }

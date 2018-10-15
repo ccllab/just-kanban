@@ -14,7 +14,9 @@ export class WinstonLogger implements ILogger {
     private loggerInstance: winston.Logger;
 
     /**
-     * 建構子
+     * constructor
+     *
+     * Set up winston.logger
      */
     public constructor() {
 
@@ -57,8 +59,8 @@ export class WinstonLogger implements ILogger {
 
     /**
      * Log debug
-     * @param message 訊息
-     * @param optionalParams 傳遞參數
+     * @param message The message for log
+     * @param optionalParams The optional parameters
      */
     public debug(message?: any, ...optionalParams: any[]): void {
 
@@ -67,8 +69,8 @@ export class WinstonLogger implements ILogger {
 
     /**
      * Log error
-     * @param message 訊息
-     * @param optionalParams 傳遞參數
+     * @param message The message for log
+     * @param optionalParams The optional parameters
      */
     public error(message?: any, ...optionalParams: any[]): void {
 
@@ -77,8 +79,8 @@ export class WinstonLogger implements ILogger {
 
     /**
      * Log info
-     * @param message 訊息
-     * @param optionalParams 傳遞參數
+     * @param message The message for log
+     * @param optionalParams The optional parameters
      */
     public info(message?: any, ...optionalParams: any[]): void {
 
@@ -87,8 +89,8 @@ export class WinstonLogger implements ILogger {
 
     /**
      * Log trace
-     * @param message 訊息
-     * @param optionalParams 傳遞參數
+     * @param message The message for log
+     * @param optionalParams The optional parameters
      */
     public trace(message?: any, ...optionalParams: any[]): void {
 
@@ -97,8 +99,8 @@ export class WinstonLogger implements ILogger {
 
     /**
      * Log warn
-     * @param message 訊息
-     * @param optionalParams 傳遞參數
+     * @param message The message for log
+     * @param optionalParams The optional parameters
      */
     public warn(message?: any, ...optionalParams: any[]): void {
 
@@ -107,8 +109,8 @@ export class WinstonLogger implements ILogger {
 
     /**
      * Default logging
-     * @param message 訊息
-     * @param optionalParams 傳遞參數
+     * @param message The message for log
+     * @param optionalParams The optional parameters
      */
     public log(message?: any, ...optionalParams: any[]): void {
 

@@ -3,19 +3,19 @@ import {IDbProvider} from './IDbProvider';
 import {injectable} from 'inversify';
 
 /**
- * database 連線來源基底類別
+ * The base class for DbProvider.
  */
 @injectable()
 export abstract class BaseDbProvider implements IDbProvider {
 
     /**
-     * 抽象方法，定義連線名稱
+     * Define database connection name
      */
     public abstract connectionName: string;
 
     /**
-     * 取得指定連線
-     * @returns db 連線
+     * Get specified db connection by connection name.
+     * @returns db connection
      */
     public getDb(): Connection {
 
