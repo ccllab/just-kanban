@@ -47,7 +47,10 @@ export class UserController extends BaseHttpController {
         user.password = req.body.password;
 
         return this.authService.addNewUser(user).then((newUser) => {
-            return res.header('x-auth', newUser.authToken).send({
+            return res.set({
+                'x-auth': user.authToken,
+                'x-auth-refresh': user.refreshToken
+            }).send({
                 id: newUser.id,
                 name: newUser.username,
                 email: newUser.email
@@ -74,7 +77,10 @@ export class UserController extends BaseHttpController {
             req.body.password,
             req.body.isRememberMe
         ).then((user) => {
-            return res.header('x-auth', user.authToken).send({
+            return res.set({
+                'x-auth': user.authToken,
+                'x-auth-refresh': user.refreshToken
+            }).send({
                 id: user.id,
                 name: user.username,
                 email: user.email
@@ -98,16 +104,10 @@ export class UserController extends BaseHttpController {
 
         // console.log(await this.httpContext.user.isAuthenticated());
 
-        let accessToken: string = req.header('x-auth');
+        if (! await this.httpContext.user.isAuthenticated()) {
+            return res.send('Please login, and try again.');
+        }
 
-        return this.authService.getUserByToken(accessToken).then((user) => {
-            return res.send({
-                id: user.id,
-                name: user.username,
-                email: user.email
-            });
-        }, (err) => {
-            return res.status(400).send(err.message);
-        });
+        return res.send(this.httpContext.user.details);
     }
 }
