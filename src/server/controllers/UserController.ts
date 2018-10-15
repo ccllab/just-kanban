@@ -69,7 +69,11 @@ export class UserController extends BaseHttpController {
         @response() res: express.Response,
         @request() req: express.Request): Promise<express.Response> {
 
-        return this.authService.verify(req.body.email, req.body.password).then((user) => {
+        return this.authService.verify(
+            req.body.email,
+            req.body.password,
+            req.body.isRememberMe
+        ).then((user) => {
             return res.header('x-auth', user.authToken).send({
                 id: user.id,
                 name: user.username,
@@ -92,7 +96,7 @@ export class UserController extends BaseHttpController {
         @response() res: express.Response,
         @request() req: express.Request): Promise<express.Response> {
 
-        console.log(await this.httpContext.user.isAuthenticated());
+        // console.log(await this.httpContext.user.isAuthenticated());
 
         let accessToken: string = req.header('x-auth');
 

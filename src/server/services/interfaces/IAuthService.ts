@@ -22,7 +22,8 @@ export interface IAuthService {
      * 登入驗證
      * @param email 使用者信箱
      * @param password 使用者密碼
+     * @param isRememberMe 是否記住我
      * @return 驗證成功之使用者資料
      */
-    verify(email: string, password: string): Promise<User>;
+    verify(email: string, password: string, isRememberMe: boolean): Promise<User>;
 }

@@ -1,7 +1,7 @@
 import {IAuthService} from "./interfaces/IAuthService";
 import {IUserRepository, JwtPayload, User} from "../repository";
 import {inject, injectable} from "inversify";
-import {verify} from "jsonwebtoken";
+import {sign, verify} from "jsonwebtoken";
 import {TYPES} from "../ioc";
 import AuthError from "./exceptions/AuthError";
 
@@ -18,6 +18,30 @@ export class AuthServiceImpl implements IAuthService {
     public constructor(@inject(TYPES.IUserRepository) private userRepository: IUserRepository) {
     }
 
+    /**
+     * 產生新的 access token
+     * @param user 使用者實體資料
+     * @param isLongExpiration 是否延長 authToken 有效期
+     * @return 取得新 token 的使用者資料
+     */
+    private static injectNewToken(user: User, isLongExpiration: boolean): User {
+
+        const secretKey: string = process.env.SECRET_KEY;
+
+        user.authToken = sign(
+            {
+                username: user.username,
+                email: user.email
+            },
+            secretKey,
+            {
+                expiresIn: isLongExpiration ? 86400 : 604800
+            }
+        );
+
+        return user;
+    }
+
 
     /**
      * 註冊使用者
@@ -31,7 +55,7 @@ export class AuthServiceImpl implements IAuthService {
             throw new AuthError("This email has been used!");
         }
 
-        return this.userRepository.add(user);
+        return this.userRepository.add(AuthServiceImpl.injectNewToken(user, false));
     }
 
     /**
@@ -62,9 +86,12 @@ export class AuthServiceImpl implements IAuthService {
      * 登入驗證
      * @param email 使用者信箱
      * @param password 使用者密碼
+     * @param isRememberMe 是否記住我
      * @return 驗證成功之使用者資料
      */
-    public async verify(email: string, password: string): Promise<User> {
+    public async verify(email: string, password: string, isRememberMe: boolean = false): Promise<User> {
+
+        // todo if "remember me", make jwt token expiration longer.
 
         let user = await this.userRepository.getBy({email});
 
@@ -73,6 +100,6 @@ export class AuthServiceImpl implements IAuthService {
         }
 
         // 成功寫入新的 access token 並回傳
-        return this.userRepository.update(user);
+        return this.userRepository.update(AuthServiceImpl.injectNewToken(user, isRememberMe));
     }
 }

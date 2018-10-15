@@ -36,7 +36,7 @@ export class AppAuthProvider implements interfaces.AuthProvider {
             return new Principal(user);
         }).catch((err) => {
 
-            // todo For now return an undefined principal, if undefined, then isAuthenticated is false.
+            // todo For now return an undefined user for principal, if undefined, then isAuthenticated is false.
             return new Principal(undefined);
         });
     }
