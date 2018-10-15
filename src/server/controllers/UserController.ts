@@ -88,9 +88,11 @@ export class UserController extends BaseHttpController {
      */
     @httpPost('/me')
     @methodAdvice()
-    private getMe(
+    private async getMe(
         @response() res: express.Response,
         @request() req: express.Request): Promise<express.Response> {
+
+        console.log(await this.httpContext.user.isAuthenticated());
 
         let accessToken: string = req.header('x-auth');
 
