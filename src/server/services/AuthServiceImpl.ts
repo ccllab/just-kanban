@@ -35,7 +35,7 @@ export class AuthServiceImpl implements IAuthService {
             },
             secretKey,
             {
-                expiresIn: isLongExpiration ? 86400 : 604800
+                expiresIn: isLongExpiration ? 604800 : 86400
             }
         );
 
