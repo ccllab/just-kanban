@@ -59,6 +59,12 @@ export class User extends BaseEntity {
     public authToken: string;
 
     /**
+     * 刷新用之 token
+     */
+    @Column()
+    public refreshToken: string;
+
+    /**
      * 建立時間
      */
     @CreateDateColumn()

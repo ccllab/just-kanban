@@ -13,10 +13,11 @@ export interface IAuthService {
 
     /**
      * 取得使用者資料
-     * @param token access token
+     * @param authToken access token
+     * @param refreshToken Refresh token
      * @return 驗證成功的使用者
      */
-    getUserByToken(token: string): Promise<User>;
+    getUserByToken(authToken: string, refreshToken: string): Promise<User>;
 
     /**
      * 登入驗證
