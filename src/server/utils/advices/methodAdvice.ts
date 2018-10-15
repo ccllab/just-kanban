@@ -12,7 +12,7 @@ export const methodAdvice = () => afterMethod(meta => {
     let methodName = `${meta.target.constructor.name}::${meta.key}`;
 
     logger.info(`log-decorator: ${methodName} invoked!`);
-    logger.info(`log-decorator: ${methodName} arguments -> `, meta.args);
-    logger.info(`log-decorator: ${methodName} result -> `, meta.result);
+    // logger.info(`log-decorator: ${methodName} arguments -> `, meta.args);
+    // logger.info(`log-decorator: ${methodName} result -> `, meta.result);
     logger.info(`log-decorator: ${methodName} out.`);
 });
