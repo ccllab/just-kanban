@@ -9,19 +9,19 @@ import {
 import {ExtendedColumnOptions} from 'typeorm-encrypted';
 
 /**
- * User 實體資料
+ * User data
  */
 @Entity()
 export class User extends BaseEntity {
 
     /**
-     * pk 編號
+     * pk
      */
     @ObjectIdColumn()
     public id: string;
 
     /**
-     * 名稱
+     * username
      */
     @Column({
         length: 20
@@ -29,7 +29,7 @@ export class User extends BaseEntity {
     public username: string;
 
     /**
-     * 電子信箱
+     * user's email
      */
     @Column({
         length: 40,
@@ -39,7 +39,7 @@ export class User extends BaseEntity {
     public email: string;
 
     /**
-     * 使用者密碼
+     * user's password
      */
     @Column(<ExtendedColumnOptions>{
         nullable: false,
@@ -53,25 +53,25 @@ export class User extends BaseEntity {
     public password: string;
 
     /**
-     * 驗證用 token
+     * The token for access web site function
      */
     @Column()
     public authToken: string;
 
     /**
-     * 刷新用之 token
+     * The token for refresh authentication.
      */
     @Column()
     public refreshToken: string;
 
     /**
-     * 建立時間
+     * The date time for create user information.
      */
     @CreateDateColumn()
     public createdAt: Date;
 
     /**
-     * 更新時間
+     * The date time for update user information.
      */
     @UpdateDateColumn()
     public updatedAt: Date;

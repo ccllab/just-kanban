@@ -1,11 +1,11 @@
 /**
- * 驗證服務例外錯誤
+ * The error for authentication
  */
 export default class AuthError extends Error {
 
     /**
-     * 建構函數
-     * @param message 錯誤訊息
+     * constructor
+     * @param message Error message
      */
     public constructor(message: string) {
 
