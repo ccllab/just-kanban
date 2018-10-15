@@ -13,18 +13,18 @@ import './controllers';
 import {AppAuthProvider} from "./services/providers/AppAuthProvider"; // declare metadata by @controller annotation
 
 /**
- * Node.js 伺服器啟動類別
+ * Node.js express server Startup class.
  * @singleton
  */
 export default class Startup {
 
     /**
-     * Startup 的單例
+     * The single instance for Startup
      */
     private static startupInstance: Startup;
 
     /**
-     * 環境 port 號
+     * The server listening port
      */
     private port: number = parseInt(process.env.PORT) || 8080;
 
@@ -44,32 +44,32 @@ export default class Startup {
     public socketInstance: socketIO.Server;
 
     /**
-     * 建構子，初始化資料庫連線與 express app
-     * @param container DI 容器
+     * constructor
+     *
+     * Set up DI container for DependencyResolver,
+     * then create database connection, if success,
+     * then set up express server.
+     * @param container DI container
      */
     private constructor(private container: Container) {
-
-        // 設定 DI 解析器
         DependencyResolverImpl.current().SetContainer(this.container);
         this.logger = DependencyResolverImpl.current().Resolve<ILogger>(TYPES.ILogger);
 
-        // 建立資料庫連線，成功後設定 express app
         createConnections().then(async conns => {
-
-            conns.forEach(c => this.logger.info(`已連線資料庫:${c.name};`));
+            conns.forEach(c => this.logger.info(`Database connected: ${c.name};`));
             this.configExpress();
         }).catch(error => {
 
-            // 記錄錯誤
+            // log error.
             this.logger.error(error);
             throw error;
         });
     }
 
     /**
-     * 啟動 Node.js 伺服器
-     * @param container DI 容器
-     * @returns Startup Startup的單一實例
+     * Create and bootstrap the Startup
+     * @param container DI container
+     * @returns Startup The single instance for Startup
      */
     public static bootstrap(container: Container): Startup {
 
@@ -77,7 +77,7 @@ export default class Startup {
     }
 
     /**
-     * 設定 express 與 DependencyResolver
+     * Set up all express server feature
      */
     private configExpress(): void {
 
@@ -91,16 +91,16 @@ export default class Startup {
             );
         const staticFolderPath = path.join(__dirname, '..', '..', '..', 'public');
 
-        // 設定 express application
+        // set additional config for express application
         expressServer.setConfig(app => {
 
             // support parsing of application/json type post data
             app.use(bodyParser.json());
 
-            // 設定靜態資料路徑
+            // set up static path
             app.use(express.static(staticFolderPath));
 
-            // 所有的 get 都導向至 index.html，由 vue-router 處理路由
+            // all http get will redirect to index.html, that vue-router handle route.
             app.get('*', (req: express.Request, res: express.Response) => {
                 let viewPath = path.join(staticFolderPath, 'views', 'index.html');
 
@@ -117,10 +117,10 @@ export default class Startup {
             });
         });
 
-        // 建立 http Server
+        // build express server
         this.serverInstance = http.createServer(expressServer.build());
 
-        // 建立 socket.io
+        // build socket io.
         this.socketInstance = socketIO(this.serverInstance);
         this.socketInstance.on('connection', (socket) => {
 
@@ -131,7 +131,7 @@ export default class Startup {
             });
         });
 
-        // 啟動
+        // boot express server
         this.serverInstance.listen(this.port, () => {
 
             this.logger.log(`Listening on port:${this.port}.`);

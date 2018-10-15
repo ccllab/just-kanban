@@ -4,14 +4,14 @@ import {inject, injectable, named} from 'inversify';
 import {Repository} from 'typeorm';
 
 /**
- * 使用者資料儲存庫實作
+ * The user repository implementation
  */
 @injectable()
 export class UserRepositoryImpl extends GenericMongoRepository<User> implements IUserRepository {
 
     /**
-     * 建構子
-     * @param dbProvider database 連線來源
+     * constructor
+     * @param dbProvider The provider for database
      */
     public constructor(@inject(TYPES.IDbProvider) @named('mongo') dbProvider: IDbProvider) {
 
@@ -19,8 +19,8 @@ export class UserRepositoryImpl extends GenericMongoRepository<User> implements 
     }
 
     /**
-     * 複寫 getRepo()，取得實際儲存庫
-     * @returns 該實體資料表之儲存庫
+     * Override getRepo, get the really User collection.
+     * @returns The repository for specified collection.
      */
     public getRepo(): Repository<User> {
 

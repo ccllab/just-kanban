@@ -26,6 +26,9 @@
     import * as Dragula from 'dragula';
     import {BoardCardModel} from "../models/BoardCard.model";
 
+    /**
+     * The KanbanBoard
+     */
     @Component
     export default class KanbanBoard extends Vue {
 

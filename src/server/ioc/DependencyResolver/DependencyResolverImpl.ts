@@ -2,30 +2,30 @@ import {Container} from 'inversify';
 import {IDependencyResolver} from './IDependencyResolver';
 
 /**
- * 相依性解析
+ * The resolver for dependency component.
  * @singleton
  */
 export class DependencyResolverImpl implements IDependencyResolver {
 
     /**
-     * 解析器之單例
+     * Single instance for resolver.
      */
     private static resolverInstance: DependencyResolverImpl;
 
     /**
-     * DI 容器
+     * DI container
      */
     private containerInstance: Container;
 
     /**
-     * 私有建構子
+     * The private constructor.
      */
     private constructor() {
     }
 
     /**
-     * 取得解析器單例
-     * @returns DI 解析器
+     * Get resolver instance
+     * @returns DependencyResolver
      */
     public static current(): IDependencyResolver {
 
@@ -33,8 +33,8 @@ export class DependencyResolverImpl implements IDependencyResolver {
     }
 
     /**
-     * 設定 DI 容器
-     * @param container DI 容器
+     * Set DI container for resolver.
+     * @param container DI container.
      */
     public SetContainer(container: Container): void {
 
@@ -42,9 +42,9 @@ export class DependencyResolverImpl implements IDependencyResolver {
     }
 
     /**
-     * 由指定鍵值解析指定類型
-     * @param resolveKey 指定之解析鍵值
-     * @returns 指定之類型
+     * Resolve by specified key.
+     * @param resolveKey The specified key.
+     * @returns The specified component.
      */
     public Resolve<TService>(resolveKey: string | symbol): TService {
 
@@ -52,10 +52,10 @@ export class DependencyResolverImpl implements IDependencyResolver {
     }
 
     /**
-     * 由註冊時指定的名稱與鍵值解析
-     * @param resolveKey 指定之解析鍵值
-     * @param name 註冊時額外設定的類型名稱
-     * @returns 指定之類型
+     * Resolve by specified key and name.
+     * @param resolveKey The specified key.
+     * @param name The specified name.
+     * @returns The specified component.
      */
     public ResolveNamed<TService>(resolveKey: string | symbol, name: string): TService {
 

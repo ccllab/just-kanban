@@ -13,14 +13,14 @@ import {methodAdvice} from '../utils';
 import {IAuthService} from "../services";
 
 /**
- * 使用者控制器
+ * User information and auth controller
  */
 @controller('/api/user')
 export class UserController extends BaseHttpController {
 
     /**
-     * 建構子
-     * @param authService 登入驗證服務
+     * Constructor
+     * @param authService The service for authentication
      */
     public constructor(
         @inject(TYPES.IAuthService) private authService: IAuthService) {
@@ -29,10 +29,10 @@ export class UserController extends BaseHttpController {
     }
 
     /**
-     * 新增使用者
-     * @param res response
-     * @param req request
-     * @return Promise
+     * Add new user
+     * @param res Http Response
+     * @param req Http Request
+     * @return Promise<Response>
      */
     @httpPost('/')
     @methodAdvice()
@@ -61,10 +61,10 @@ export class UserController extends BaseHttpController {
     }
 
     /**
-     * 登入驗證
-     * @param res response
-     * @param req request
-     * @return Promise
+     * User login
+     * @param res http response
+     * @param req http request
+     * @return Promise<response>
      */
     @httpPost('/login')
     @methodAdvice()
@@ -91,10 +91,10 @@ export class UserController extends BaseHttpController {
     }
 
     /**
-     * 使用 user access token 取得基本資料
-     * @param res response
-     * @param req request
-     * @return Promise
+     * Get user information
+     * @param res http response
+     * @param req http request
+     * @return Promise<Response>
      */
     @httpPost('/me')
     @methodAdvice()

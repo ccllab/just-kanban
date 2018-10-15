@@ -3,7 +3,7 @@ import {ILogger} from '..';
 import {DependencyResolverImpl, TYPES} from '../../ioc';
 
 /**
- * 紀錄 method I/O
+ * Log method I/O
  * @returns Advice for log method I/O
  */
 export const methodAdvice = () => afterMethod(meta => {

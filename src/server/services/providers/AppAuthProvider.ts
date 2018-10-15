@@ -5,10 +5,9 @@ import {TYPES} from "../../ioc";
 import {IAuthService} from "..";
 import {Principal} from "./Principal";
 
-const authService = inject(TYPES.IAuthService);
-
 /**
  * HttpContext Auth Provider
+ * Verify user status by token in every http request.
  */
 @injectable()
 export class AppAuthProvider implements interfaces.AuthProvider {
@@ -16,10 +15,10 @@ export class AppAuthProvider implements interfaces.AuthProvider {
     /**
      * AuthService
      */
-    @authService private readonly authService: IAuthService;
+    @inject(TYPES.IAuthService) private readonly authService: IAuthService;
 
     /**
-     * get User principal
+     * Get user principal by authToken, and refreshToken.
      * @param req request
      * @param res response
      * @param next next function
@@ -35,7 +34,7 @@ export class AppAuthProvider implements interfaces.AuthProvider {
 
         return this.authService.getUserByToken(authToken, refreshToken).then((user) => {
 
-            // 取得 principal 後重設 header.
+            // set header after get User entity.
             res.set({
                 'x-auth': user.authToken,
                 'x-auth-refresh': user.refreshToken
@@ -45,7 +44,7 @@ export class AppAuthProvider implements interfaces.AuthProvider {
         }).catch((err) => {
 
             // todo For now return an undefined user for principal, if undefined, then isAuthenticated is false.
-            // todo 錯誤訊息會被吃掉
+            // todo This will hide error message.
             return new Principal(undefined);
         });
     }

@@ -4,7 +4,7 @@ import {Socket} from 'net';
 
 /**
  * HTTP/HTTPS shutdown manager
- * 修改自 @moebius/http-graceful-shutdown，增加對 https.Server 的支援
+ * modify from @moebius/http-graceful-shutdown，adding https.Server support.
  * @author Moebius https://github.com/moebius-mlm
  */
 export class HttpShutdownManager {

@@ -1,12 +1,12 @@
 /**
- * 定義依賴注入的類型符號
+ * Define specified key for interfaces that inject to components.
  */
 export const TYPES = {
 
-    // Database
+    // DbProvider
     IDbProvider: Symbol.for('IDbProvider'),
 
-    // Repository
+    // Repositories
     IUserRepository: Symbol.for('IUserRepository'),
 
     // Services

@@ -1,7 +1,7 @@
 import {IGenericRepository, User} from '../..';
 
 /**
- * 使用者資料儲存庫介面
+ * The repository user data
  */
 export interface IUserRepository extends IGenericRepository<User> {
 }
