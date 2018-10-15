@@ -1,28 +1,28 @@
 import {Container} from 'inversify';
 
 /**
- * 相依性解析介面
+ * The interface of resolver for dependency component.
  */
 export interface IDependencyResolver {
 
     /**
-     * 設定 DI 容器
-     * @param container DI 容器
+     * Set DI container for resolver.
+     * @param container DI container.
      */
     SetContainer(container: Container): void;
 
     /**
-     * 由指定鍵值解析指定類型
-     * @param resolveKey 指定之解析鍵值
-     * @returns 指定之類型
+     * Resolve by specified key.
+     * @param resolveKey The specified key.
+     * @returns The specified component.
      */
     Resolve<TService>(resolveKey: string | symbol): TService;
 
     /**
-     * 由註冊時指定的名稱與鍵值解析
-     * @param resolveKey 指定之解析鍵值
-     * @param name 註冊時額外設定的類型名稱
-     * @returns 指定之類型
+     * Resolve by specified key and name.
+     * @param resolveKey The specified key.
+     * @param name The specified name.
+     * @returns The specified component.
      */
     ResolveNamed<TService>(resolveKey: string | symbol, name: string): TService;
 }

@@ -3,8 +3,8 @@ import {TYPES} from '../ioc';
 import * as Repository from './index';
 
 /**
- * 註冊儲存庫層之類型
- * @param container DI 容器
+ * Register repository layer components.
+ * @param container DI container
  */
 const registerRepository = (container: Container) => {
 

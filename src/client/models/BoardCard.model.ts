@@ -1,7 +1,10 @@
+/**
+ * The kanban board card information.
+ */
 export class BoardCardModel {
 
     /**
-     * pk 編號
+     * pk
      */
     public id: string;
 

@@ -6,29 +6,29 @@ import {TYPES} from "../ioc";
 import AuthError from "./exceptions/AuthError";
 
 /**
- * 登入驗證服務
+ * The implementation for authentication service
  */
 @injectable()
 export class AuthServiceImpl implements IAuthService {
 
     /**
-     * 建構函數
-     * @param userRepository 使用者資料儲存庫
+     * constructor
+     * @param userRepository User Repository
      */
     public constructor(@inject(TYPES.IUserRepository) private userRepository: IUserRepository) {
     }
 
     /**
-     * 產生新的 access token
-     * @param user 使用者實體資料
-     * @param isLongExpiration 是否延長 RefreshToken 期限
-     * @return 取得新 token 的使用者資料
+     * Generate and inject new authToken and refreshToken to user.
+     * @param user User entity
+     * @param isLongExpiration Extend token expiration or not.
+     * @return The user entity injected with new token.
      */
     private static injectNewToken(user: User, isLongExpiration: boolean): User {
 
         const {SECRET_KEY, LONG_EXPIRATION, NORMAL_EXPIRATION, TOKEN_LIFE_USING_REFRESH} = process.env;
 
-        // authToken 用於 access, 只有 20 分鐘
+        // authToken for access, expires after 20 min.
         user.authToken = sign(
             {
                 username: user.username,
@@ -40,8 +40,7 @@ export class AuthServiceImpl implements IAuthService {
             }
         );
 
-        // 過了 20 分鐘用 refresh token 刷新
-        // refresh token 的期限根據 isLongExpiration 記住我設為 1 天或 1 週
+        // after 20 min, use refresh token to refresh
         user.refreshToken = sign(
             {},
             SECRET_KEY,
@@ -55,12 +54,12 @@ export class AuthServiceImpl implements IAuthService {
 
 
     /**
-     * 註冊使用者
-     * @param user 新增的使用者
+     * Add new user
+     * @param user The new user that want to add.
      */
     public async addNewUser(user: User): Promise<User> {
 
-        // 檢查信箱是否已經使用
+        // check email if is already used.
         if (await this.userRepository.getBy({email: user.email})) {
 
             throw new AuthError("This email has been used!");
@@ -70,15 +69,14 @@ export class AuthServiceImpl implements IAuthService {
     }
 
     /**
-     * 取得使用者資料
+     * Get user by authToken, if authToken expired, refresh authToken
      * @param authToken access token
      * @param refreshToken Refresh token
-     * @return 驗證成功的使用者
+     * @return The user passing authentication.
      */
     public async getUserByToken(authToken: string, refreshToken: string): Promise<User> {
 
-        // 檢查目前傳入之 authToken 是否已經遭到覆蓋
-        // 遭到覆蓋表示已經重新登入
+        // Check the token if is exist in database or not.
         if (! await this.userRepository.getBy({authToken})) {
             throw new AuthError('This token is invalid.');
         }
@@ -86,28 +84,30 @@ export class AuthServiceImpl implements IAuthService {
         const {SECRET_KEY} = process.env;
         let payload: JwtPayload = new JwtPayload(null, null);
 
+        // todo Nested try-catch, need refactor
         try {
-            // 驗證 authToken
+            // verify authToken first.
             payload = verify(authToken, SECRET_KEY) as JwtPayload;
         } catch (err) {
 
-            // authToken 已經失效或驗證失敗, 嘗試驗證 refreshToken
+            // if failed, try verify refreshToken.
             try {
                 verify(refreshToken, SECRET_KEY);
 
-                // 驗證通過後取得使用者資訊, 並刷新 tokens
+                // verify success, then get user data to update user's token.
                 let user = await this.userRepository.getBy({refreshToken});
                 let updated = await this.userRepository.update(
                     AuthServiceImpl.injectNewToken(user, true)
                 );
 
-                // 更新 payload 資訊
+                // update payload
                 Object.assign(payload, updated);
             } catch (err) {
                 throw new AuthError(err.message);
             }
         }
 
+        // get user data by payload.
         return await this.userRepository.getBy({
             email: payload.email,
             username: payload.username
@@ -115,23 +115,20 @@ export class AuthServiceImpl implements IAuthService {
     }
 
     /**
-     * 登入驗證
-     * @param email 使用者信箱
-     * @param password 使用者密碼
-     * @param isRememberMe 是否記住我
-     * @return 驗證成功之使用者資料
+     * User login verify
+     * @param email User's email
+     * @param password User's password
+     * @param isRememberMe Is remember login status.
+     * @return The user passing authentication.
      */
     public async verify(email: string, password: string, isRememberMe: boolean = false): Promise<User> {
-
-        // todo if "remember me", make jwt token expiration longer.
-
         let user = await this.userRepository.getBy({email});
 
         if (user.password !== password) {
             throw new AuthError('Wrong email or password!');
         }
 
-        // 成功寫入新的 access token 並回傳
+        // Update new token for login user.
         return this.userRepository.update(AuthServiceImpl.injectNewToken(user, isRememberMe));
     }
 }

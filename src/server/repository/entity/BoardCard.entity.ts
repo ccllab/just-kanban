@@ -1,10 +1,13 @@
-import {BaseEntity, Column, Entity, ObjectIdColumn} from "typeorm";
+import {BaseEntity, Column, CreateDateColumn, Entity, ObjectIdColumn, UpdateDateColumn} from "typeorm";
 
+/**
+ * The kanban board card information.
+ */
 @Entity()
 export class BoardCardEntity extends BaseEntity {
 
     /**
-     * pk 編號
+     * pk
      */
     @ObjectIdColumn()
     public id: string;
@@ -20,4 +23,16 @@ export class BoardCardEntity extends BaseEntity {
      */
     @Column()
     public status: string;
+
+    /**
+     * The date time for create board card.
+     */
+    @CreateDateColumn()
+    public createdAt: Date;
+
+    /**
+     * The date time for update board card.
+     */
+    @UpdateDateColumn()
+    public updatedAt: Date;
 }
