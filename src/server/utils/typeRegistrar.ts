@@ -3,8 +3,8 @@ import {ConsoleLogger, ILogger, WinstonLogger} from './index';
 import {TYPES} from '../ioc';
 
 /**
- * 註冊 util
- * @param container DI 容器
+ * Register util layer components
+ * @param container DI container
  */
 const registerUtil = (container: Container) => {
     let isProduction: boolean = process.env.NODE_ENV === 'production';

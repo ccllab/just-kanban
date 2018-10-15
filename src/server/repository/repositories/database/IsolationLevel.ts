@@ -1,25 +1,28 @@
 /**
- * 交易隔離等級列舉
+ * Isolation level enum
  */
 export enum IsolationLevel {
 
     /**
-     * 代表 transaction 可以讀到別的 transaction 尚未 commit 的資料。
+     * Can read the data that didn't commit yet.
      */
     ReadUncommitted = 'READ UNCOMMITTED',
 
     /**
-     * 代表 transaction 只能讀到別的 transaction 已經 commit 的資料。
+     * Can read the data only committed
      */
     ReadCommitted = 'READ COMMITTED',
 
     /**
-     * 代表每次 transaction 要讀取特定欄位的資料時，只要 query 條件相同，讀取到的資料就會相同。
+     * Read same data, when use same query in every transaction.
      */
     RepeatableRead = 'REPEATABLE READ',
 
     /**
-     * 代表在多個 transaction 同時執行時，只要 transaction 的順序相同時，得到的結果一定相同。
+     * A serializable execution is defined to be an execution
+     * of the operations of concurrently executing SQL-transactions
+     * that produces the same effect as some serial execution of those
+     * same SQL-transactions.
      */
     Serializable = 'SERIALIZABLE'
 }

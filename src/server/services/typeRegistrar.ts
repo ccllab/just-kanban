@@ -3,8 +3,8 @@ import * as services from './index';
 import {TYPES} from "../ioc";
 
 /**
- * 註冊服務層之類型
- * @param container DI 容器
+ * Register service layer components
+ * @param container DI container
  */
 const registerServices = (container: Container) => {
 

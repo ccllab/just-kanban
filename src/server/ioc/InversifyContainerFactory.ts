@@ -4,41 +4,41 @@ import registerUtil from '../utils/typeRegistrar';
 import registerServices from "../services/typeRegistrar";
 
 /**
- * Inversify DI 容器工廠
+ * Inversify DI container factory
  * @singleton
  */
 export class InversifyContainerFactory {
 
     /**
-     * 容器工廠的實例
+     * The single instance for InversifyContainerFactory
      */
     private static containerFactoryInstance: InversifyContainerFactory;
 
     /**
-     * DI 容器
+     * DI container
      */
     public container: Container;
 
     /**
-     * 私有建構子，建立 DI 容器
+     * The private constructor, build container here
      */
     private constructor() {
 
         this.container = new Container();
 
-        // 註冊儲存庫層
+        // register repositories
         registerRepository(this.container);
 
-        // 註冊服務
+        // register services
         registerServices(this.container);
 
-        // 註冊 util
+        // register utils
         registerUtil(this.container);
     }
 
     /**
-     * 取得容器工廠的實例
-     * @returns 容器工廠
+     * Get InversifyContainerFactory instance.
+     * @returns InversifyContainerFactory
      */
     public static getInstance(): InversifyContainerFactory {
 

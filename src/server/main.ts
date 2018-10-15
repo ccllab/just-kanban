@@ -1,4 +1,4 @@
-﻿import 'reflect-metadata';
+﻿import 'reflect-metadata'; // import reflect-metadata in program entry.
 import Startup from './Startup';
 import {HttpShutdownManager, ILogger} from './utils';
 import {DependencyResolverImpl, InversifyContainerFactory, TYPES} from './ioc';
@@ -6,17 +6,17 @@ import {Container} from 'inversify';
 import * as dotenv from 'dotenv';
 
 /**
- * 主程式
+ * The main function.
  */
 const Main = () => {
 
     // .env config
     dotenv.config();
 
-    // 建立 app 容器
+    // build application dependency injection container.
     const appContainer: Container = InversifyContainerFactory.getInstance().container;
 
-    // 建立 Startup class
+    // build Startup class
     const server: Startup = Startup.bootstrap(appContainer);
 
     let logger = DependencyResolverImpl.current().Resolve<ILogger>(TYPES.ILogger);
@@ -42,9 +42,10 @@ const Main = () => {
     process.on('exit', shutdownCallback);
 };
 
+// program entry.
 // check this module was run directly from the command line as in node main.js
 if (require.main === module) {
 
-    // invoke
+    // invoke main function
     Main();
 }
