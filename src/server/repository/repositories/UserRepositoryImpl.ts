@@ -1,8 +1,8 @@
-import {TYPES} from '../../ioc';
 import {GenericMongoRepository, IDbProvider, IUserRepository, User} from '..';
+import {IExecutionContext} from "../../utils";
 import {inject, injectable, named} from 'inversify';
 import {Repository} from 'typeorm';
-import {IExecutionContext} from "../../utils";
+import {TYPES} from '../../ioc';
 
 /**
  * The user repository implementation
