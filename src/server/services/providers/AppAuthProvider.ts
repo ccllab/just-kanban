@@ -30,7 +30,7 @@ export class AppAuthProvider implements interfaces.AuthProvider {
         next: express.NextFunction): Promise<interfaces.Principal> {
 
         const authToken: string = req.header('x-auth');
-        let refreshToken: string = req.header('x-auth-refresh');
+        const refreshToken: string = req.header('x-auth-refresh');
 
         return this.authService.getUserByToken(authToken, refreshToken).then((user) => {
 
