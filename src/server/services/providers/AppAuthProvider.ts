@@ -1,9 +1,9 @@
 import * as express from 'express';
-import {interfaces} from 'inversify-express-utils';
-import {inject, injectable} from "inversify";
-import {TYPES} from "../../ioc";
 import {IAuthService} from "..";
+import {inject, injectable} from "inversify";
+import {interfaces} from 'inversify-express-utils';
 import {Principal} from "./Principal";
+import {TYPES} from "../../ioc";
 
 /**
  * HttpContext Auth Provider

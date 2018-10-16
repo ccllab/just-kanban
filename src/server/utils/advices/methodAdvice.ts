@@ -1,6 +1,6 @@
 import {afterMethod} from 'kaop-ts';
-import {ILogger} from '..';
 import {DependencyResolverImpl, TYPES} from '../../ioc';
+import {ILogger} from '..';
 
 /**
  * Log method I/O

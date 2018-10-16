@@ -1,12 +1,7 @@
-import {
-    BaseEntity,
-    Column,
-    Entity,
-    ObjectIdColumn,
-} from 'typeorm';
+import {BaseEntity, Column, Entity, ObjectIdColumn,} from 'typeorm';
+import {Exclude} from "class-transformer";
 import {ExtendedColumnOptions} from 'typeorm-encrypted';
 import {ICreatedAtUpdateAt} from "./ICreatedAtUpdateAt";
-import {Exclude} from "class-transformer";
 
 /**
  * User data
