@@ -4,6 +4,7 @@ import {inject, injectable} from "inversify";
 import {sign, verify} from "jsonwebtoken";
 import {TYPES} from "../ioc";
 import AuthError from "./exceptions/AuthError";
+import {UserAuthenticationDto} from "./dtos/UserAuthenticationDto";
 
 /**
  * The implementation for authentication service
@@ -24,23 +25,10 @@ export class AuthServiceImpl implements IAuthService {
      * @param isLongExpiration Extend token expiration or not.
      * @return The user entity injected with new token.
      */
-    private static injectNewToken(user: User, isLongExpiration: boolean): User {
+    private static injectNewRefreshToken(user: User, isLongExpiration: boolean): User {
+        const {SECRET_KEY, LONG_EXPIRATION, NORMAL_EXPIRATION} = process.env;
 
-        const {SECRET_KEY, LONG_EXPIRATION, NORMAL_EXPIRATION, TOKEN_LIFE_USING_REFRESH} = process.env;
-
-        // authToken for access, expires after 20 min.
-        user.authToken = sign(
-            {
-                username: user.username,
-                email: user.email
-            },
-            SECRET_KEY,
-            {
-                expiresIn: parseInt(TOKEN_LIFE_USING_REFRESH)
-            }
-        );
-
-        // after 20 min, use refresh token to refresh
+        // after 10 min, use refresh token to refresh
         user.refreshToken = sign(
             {},
             SECRET_KEY,
@@ -52,52 +40,68 @@ export class AuthServiceImpl implements IAuthService {
         return user;
     }
 
+    /**
+     * Generate new access token for user
+     * @param username User's name
+     * @param email User's email
+     * @return new access token
+     */
+    private static newAccessToken(username: string, email: string): string {
+        const {TOKEN_LIFE_USING_REFRESH, SECRET_KEY} = process.env;
+
+        return sign(
+            {username, email},
+            SECRET_KEY,
+            {expiresIn: parseInt(TOKEN_LIFE_USING_REFRESH)}
+        );
+    }
+
 
     /**
      * Add new user
      * @param user The new user that want to add.
      */
-    public async addNewUser(user: User): Promise<User> {
+    public async addNewUser(user: User): Promise<UserAuthenticationDto> {
 
         // check email if is already used.
         if (await this.userRepository.getBy({email: user.email})) {
-
             throw new AuthError("This email has been used!");
         }
 
-        return this.userRepository.add(AuthServiceImpl.injectNewToken(user, true));
+        let dto = new UserAuthenticationDto();
+        dto.userDetail = await this.userRepository.add(AuthServiceImpl.injectNewRefreshToken(user, true));
+        dto.accessToken = AuthServiceImpl.newAccessToken(user.username, user.email);
+
+        return Promise.resolve(dto);
     }
 
     /**
-     * Get user by authToken, if authToken expired, refresh authToken
-     * @param authToken access token
+     * Get user auth dto by authToken, if authToken expired, refresh authToken
+     * @param accessToken access token
      * @param refreshToken Refresh token
      * @return The user passing authentication.
      */
-    public async getUserByToken(authToken: string, refreshToken: string): Promise<User> {
-
-        // Check the token if is exist in database or not.
-        if (! await this.userRepository.getBy({authToken})) {
-            throw new AuthError('This token is invalid.');
-        }
-
+    public async getUserAuthByToken(accessToken: string, refreshToken: string): Promise<UserAuthenticationDto> {
         const {SECRET_KEY} = process.env;
-        let payload: JwtPayload = new JwtPayload(null, null);
+        let payload = new JwtPayload(null, null);
 
-        // todo Nested try-catch, need refactor
+        // verify authToken first.
         try {
-            // verify authToken first.
-            payload = verify(authToken, SECRET_KEY) as JwtPayload;
+            payload = verify(accessToken, SECRET_KEY) as JwtPayload;
         } catch (err) {
+            // Get user by refreshToken which is storage in database.
+            let user = await this.userRepository.getBy({refreshToken});
+            if (!user) {
+                throw new AuthError('Cannot refresh authentication, please login again.');
+            }
 
             // if failed, try verify refreshToken.
             try {
                 verify(refreshToken, SECRET_KEY);
 
-                // verify success, then get user data to update user's token.
-                let user = await this.userRepository.getBy({refreshToken});
+                // verify success, update user's refresh token.
                 let updated = await this.userRepository.update(
-                    AuthServiceImpl.injectNewToken(user, true)
+                    AuthServiceImpl.injectNewRefreshToken(user, true)
                 );
 
                 // update payload
@@ -107,11 +111,11 @@ export class AuthServiceImpl implements IAuthService {
             }
         }
 
-        // get user data by payload.
-        return await this.userRepository.getBy({
-            email: payload.email,
-            username: payload.username
-        });
+        let dto = new UserAuthenticationDto();
+        dto.accessToken = AuthServiceImpl.newAccessToken(payload.username, payload.email);
+        dto.userDetail = await this.userRepository.getBy({username:payload.username, email:payload.email});
+
+        return Promise.resolve(dto);
     }
 
     /**
@@ -121,14 +125,16 @@ export class AuthServiceImpl implements IAuthService {
      * @param isRememberMe Is remember login status.
      * @return The user passing authentication.
      */
-    public async verify(email: string, password: string, isRememberMe: boolean = false): Promise<User> {
+    public async verify(email: string, password: string, isRememberMe: boolean = false): Promise<UserAuthenticationDto> {
         let user = await this.userRepository.getBy({email});
-
         if (user.password !== password) {
             throw new AuthError('Wrong email or password!');
         }
 
-        // Update new token for login user.
-        return this.userRepository.update(AuthServiceImpl.injectNewToken(user, isRememberMe));
+        let dto = new UserAuthenticationDto();
+        dto.userDetail = await this.userRepository.update(AuthServiceImpl.injectNewRefreshToken(user, isRememberMe));
+        dto.accessToken = AuthServiceImpl.newAccessToken(user.username, user.email);
+
+        return Promise.resolve(dto);
     }
 }
