@@ -1,5 +1,6 @@
 import * as express from 'express';
-import {BaseHttpController, controller, httpPost, request, response} from 'inversify-express-utils';
+import ApiControllerBase from "./ApiControllerBase";
+import {controller, httpPost, request, response} from 'inversify-express-utils';
 import {IAuthService} from "../services";
 import {inject} from 'inversify';
 import {methodAdvice} from '../utils';
@@ -10,7 +11,7 @@ import {User} from '../repository';
  * User information and auth controller
  */
 @controller('/api/user')
-export class UserController extends BaseHttpController {
+export class UserController extends ApiControllerBase {
 
     /**
      * Constructor
@@ -98,7 +99,7 @@ export class UserController extends BaseHttpController {
 
         // console.log(await this.httpContext.user.isAuthenticated());
 
-        if (! await this.httpContext.user.isAuthenticated()) {
+        if (! await this.isAuthenticated()) {
             return res.send('Please login, and try again.');
         }
 
