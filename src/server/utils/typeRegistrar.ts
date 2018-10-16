@@ -1,5 +1,5 @@
-import {Container} from 'inversify';
 import {ConsoleLogger, ExecutionContext, IExecutionContext, ILogger, WinstonLogger} from './index';
+import {Container} from 'inversify';
 import {TYPES} from '../ioc';
 
 /**

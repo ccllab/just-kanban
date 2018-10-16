@@ -1,5 +1,5 @@
 import * as http from 'http';
-import * as https from 'http';
+import * as https from 'https';
 import {Socket} from 'net';
 
 /**
@@ -101,7 +101,7 @@ export class HttpShutdownManager {
      * @param request incoming message
      * @param response server's response
      */
-    private onRequest(request: http.IncomingMessage | https.IncomingMessage, response: http.ServerResponse | https.ServerResponse): void {
+    private onRequest(request: http.IncomingMessage, response: http.ServerResponse): void {
 
         const connection = (request.connection as any);
 

@@ -1,10 +1,4 @@
-import {
-    DeepPartial,
-    EntityManager,
-    FindConditions,
-    ObjectID,
-    Repository
-} from 'typeorm';
+import {DeepPartial, EntityManager, FindConditions, ObjectID, Repository} from 'typeorm';
 import {IsolationLevel} from '../..';
 
 /**

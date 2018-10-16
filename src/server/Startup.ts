@@ -1,16 +1,16 @@
+import './controllers'; // declare metadata by @controller annotation
 import * as bodyParser from 'body-parser';
 import * as express from 'express';
 import * as fs from 'fs';
 import * as http from 'http';
 import * as path from 'path';
 import * as socketIO from 'socket.io';
+import {AppAuthProvider} from "./services/providers/AppAuthProvider";
 import {Container} from 'inversify';
 import {createConnections} from 'typeorm';
 import {DependencyResolverImpl, TYPES} from './ioc';
 import {ILogger} from './utils';
 import {InversifyExpressServer} from 'inversify-express-utils';
-import './controllers';
-import {AppAuthProvider} from "./services/providers/AppAuthProvider"; // declare metadata by @controller annotation
 
 /**
  * Node.js express server Startup class.
