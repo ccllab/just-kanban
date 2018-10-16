@@ -1,6 +1,8 @@
 import * as winston from 'winston';
 import {ILogger} from './abstraction/ILogger';
-import {injectable} from 'inversify';
+import {inject, injectable} from 'inversify';
+import {TYPES} from "../../../ioc";
+import {IExecutionContext} from "../..";
 
 /**
  * ILogger implement by winston.logger
@@ -17,16 +19,17 @@ export class WinstonLogger implements ILogger {
      * constructor
      *
      * Set up winston.logger
+     * @param executionContext IExecutionContext
      */
-    public constructor() {
+    public constructor(@inject(TYPES.IExecutionContext) executionContext: IExecutionContext) {
 
         // short date format yyyy-mm-dd
-        const dateNow: string = new Date().toJSON().slice(0, 10);
+        const dateNow: string = executionContext.dateNow.toJSON().slice(0, 10);
 
         // display format for log
         const loggerFormat = winston.format.printf(info => {
 
-            let time = new Date().toTimeString();
+            let time = executionContext.dateNow.toTimeString();
 
             return `[${time}] [${info.level}]: ${info.message}`;
         });

@@ -1,3 +1,4 @@
+export * from './entity/ICreatedAtUpdateAt';
 export * from './entity/User.entity';
 export * from './entity/BoardCard.entity';
 

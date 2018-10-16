@@ -3,6 +3,8 @@ import {injectable} from "inversify";
 import {IDbProvider} from "../..";
 import {DeepPartial, FindConditions, ObjectID, Repository} from "typeorm";
 import {decrypt} from "typeorm-encrypted";
+import {IExecutionContext} from "../../../utils";
+import {hasEditColumn} from "../../../utils/extensions/typeExtensions";
 
 /**
  * The generic MongoDB repository
@@ -15,9 +17,41 @@ export abstract class GenericMongoRepository<TEntity extends DeepPartial<TEntity
     /**
      * constructor
      * @param dbProvider The provider for database
+     * @param executionContext IExecutionContext
      */
-    protected constructor(dbProvider: IDbProvider) {
+    protected constructor(
+        dbProvider: IDbProvider,
+        private readonly executionContext: IExecutionContext
+    ) {
         super(dbProvider);
+    }
+
+    /**
+     * Add one entity to table(collection)
+     * @param entity The entity for adding
+     * @returns The entity that added
+     */
+    public add(entity: TEntity): Promise<TEntity> {
+        if (hasEditColumn(entity)) {
+            entity.createdAt = this.executionContext.dateNow;
+            entity.updatedAt = this.executionContext.dateNow;
+        }
+
+        return super.add(entity);
+    }
+
+    /**
+     * Update one entity to table(collection)
+     * @param entity The entity for updating
+     * @returns The entity that updated
+     */
+    public update(entity: TEntity): Promise<TEntity> {
+        if (hasEditColumn(entity)) {
+            entity.createdAt = this.executionContext.dateNow;
+            entity.updatedAt = this.executionContext.dateNow;
+        }
+
+        return super.add(entity);
     }
 
     /**
