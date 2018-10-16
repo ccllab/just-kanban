@@ -1,24 +1,34 @@
 import {
     BaseEntity,
     Column,
-    CreateDateColumn,
     Entity,
     ObjectIdColumn,
-    UpdateDateColumn
 } from 'typeorm';
 import {ExtendedColumnOptions} from 'typeorm-encrypted';
+import {ICreatedAtUpdateAt} from "./ICreatedAtUpdateAt";
+import {Exclude} from "class-transformer";
 
 /**
  * User data
  */
 @Entity()
-export class User extends BaseEntity {
+export class User extends BaseEntity implements ICreatedAtUpdateAt {
 
     /**
      * pk
      */
     @ObjectIdColumn()
-    public id: string;
+    public _id: string;
+
+    /**
+     * User Id
+     */
+    @Column({
+        length:25,
+        nullable:false,
+        unique: true
+    })
+    public userId: string;
 
     /**
      * username
@@ -61,12 +71,34 @@ export class User extends BaseEntity {
     /**
      * The date time for create user information.
      */
-    @CreateDateColumn()
+    @Column({
+        type: "date"
+    })
     public createdAt: Date;
 
     /**
      * The date time for update user information.
      */
-    @UpdateDateColumn()
+    @Column({
+        type: "date"
+    })
     public updatedAt: Date;
+
+    /**
+     * The flag for check this entity has implemented ICreatedAtUpdateAt
+     * @return createdAt
+     */
+    @Exclude()
+    public createdAtFlag(): Date {
+        return this.createdAt;
+    }
+
+    /**
+     * The flag for check this entity has implemented ICreatedAtUpdateAt
+     * @return updatedAt
+     */
+    @Exclude()
+    public updatedAtFlag(): Date {
+        return this.updatedAt;
+    }
 }

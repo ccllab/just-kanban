@@ -13,5 +13,6 @@ export const TYPES = {
     IAuthService: Symbol.for('IAuthService'),
 
     // other utils
-    ILogger: Symbol.for('ILogger')
+    ILogger: Symbol.for('ILogger'),
+    IExecutionContext: Symbol.for('IExecutionContext')
 };
