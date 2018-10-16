@@ -33,8 +33,8 @@ module.exports = {
         "padding-line-between-statements": [ // 空行規則
             "warn",
             { blankLine: "always", prev: "*", next: "return" }, // return 前強制空一行
-            { blankLine: "always", prev: ["const", "let", "var"], next: "*" }, // 所有變數聲明後面強制空一行
-            { blankLine: "any", prev: ["const", "let", "var"], next: ["const", "let", "var"] },
+            //{ blankLine: "always", prev: ["const", "let", "var"], next: "*" }, // 所有變數聲明後面強制空一行
+            //{ blankLine: "any", prev: ["const", "let", "var"], next: ["const", "let", "var"] },
             { blankLine: "always", prev: "block-like", next: "*" } // 區塊結束後強制空一行
         ],
         "space-before-blocks": [ // 花括號前空格

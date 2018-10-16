@@ -46,14 +46,14 @@ export class UserController extends BaseHttpController {
         user.email = req.body.email;
         user.password = req.body.password;
 
-        return this.authService.addNewUser(user).then((newUser) => {
+        return this.authService.addNewUser(user).then((userAuthDto) => {
             return res.set({
-                'x-auth': user.authToken,
-                'x-auth-refresh': user.refreshToken
+                'x-auth': userAuthDto.accessToken,
+                'x-auth-refresh': userAuthDto.userDetail.refreshToken
             }).send({
-                id: newUser.id,
-                name: newUser.username,
-                email: newUser.email
+                id: userAuthDto.userDetail.id,
+                name: userAuthDto.userDetail.username,
+                email: userAuthDto.userDetail.email
             });
         }, (err) => {
             return res.status(400).send(err.message);
@@ -76,14 +76,14 @@ export class UserController extends BaseHttpController {
             req.body.email,
             req.body.password,
             req.body.isRememberMe
-        ).then((user) => {
+        ).then((userAuthDto) => {
             return res.set({
-                'x-auth': user.authToken,
-                'x-auth-refresh': user.refreshToken
+                'x-auth': userAuthDto.accessToken,
+                'x-auth-refresh': userAuthDto.userDetail.refreshToken
             }).send({
-                id: user.id,
-                name: user.username,
-                email: user.email
+                id: userAuthDto.userDetail.id,
+                name: userAuthDto.userDetail.username,
+                email: userAuthDto.userDetail.email
             });
         }, (err) => {
             return res.status(400).send(err.message);
