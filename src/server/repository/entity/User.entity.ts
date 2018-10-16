@@ -53,12 +53,6 @@ export class User extends BaseEntity {
     public password: string;
 
     /**
-     * The token for access web site function
-     */
-    @Column()
-    public authToken: string;
-
-    /**
      * The token for refresh authentication.
      */
     @Column()
