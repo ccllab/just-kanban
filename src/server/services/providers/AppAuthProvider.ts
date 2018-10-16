@@ -32,15 +32,15 @@ export class AppAuthProvider implements interfaces.AuthProvider {
         const authToken: string = req.header('x-auth');
         const refreshToken: string = req.header('x-auth-refresh');
 
-        return this.authService.getUserByToken(authToken, refreshToken).then((user) => {
+        return this.authService.getUserAuthByToken(authToken, refreshToken).then((userAuthDto) => {
 
             // set header after get User entity.
             res.set({
-                'x-auth': user.authToken,
-                'x-auth-refresh': user.refreshToken
+                'x-auth': userAuthDto.accessToken,
+                'x-auth-refresh': userAuthDto.userDetail.refreshToken
             });
 
-            return new Principal(user);
+            return new Principal(userAuthDto.userDetail);
         }).catch((err) => {
 
             // todo For now return an undefined user for principal, if undefined, then isAuthenticated is false.
