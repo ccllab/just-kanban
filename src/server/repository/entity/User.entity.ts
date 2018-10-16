@@ -2,8 +2,7 @@ import {
     BaseEntity,
     Column,
     CreateDateColumn,
-    Entity,
-    ObjectIdColumn,
+    Entity, ObjectIdColumn,
     UpdateDateColumn
 } from 'typeorm';
 import {ExtendedColumnOptions} from 'typeorm-encrypted';
@@ -18,7 +17,15 @@ export class User extends BaseEntity {
      * pk
      */
     @ObjectIdColumn()
-    public id: string;
+    public _id: string;
+
+    /**
+     * User Id
+     */
+    @Column({
+        name: '_id'
+    })
+    public userId: string;
 
     /**
      * username
