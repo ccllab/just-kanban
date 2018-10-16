@@ -1,16 +1,18 @@
-import {BaseEntity, Column, CreateDateColumn, Entity, ObjectIdColumn, UpdateDateColumn} from "typeorm";
+import {BaseEntity, Column, Entity, ObjectIdColumn} from "typeorm";
+import {ICreatedAtUpdateAt} from "./ICreatedAtUpdateAt";
+import {Exclude} from "class-transformer";
 
 /**
  * The kanban board card information.
  */
 @Entity()
-export class BoardCardEntity extends BaseEntity {
+export class BoardCardEntity extends BaseEntity implements ICreatedAtUpdateAt {
 
     /**
      * pk
      */
     @ObjectIdColumn()
-    public id: string;
+    public _id: string;
 
     /**
      * Board block title
@@ -27,12 +29,34 @@ export class BoardCardEntity extends BaseEntity {
     /**
      * The date time for create board card.
      */
-    @CreateDateColumn()
+    @Column({
+        type: "date"
+    })
     public createdAt: Date;
 
     /**
      * The date time for update board card.
      */
-    @UpdateDateColumn()
+    @Column({
+        type: "date"
+    })
     public updatedAt: Date;
+
+    /**
+     * The flag for check this entity has implemented ICreatedAtUpdateAt
+     * @return createdAt
+     */
+    @Exclude()
+    public createdAtFlag(): Date {
+        return this.createdAt;
+    }
+
+    /**
+     * The flag for check this entity has implemented ICreatedAtUpdateAt
+     * @return updatedAt
+     */
+    @Exclude()
+    public updatedAtFlag(): Date {
+        return this.updatedAt;
+    }
 }

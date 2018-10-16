@@ -2,6 +2,7 @@ import {TYPES} from '../../ioc';
 import {GenericMongoRepository, IDbProvider, IUserRepository, User} from '..';
 import {inject, injectable, named} from 'inversify';
 import {Repository} from 'typeorm';
+import {IExecutionContext} from "../../utils";
 
 /**
  * The user repository implementation
@@ -12,10 +13,13 @@ export class UserRepositoryImpl extends GenericMongoRepository<User> implements 
     /**
      * constructor
      * @param dbProvider The provider for database
+     * @param executionContext IExecutionContext
      */
-    public constructor(@inject(TYPES.IDbProvider) @named('mongo') dbProvider: IDbProvider) {
-
-        super(dbProvider);
+    public constructor(
+        @inject(TYPES.IDbProvider) @named('mongo') dbProvider: IDbProvider,
+        @inject(TYPES.IExecutionContext) executionContext: IExecutionContext
+    ) {
+        super(dbProvider, executionContext);
     }
 
     /**
