@@ -1,16 +1,10 @@
 import * as express from 'express';
-import {TYPES} from '../ioc';
-import {
-    controller,
-    httpPost,
-    BaseHttpController,
-    request,
-    response
-} from 'inversify-express-utils';
-import {User} from '../repository';
+import {BaseHttpController, controller, httpPost, request, response} from 'inversify-express-utils';
+import {IAuthService} from "../services";
 import {inject} from 'inversify';
 import {methodAdvice} from '../utils';
-import {IAuthService} from "../services";
+import {TYPES} from '../ioc';
+import {User} from '../repository';
 
 /**
  * User information and auth controller

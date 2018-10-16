@@ -1,6 +1,6 @@
 import {BaseEntity, Column, Entity, ObjectIdColumn} from "typeorm";
-import {ICreatedAtUpdateAt} from "./ICreatedAtUpdateAt";
 import {Exclude} from "class-transformer";
+import {ICreatedAtUpdateAt} from "./ICreatedAtUpdateAt";
 
 /**
  * The kanban board card information.

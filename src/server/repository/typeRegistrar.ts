@@ -1,6 +1,6 @@
+import * as Repository from './index';
 import {Container} from 'inversify';
 import {TYPES} from '../ioc';
-import * as Repository from './index';
 
 /**
  * Register repository layer components.

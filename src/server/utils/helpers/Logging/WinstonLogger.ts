@@ -1,8 +1,8 @@
 import * as winston from 'winston';
+import {IExecutionContext} from "../..";
 import {ILogger} from './abstraction/ILogger';
 import {inject, injectable} from 'inversify';
 import {TYPES} from "../../../ioc";
-import {IExecutionContext} from "../..";
 
 /**
  * ILogger implement by winston.logger

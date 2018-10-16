@@ -1,13 +1,6 @@
+import {Connection, DeepPartial, EntityManager, FindConditions, ObjectID, Repository,} from 'typeorm';
 import {IDbProvider, IGenericRepository, IsolationLevel} from '../..';
 import {injectable} from 'inversify';
-import {
-    Connection,
-    DeepPartial,
-    EntityManager,
-    FindConditions,
-    ObjectID,
-    Repository,
-} from 'typeorm';
 
 /**
  * The base and generic class for repository,

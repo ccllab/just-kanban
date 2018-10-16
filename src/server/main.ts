@@ -1,9 +1,9 @@
 ﻿import 'reflect-metadata'; // import reflect-metadata in program entry.
-import Startup from './Startup';
-import {HttpShutdownManager, ILogger} from './utils';
-import {DependencyResolverImpl, InversifyContainerFactory, TYPES} from './ioc';
-import {Container} from 'inversify';
 import * as dotenv from 'dotenv';
+import Startup from './Startup';
+import {Container} from 'inversify';
+import {DependencyResolverImpl, InversifyContainerFactory, TYPES} from './ioc';
+import {HttpShutdownManager, ILogger} from './utils';
 
 /**
  * The main function.

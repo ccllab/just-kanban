@@ -1,7 +1,7 @@
-import {Container} from 'inversify';
 import registerRepository from '../repository/typeRegistrar';
-import registerUtil from '../utils/typeRegistrar';
 import registerServices from "../services/typeRegistrar";
+import registerUtil from '../utils/typeRegistrar';
+import {Container} from 'inversify';
 
 /**
  * Inversify DI container factory

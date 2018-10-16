@@ -1,5 +1,5 @@
-import {Container} from "inversify";
 import * as services from './index';
+import {Container} from "inversify";
 import {TYPES} from "../ioc";
 
 /**

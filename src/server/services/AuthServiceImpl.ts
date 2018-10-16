@@ -1,9 +1,9 @@
+import AuthError from "./exceptions/AuthError";
 import {IAuthService} from "./interfaces/IAuthService";
-import {IUserRepository, JwtPayload, User} from "../repository";
 import {inject, injectable} from "inversify";
+import {IUserRepository, JwtPayload, User} from "../repository";
 import {sign, verify} from "jsonwebtoken";
 import {TYPES} from "../ioc";
-import AuthError from "./exceptions/AuthError";
 import {UserAuthenticationDto} from "./dtos/UserAuthenticationDto";
 
 /**
