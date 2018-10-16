@@ -16,44 +16,7 @@ export class AuthServiceImpl implements IAuthService {
      * constructor
      * @param userRepository User Repository
      */
-    public constructor(@inject(TYPES.IUserRepository) private userRepository: IUserRepository) {
-    }
-
-    /**
-     * Generate and inject new authToken and refreshToken to user.
-     * @param user User entity
-     * @param isLongExpiration Extend token expiration or not.
-     * @return The user entity injected with new token.
-     */
-    private static injectNewRefreshToken(user: User, isLongExpiration: boolean): User {
-        const {SECRET_KEY, LONG_EXPIRATION, NORMAL_EXPIRATION} = process.env;
-
-        // after 10 min, use refresh token to refresh
-        user.refreshToken = sign(
-            {},
-            SECRET_KEY,
-            {
-                expiresIn: isLongExpiration ? parseInt(LONG_EXPIRATION) : parseInt(NORMAL_EXPIRATION)
-            }
-        );
-
-        return user;
-    }
-
-    /**
-     * Generate new access token for user
-     * @param username User's name
-     * @param email User's email
-     * @return new access token
-     */
-    private static newAccessToken(username: string, email: string): string {
-        const {TOKEN_LIFE_USING_REFRESH, SECRET_KEY} = process.env;
-
-        return sign(
-            {username, email},
-            SECRET_KEY,
-            {expiresIn: parseInt(TOKEN_LIFE_USING_REFRESH)}
-        );
+    public constructor(@inject(TYPES.IUserRepository) private readonly userRepository: IUserRepository) {
     }
 
 
@@ -63,14 +26,18 @@ export class AuthServiceImpl implements IAuthService {
      */
     public async addNewUser(user: User): Promise<UserAuthenticationDto> {
 
-        // check email if is already used.
+        // check id or email if is already used.
         if (await this.userRepository.getBy({email: user.email})) {
             throw new AuthError("This email has been used!");
         }
 
+        if (await this.userRepository.getBy({userId:user.userId})) {
+            throw new AuthError('This user id has been used!');
+        }
+
         let dto = new UserAuthenticationDto();
-        dto.userDetail = await this.userRepository.add(AuthServiceImpl.injectNewRefreshToken(user, true));
-        dto.accessToken = AuthServiceImpl.newAccessToken(user.username, user.email);
+        dto.userDetail = await this.userRepository.add(this.injectNewRefreshToken(user, true));
+        dto.accessToken = this.newAccessToken(user.username, user.email);
 
         return Promise.resolve(dto);
     }
@@ -79,7 +46,7 @@ export class AuthServiceImpl implements IAuthService {
      * Get user auth dto by authToken, if authToken expired, refresh authToken
      * @param accessToken access token
      * @param refreshToken Refresh token
-     * @return The user passing authentication.
+     * @return The user auth dto passing authentication.
      */
     public async getUserAuthByToken(accessToken: string, refreshToken: string): Promise<UserAuthenticationDto> {
         const {SECRET_KEY} = process.env;
@@ -101,7 +68,7 @@ export class AuthServiceImpl implements IAuthService {
 
                 // verify success, update user's refresh token.
                 let updated = await this.userRepository.update(
-                    AuthServiceImpl.injectNewRefreshToken(user, true)
+                    this.injectNewRefreshToken(user, true)
                 );
 
                 // update payload
@@ -112,7 +79,7 @@ export class AuthServiceImpl implements IAuthService {
         }
 
         let dto = new UserAuthenticationDto();
-        dto.accessToken = AuthServiceImpl.newAccessToken(payload.username, payload.email);
+        dto.accessToken = this.newAccessToken(payload.username, payload.email);
         dto.userDetail = await this.userRepository.getBy({username:payload.username, email:payload.email});
 
         return Promise.resolve(dto);
@@ -132,9 +99,46 @@ export class AuthServiceImpl implements IAuthService {
         }
 
         let dto = new UserAuthenticationDto();
-        dto.userDetail = await this.userRepository.update(AuthServiceImpl.injectNewRefreshToken(user, isRememberMe));
-        dto.accessToken = AuthServiceImpl.newAccessToken(user.username, user.email);
+        dto.userDetail = await this.userRepository.update(this.injectNewRefreshToken(user, isRememberMe));
+        dto.accessToken = this.newAccessToken(user.username, user.email);
 
         return Promise.resolve(dto);
+    }
+
+    /**
+     * Generate and inject new authToken and refreshToken to user.
+     * @param user User entity
+     * @param isLongExpiration Extend token expiration or not.
+     * @return The user entity injected with new token.
+     */
+    private injectNewRefreshToken(user: User, isLongExpiration: boolean): User {
+        const {SECRET_KEY, LONG_EXPIRATION, NORMAL_EXPIRATION} = process.env;
+
+        // after 10 min, use refresh token to refresh
+        user.refreshToken = sign(
+            {},
+            SECRET_KEY,
+            {
+                expiresIn: isLongExpiration ? parseInt(LONG_EXPIRATION) : parseInt(NORMAL_EXPIRATION)
+            }
+        );
+
+        return user;
+    }
+
+    /**
+     * Generate new access token for user
+     * @param username User's name
+     * @param email User's email
+     * @return new access token
+     */
+    private newAccessToken(username: string, email: string): string {
+        const {TOKEN_LIFE_USING_REFRESH, SECRET_KEY} = process.env;
+
+        return sign(
+            {username, email},
+            SECRET_KEY,
+            {expiresIn: parseInt(TOKEN_LIFE_USING_REFRESH)}
+        );
     }
 }

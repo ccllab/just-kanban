@@ -1,5 +1,5 @@
 import {Container} from 'inversify';
-import {ConsoleLogger, ILogger, WinstonLogger} from './index';
+import {ConsoleLogger, ExecutionContext, IExecutionContext, ILogger, WinstonLogger} from './index';
 import {TYPES} from '../ioc';
 
 /**
@@ -12,6 +12,8 @@ const registerUtil = (container: Container) => {
     isProduction ?
         container.bind<ILogger>(TYPES.ILogger).to(WinstonLogger) :
         container.bind<ILogger>(TYPES.ILogger).to(ConsoleLogger);
+
+    container.bind<IExecutionContext>(TYPES.IExecutionContext).to(ExecutionContext);
 };
 
 export default registerUtil;

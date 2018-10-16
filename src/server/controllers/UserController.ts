@@ -41,7 +41,7 @@ export class UserController extends BaseHttpController {
         @request() req: express.Request): Promise<express.Response> {
 
         let user: User = new User();
-
+        user.userId = req.body.userId;
         user.username = req.body.username;
         user.email = req.body.email;
         user.password = req.body.password;
@@ -51,7 +51,7 @@ export class UserController extends BaseHttpController {
                 'x-auth': userAuthDto.accessToken,
                 'x-auth-refresh': userAuthDto.userDetail.refreshToken
             }).send({
-                id: userAuthDto.userDetail.id,
+                id: userAuthDto.userDetail.userId,
                 name: userAuthDto.userDetail.username,
                 email: userAuthDto.userDetail.email
             });
@@ -81,7 +81,7 @@ export class UserController extends BaseHttpController {
                 'x-auth': userAuthDto.accessToken,
                 'x-auth-refresh': userAuthDto.userDetail.refreshToken
             }).send({
-                id: userAuthDto.userDetail.id,
+                id: userAuthDto.userDetail.userId,
                 name: userAuthDto.userDetail.username,
                 email: userAuthDto.userDetail.email
             });
