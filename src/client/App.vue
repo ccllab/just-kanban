@@ -24,8 +24,8 @@
     import {Component, Vue} from 'vue-property-decorator';
     import * as faker from 'faker';
     import {debounce} from 'lodash';
-    import KanbanBoard from './components/KanbanBoard';
-    import BoardCard from './components/BoardCard';
+    import KanbanBoard from './components/KanbanBoard.vue';
+    import BoardCard from './components/BoardCard.vue';
     import {BoardCardModel} from "./models/BoardCard.model";
 
     /**
