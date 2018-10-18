@@ -94,7 +94,7 @@ export class AuthServiceImpl implements IAuthService {
      */
     public async verify(email: string, password: string, isRememberMe: boolean = false): Promise<UserAuthenticationDto> {
         let user = await this.userRepository.getBy({email});
-        if (user.password !== password) {
+        if (!user || user.password !== password) {
             throw new AuthError('Wrong email or password!');
         }
 

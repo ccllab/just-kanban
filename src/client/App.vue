@@ -50,6 +50,13 @@
         public blocks: Array<BoardCardModel> = [];
 
         /**
+         * Set up config after creat App
+         */
+        public created(): void {
+            this.$cookies.set('vue-cookie-test', 'fuckyouass');
+        }
+
+        /**
          * push fake data to blocks when mounted
          */
         public mounted():  void {
@@ -73,6 +80,8 @@
          * @param status The status for updating block.
          */
         public updateBlock(id: string, status: string): void {
+
+            console.log(this.$cookies.get('vue-cookie-test'));
 
             debounce(() => {
                 this.blocks.find(b => b.id === id).status = status;

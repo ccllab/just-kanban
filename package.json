@@ -75,6 +75,7 @@
     "typeorm-encrypted": "^0.5.1",
     "vue": "^2.5.17",
     "vue-class-component": "^6.2.0",
+    "vue-cookies": "^1.5.7",
     "vue-property-decorator": "^7.1.0",
     "vue-router": "^3.0.1",
     "vuex": "^3.0.1",
