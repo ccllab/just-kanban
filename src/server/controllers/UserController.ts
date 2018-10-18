@@ -34,12 +34,12 @@ export class UserController extends ApiControllerBase {
     private addUser(
         @response() res: express.Response,
         @request() req: express.Request): Promise<express.Response> {
-
+        let {userId, username, email, password} = req.body;
         let user: User = new User();
-        user.userId = req.body.userId;
-        user.username = req.body.username;
-        user.email = req.body.email;
-        user.password = req.body.password;
+        user.userId = userId;
+        user.username = username;
+        user.email = email;
+        user.password = password;
 
         return this.authService.addNewUser(user).then((userAuthDto) => {
             return res.set({
@@ -66,11 +66,12 @@ export class UserController extends ApiControllerBase {
     private login(
         @response() res: express.Response,
         @request() req: express.Request): Promise<express.Response> {
+        let {email, password, isRememberMe} = req.body;
 
         return this.authService.verify(
-            req.body.email,
-            req.body.password,
-            req.body.isRememberMe
+            email,
+            password,
+            isRememberMe
         ).then((userAuthDto) => {
             return res.set({
                 'x-auth': userAuthDto.accessToken,
@@ -100,7 +101,7 @@ export class UserController extends ApiControllerBase {
         // console.log(await this.httpContext.user.isAuthenticated());
 
         if (! await this.isAuthenticated()) {
-            return res.send('Please login, and try again.');
+            return res.status(401).send('Please login, and try again.');
         }
 
         return res.send(this.httpContext.user.details);
