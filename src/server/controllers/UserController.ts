@@ -44,7 +44,7 @@ export class UserController extends ApiControllerBase {
         return this.authService.addNewUser(user).then((userAuthDto) => {
             return res.set({
                 'x-auth': userAuthDto.accessToken,
-                'x-auth-refresh': userAuthDto.userDetail.refreshToken
+                'x-refresh': userAuthDto.userDetail.refreshToken
             }).send({
                 id: userAuthDto.userDetail.userId,
                 name: userAuthDto.userDetail.username,
@@ -75,7 +75,7 @@ export class UserController extends ApiControllerBase {
         ).then((userAuthDto) => {
             return res.set({
                 'x-auth': userAuthDto.accessToken,
-                'x-auth-refresh': userAuthDto.userDetail.refreshToken
+                'x-refresh': userAuthDto.userDetail.refreshToken
             }).send({
                 id: userAuthDto.userDetail.userId,
                 name: userAuthDto.userDetail.username,
