@@ -27,6 +27,7 @@
     import KanbanBoard from './components/KanbanBoard.vue';
     import BoardCard from './components/BoardCard.vue';
     import {BoardCardModel} from "./models/BoardCard.model";
+    import AuthApiHelper from "./api/AuthApiHelper";
 
     /**
      * Vue app
@@ -81,7 +82,7 @@
          */
         public updateBlock(id: string, status: string): void {
 
-            console.log(this.$cookies.get('vue-cookie-test'));
+            AuthApiHelper.login();
 
             debounce(() => {
                 this.blocks.find(b => b.id === id).status = status;
