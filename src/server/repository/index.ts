@@ -1,9 +1,14 @@
 export * from './entity/ICreatedAtUpdateAt';
 export * from './entity/User.entity';
 export * from './entity/BoardCard.entity';
+export * from './entity/KanbanBoard.entity';
+export * from './entity/TeamGroup.entity';
 
 export * from './repositories/infrastructure/IGenericRepository';
 export * from './repositories/interfaces/IUserRepository';
+export * from './repositories/interfaces/IKanbanBoardRepository';
+export * from './repositories/interfaces/ITeamGroupRepository';
+export * from './repositories/interfaces/IBoardCardRepository';
 
 export * from './repositories/database/IsolationLevel';
 
@@ -14,6 +19,9 @@ export * from './repositories/database/MongoDbProvider';
 export * from './repositories/infrastructure/GenericRepositoryImpl';
 export * from './repositories/infrastructure/GenericMongoRepository';
 export * from './repositories/UserRepositoryImpl';
+export * from './repositories/KanbanBoardRepositoryImpl';
+export * from './repositories/TeamGroupRepositoryImpl';
+export * from './repositories/BoardCardRepositoryImpl';
 
 export * from './JwtPayload';
 

@@ -8,6 +8,9 @@ export const TYPES = {
 
     // Repositories
     IUserRepository: Symbol.for('IUserRepository'),
+    IBoardCardRepository: Symbol.for('IBoardCardRepository'),
+    ITeamGroupRepository: Symbol.for('ITeamGroupRepository'),
+    IKanbanBoardRepository: Symbol.for('IKanbanBoardRepository'),
 
     // Services
     IAuthService: Symbol.for('IAuthService'),
