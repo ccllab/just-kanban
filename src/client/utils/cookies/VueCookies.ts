@@ -15,7 +15,7 @@ export default class VueCookie implements PluginObject<{expires: string | number
      */
     private defaultConfig: {expires: string | number | Date, path: string} = {
         expires: '1d',
-        path: '; path=/'
+        path: '/'
     };
 
     /**

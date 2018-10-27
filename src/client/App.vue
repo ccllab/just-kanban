@@ -13,7 +13,7 @@
                     <a>+</a>
                 </h2>
             </div>
-            <div v-for="item in blocks" :slot="item.id" :key="item.id">
+            <div v-for="item in blocks" :slot="item._id" :key="item._id">
                 <BoardCard :boardCard="item"></BoardCard>
             </div>
         </KanbanBoard>
@@ -67,7 +67,7 @@
 
                 let item: BoardCardModel = new BoardCardModel();
 
-                item.id = i.toString();
+                item._id = i.toString();
                 item.status = this.statuses[Math.floor(Math.random() * 4)];
                 item.title = faker.company.bs();
 
@@ -85,7 +85,7 @@
             AuthApiHelper.login();
 
             debounce(() => {
-                this.blocks.find(b => b.id === id).status = status;
+                this.blocks.find(b => b._id === id).status = status;
             }, 500)(); // need invoke.
         }
     }
