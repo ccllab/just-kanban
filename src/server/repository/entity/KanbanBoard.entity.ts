@@ -29,7 +29,7 @@ export class KanbanBoardEntity extends BaseEntity implements ICreatedAtUpdateAt 
     public boardCardIds: Array<string>;
 
     /**
-     * The date time for create board card.
+     * The date time for create KanbanBoard entity.
      */
     @Column({
         type: "date"
@@ -37,13 +37,13 @@ export class KanbanBoardEntity extends BaseEntity implements ICreatedAtUpdateAt 
     public createdAt: Date;
 
     /**
-     * The date time for update boa
-    rd card.
-*/
+     * The date time for update KanbanBoard entity.
+     */
     @Column({
         type: "date"
     })
     public updatedAt: Date;
+
     /**
      * The flag for check this entity has implemented ICreatedAtUpdateAt
      * @return createdAt

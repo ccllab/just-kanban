@@ -26,7 +26,7 @@ export class TeamGroupEntity extends BaseEntity implements ICreatedAtUpdateAt {
     public kanbanBoardId: string;
 
     /**
-     * The date time for create board card.
+     * The date time for create TeamGroup entity.
      */
     @Column({
         type: "date"
@@ -34,8 +34,7 @@ export class TeamGroupEntity extends BaseEntity implements ICreatedAtUpdateAt {
     public createdAt: Date;
 
     /**
-     * The date time for update boa
-     rd card.
+     * The date time for update TeamGroup entity.
      */
     @Column({
         type: "date"

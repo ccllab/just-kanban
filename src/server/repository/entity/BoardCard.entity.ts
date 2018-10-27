@@ -50,6 +50,7 @@ export class BoardCardEntity extends BaseEntity implements ICreatedAtUpdateAt {
     @Column({
         type: "date"
     })
+
     public updatedAt: Date;
 
     /**
