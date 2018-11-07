@@ -17,6 +17,12 @@ export class BoardCardEntity extends BaseEntity implements ICreatedAtUpdateAt {
     public _id: string;
 
     /**
+     * The user id that assigned for this task board card.
+     */
+    @Column()
+    public assignedUserId: string;
+
+    /**
      * The card id before this boardCard.
      *
      * Empty if this boardCard is first.
