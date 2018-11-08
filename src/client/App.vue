@@ -1,21 +1,7 @@
 <template>
     <div id="app">
-        <section class="section">
-            <h4>
-                Vue adoptation of Ettric's
-                <a href="//codepen.io/ettrics/pen/QbPEeg">Codepen</a>
-            </h4>
-        </section>
         <KanbanBoard :stages="statuses" :blocks="blocks" @update-block="updateBlock">
-            <div v-for="stage in statuses" :slot="stage" :key="stage">
-                <h2>
-                    {{ stage }}
-                    <a>+</a>
-                </h2>
-            </div>
-            <div v-for="item in blocks" :slot="item.id" :key="item.id">
-                <BoardCard :boardCard="item"></BoardCard>
-            </div>
+            <BoardCard v-for="item in blocks" :slot="item.id" :key="item.id" :boardCard="item"></BoardCard>
         </KanbanBoard>
     </div>
 </template>
@@ -79,7 +65,7 @@
          * @param id The id for updating block.
          * @param status The status for updating block.
          */
-        public updateBlock(id: string, status: string): void {
+        public updateBlock(id: string, status: string, index: number): void {
 
             console.log(this.$cookies.get('vue-cookie-test'));
 
@@ -102,26 +88,43 @@
         box-sizing: border-box;
     }
 
+    a {
+        text-decoration: none;
+    }
+
     body {
+        color: #17394d;
         background: #33363D;
-        color: white;
-        font-family: 'Lato', serif;
-        font-weight: 300;
         line-height: 1.5;
+        margin: 0;
         -webkit-font-smoothing: antialiased;
+        background-image: url(/img/bkgImg.jpg);
+        background-position: center;
+        background-size: cover;
+        background-repeat: no-repeat;
+        height: 100vh;
+        font-family: Helvetica Neue,Arial,Helvetica,sans-serif;
+        overflow: hidden;
+    }
+
+    #app {
+        display: flex;
+        height: 100%;
+        flex-direction: column;
     }
 
     .drag-column {
-        .drag-column-header > div {
+        .drag-column-header > h2 {
             width: 100%;
-            h2 > a {
+
+            > a {
                 float: right;
             }
         }
 
         &-on-hold {
             .drag-column-header,
-            .is-moved,
+            .is-moved .card-item,
             .drag-options {
                 background: $on-hold;
             }
@@ -129,7 +132,7 @@
 
         &-in-progress {
             .drag-column-header,
-            .is-moved,
+            .is-moved .card-item,
             .drag-options {
                 background: $in-progress;
             }
@@ -137,7 +140,7 @@
 
         &-needs-review {
             .drag-column-header,
-            .is-moved,
+            .is-moved .card-item,
             .drag-options{
                 background: $needs-review;
             }
@@ -145,27 +148,9 @@
 
         &-approved {
             .drag-column-header,
-            .is-moved,
+            .is-moved .card-item,
             .drag-options {
                 background: $approved;
-            }
-        }
-    }
-
-    .section {
-        padding: 20px;
-        text-align: center;
-
-        a {
-            color: white;
-            text-decoration: none;
-            font-weight: 300;
-        }
-
-        h4 {
-            font-weight: 400;
-            a {
-                font-weight: 600;
             }
         }
     }

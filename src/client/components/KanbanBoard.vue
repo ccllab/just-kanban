@@ -1,23 +1,18 @@
 <template>
     <div class="drag-container">
-        <ul class="drag-list">
-            <li v-for="stage in stages" class="drag-column" :class="{['drag-column-' + stage]: true}" :key="stage">
+        <div class="drag-list">
+            <div v-for="stage in stages" class="drag-column" :class="{['drag-column-' + stage]: true}" :key="stage">
                 <span class="drag-column-header">
-                  <slot :name="stage">
-                    <h2>{{ stage }}</h2>
-                  </slot>
+                    <h2>{{ stage }}<router-link to="/">+</router-link></h2>
                 </span>
                 <div class="drag-options"></div>
                 <ul class="drag-inner-list" ref="list" :data-status="stage">
                     <li class="drag-item" v-for="block in getBlocks(stage)" :data-block-id="block.id" :key="block.id">
-                        <slot :name="block.id">
-                            <strong>{{ block.status }}</strong>
-                            <div>{{ block.id }}</div>
-                        </slot>
+                        <slot :name="block.id"></slot>
                     </li>
                 </ul>
-            </li>
-        </ul>
+            </div>
+        </div>
     </div>
 </template>
 
