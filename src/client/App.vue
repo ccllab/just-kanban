@@ -13,6 +13,7 @@
     import KanbanBoard from './components/KanbanBoard.vue';
     import BoardCard from './components/BoardCard.vue';
     import {BoardCardModel} from "./models/BoardCard.model";
+    import AuthApiHelper from "./api/AuthApiHelper";
 
     /**
      * Vue app
@@ -52,7 +53,7 @@
 
                 let item: BoardCardModel = new BoardCardModel();
 
-                item.id = i.toString();
+                item._id = i.toString();
                 item.status = this.statuses[Math.floor(Math.random() * 4)];
                 item.title = faker.company.bs();
 
@@ -67,10 +68,10 @@
          */
         public updateBlock(id: string, status: string, index: number): void {
 
-            console.log(this.$cookies.get('vue-cookie-test'));
+            AuthApiHelper.login();
 
             debounce(() => {
-                this.blocks.find(b => b.id === id).status = status;
+                this.blocks.find(b => b._id === id).status = status;
             }, 500)(); // need invoke.
         }
     }

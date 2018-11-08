@@ -1,14 +1,14 @@
 import {BaseEntity, Column, Entity, ObjectIdColumn} from "typeorm";
-import {Exclude} from "class-transformer";
 import {ICreatedAtUpdateAt} from "./ICreatedAtUpdateAt";
+import {Exclude} from "class-transformer";
 
 /**
- * The kanban board card information.
+ * KanbanBoard entity
  */
 @Entity({
-    name: 'boardCard'
+    name: 'kanbanBoard'
 })
-export class BoardCardEntity extends BaseEntity implements ICreatedAtUpdateAt {
+export class KanbanBoardEntity extends BaseEntity implements ICreatedAtUpdateAt {
 
     /**
      * pk
@@ -17,33 +17,19 @@ export class BoardCardEntity extends BaseEntity implements ICreatedAtUpdateAt {
     public _id: string;
 
     /**
-     * The user id that assigned for this task board card.
+     * The name of kanban board
      */
     @Column()
-    public assignedUserId: string;
+    public boardName: string;
 
     /**
-     * The card id before this boardCard.
-     *
-     * Empty if this boardCard is first.
+     * The ids for child board cards.
      */
     @Column()
-    public preCardId: string;
+    public boardCardIds: Array<string>;
 
     /**
-     * Board block title
-     */
-    @Column()
-    public title: string;
-
-    /**
-     * Board block status
-     */
-    @Column()
-    public status: string;
-
-    /**
-     * The date time for create board card.
+     * The date time for create KanbanBoard entity.
      */
     @Column({
         type: "date"
@@ -51,12 +37,11 @@ export class BoardCardEntity extends BaseEntity implements ICreatedAtUpdateAt {
     public createdAt: Date;
 
     /**
-     * The date time for update board card.
+     * The date time for update KanbanBoard entity.
      */
     @Column({
         type: "date"
     })
-
     public updatedAt: Date;
 
     /**

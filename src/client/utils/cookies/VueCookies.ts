@@ -6,7 +6,7 @@ import _Vue ,{PluginFunction, PluginObject} from 'vue';
 export default class VueCookie implements PluginObject<{expires: string | number | Date, path: string}> {
 
     /**
-     *
+     * Singleton instance
      */
     private static $cookieInstance: VueCookie;
 
@@ -15,7 +15,7 @@ export default class VueCookie implements PluginObject<{expires: string | number
      */
     private defaultConfig: {expires: string | number | Date, path: string} = {
         expires: '1d',
-        path: '; path=/'
+        path: '/'
     };
 
     /**
@@ -33,7 +33,7 @@ export default class VueCookie implements PluginObject<{expires: string | number
         }
 
         if (options.path) {
-            this.defaultConfig.path = options.path;
+            this.defaultConfig.path = options.path === '' ? '' : `; path=${options.path}`;
         }
     }
 
@@ -54,6 +54,20 @@ export default class VueCookie implements PluginObject<{expires: string | number
     public static install(Vue: typeof _Vue, options?: {expires: string | number | Date, path: string}): void {
         Vue.prototype.$cookies = VueCookie.getInstance(options);
     }
+
+    /**
+     * Override default config
+     * @param expires cookie expires
+     * @param path cookie path
+     */
+    public config(expires: string | number | Date, path: string) {
+
+        this.defaultConfig = {
+            expires,
+            path: path === '' ? '' : `; path=${path}`
+        };
+    }
+
 
     /**
      * Get value by specified key

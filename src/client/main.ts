@@ -7,7 +7,7 @@ Vue.config.productionTip = false;
 
 Vue.use(VueCookies, {
     expires: '3d',
-    path: '; path=/'
+    path: '/'
 });
 
 new Vue({

@@ -6,7 +6,7 @@ export class BoardCardModel {
     /**
      * pk
      */
-    public id: string;
+    public _id: string;
 
     /**
      * Board block title
