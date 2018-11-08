@@ -1,7 +1,7 @@
 <template>
     <div class="card-item">
         <div>
-            <strong>id:</strong> {{ boardCard.id }}
+            <strong>id:</strong> {{ boardCard._id }}
         </div>
         <div>
             {{ boardCard.title }}

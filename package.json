@@ -8,6 +8,7 @@
   },
   "scripts": {
     "start": "node build/src/server/main.js",
+    "dev": "webpack-dev-server --process  --inline --config webpack.common.js",
     "build-dev": "npm run tsc && npm run webpack-dev",
     "build-prod": "npm run tsc && npm run webpack-prod",
     "docker-start": "npm run build-dev && npm run start",
@@ -47,10 +48,12 @@
     "typescript": "^3.0.3",
     "typescript-eslint-parser": "^18.0.0",
     "vue-eslint-parser": "^3.2.2",
+    "vue-hot-reload-api": "^2.3.1",
     "vue-loader": "^15.4.2",
     "vue-template-compiler": "^2.5.17",
     "webpack": "^4.19.1",
     "webpack-cli": "^3.1.0",
+    "webpack-dev-server": "^3.1.10",
     "webpack-merge": "^4.1.4"
   },
   "dependencies": {

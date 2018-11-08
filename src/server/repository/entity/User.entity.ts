@@ -34,6 +34,12 @@ export class User extends BaseEntity implements ICreatedAtUpdateAt {
     public username: string;
 
     /**
+     * The role of user in the team.
+     */
+    @Column()
+    public userRole: string;
+
+    /**
      * user's email
      */
     @Column({
@@ -56,6 +62,12 @@ export class User extends BaseEntity implements ICreatedAtUpdateAt {
         length: 90
     })
     public password: string;
+
+    /**
+     * The team id of user
+     */
+    @Column()
+    public teamId: string;
 
     /**
      * The token for refresh authentication.
