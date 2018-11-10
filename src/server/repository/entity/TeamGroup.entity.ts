@@ -20,10 +20,16 @@ export class TeamGroupEntity extends BaseEntity implements ICreatedAtUpdateAt {
     public teamName: string;
 
     /**
-     * The board id of this team
+     * The board ids of this team
      */
     @Column()
-    public kanbanBoardId: string;
+    public kanbanBoardIds: Array<string>;
+
+    /**
+     * The admins of this team
+     */
+    @Column()
+    public admins: Array<string>;
 
     /**
      * The date time for create TeamGroup entity.

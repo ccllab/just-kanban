@@ -16,6 +16,8 @@ const registerRepository = (container: Container) => {
     container.bind<Repository.IBoardCardRepository>(TYPES.IBoardCardRepository).to(Repository.BoardCardRepositoryImpl);
     container.bind<Repository.IKanbanBoardRepository>(TYPES.IKanbanBoardRepository).to(Repository.KanbanBoardRepositoryImpl);
     container.bind<Repository.ITeamGroupRepository>(TYPES.ITeamGroupRepository).to(Repository.TeamGroupRepositoryImpl);
+    container.bind<Repository.ICardCommentRepository>(TYPES.ICardCommentRepository).to(Repository.CardCommentRepository);
+    container.bind<Repository.ICardListRepository>(TYPES.ICardListRepository).to(Repository.CardListRepository);
 };
 
 export default registerRepository;
