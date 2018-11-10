@@ -64,6 +64,10 @@ $ease-out: all .3s cubic-bezier(0.23, 1, 0.32, 1);
     margin: 0;
     flex-grow: 1;
     overflow-y: scroll;
+
+    &::-webkit-scrollbar {
+        display: none;
+    }
 }
 
 .drag-item {

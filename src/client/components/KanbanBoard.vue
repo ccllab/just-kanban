@@ -7,8 +7,8 @@
                 </span>
                 <div class="drag-options"></div>
                 <ul class="drag-inner-list" ref="list" :data-status="stage">
-                    <li class="drag-item" v-for="block in getBlocks(stage)" :data-block-id="block.id" :key="block.id">
-                        <slot :name="block.id"></slot>
+                    <li class="drag-item" v-for="block in getBlocks(stage)" :data-block-id="block._id" :key="block._id">
+                        <slot :name="block._id"></slot>
                     </li>
                 </ul>
             </div>
