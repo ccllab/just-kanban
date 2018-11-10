@@ -1,7 +1,7 @@
 <template>
     <div id="app">
         <KanbanBoard :stages="statuses" :blocks="blocks" @update-block="updateBlock">
-            <BoardCard v-for="item in blocks" :slot="item.id" :key="item.id" :boardCard="item"></BoardCard>
+            <BoardCard v-for="item in blocks" :slot="item._id" :key="item._id" :boardCard="item"></BoardCard>
         </KanbanBoard>
     </div>
 </template>
