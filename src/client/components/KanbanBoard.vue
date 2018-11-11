@@ -2,6 +2,9 @@
     <div id="kanbanBoard">
         <div class="boardHeader">
             <div class="boardName">Board1</div>
+            <router-link :to="{name: 'BoardConfig'}" class="config">
+                <i class="fas fa-cog"></i>
+            </router-link>
             <div class="memberList">
                 <div class="member">K</div>
                 <div class="member">J</div>
@@ -160,7 +163,24 @@
             .boardName {
                 font-weight: bold;
                 font-size: 28px;
-                margin-right: 15px;
+                margin-right: 2px;
+            }
+
+            .config {
+                width: 28px;
+                height: 28px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                background-color: rgba(0, 0, 0, 0.4);
+                color: white;
+                border-radius: 5px;
+                margin-right: 20px;
+                cursor: pointer;
+
+                &:hover {
+                    background-color: rgba(0, 0, 0, 0.6);
+                }
             }
 
             .memberList {

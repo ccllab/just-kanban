@@ -2,7 +2,7 @@
     <div id="cardEditor" @click="close">
         <div class="container" @click.stop="">
             <div class="title">
-                <i class="icon far fa-clipboard"></i>
+                <i class="icon far fa-credit-card"></i>
                 <input type="text" placeholder="Add title for this card...">   
             </div>
             <div class="content">
