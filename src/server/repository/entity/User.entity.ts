@@ -58,10 +58,10 @@ export class User extends BaseEntity implements ICreatedAtUpdateAt {
     public password: string;
 
     /**
-     * The team ids of this user
+     * The board ids of this user
      */
     @Column()
-    public teamIds: Array<string>;
+    public boardIds: Array<string>;
 
     /**
      * The token for refresh authentication.
