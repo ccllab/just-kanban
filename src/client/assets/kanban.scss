@@ -27,6 +27,10 @@ $approved: #00B961;
     @media (max-width: 690px) {
         display: block;
     }
+
+    &::-webkit-scrollbar {
+        display: none;
+    }
 }
 
 .drag-column-header {
