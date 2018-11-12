@@ -1,9 +1,6 @@
 <template>
     <div class="card-item">
         <div>
-            <strong>id:</strong> {{ boardCard._id }}
-        </div>
-        <div>
             {{ boardCard.title }}
         </div>
     </div>
@@ -31,7 +28,7 @@
         max-height: 150px;
         padding: 10px;
         background: white;
-        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
+        box-shadow: 1px 2px 10px rgba(0, 0, 0, 0.2);
         border-radius: 2px;
         cursor: pointer;
     }
