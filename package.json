@@ -8,7 +8,7 @@
   },
   "scripts": {
     "start": "node build/src/server/main.js",
-    "dev": "webpack-dev-server --process  --inline --config webpack.common.js",
+    "dev": "webpack-dev-server --inline --config webpack.dev.js",
     "build-dev": "npm run tsc && npm run webpack-dev",
     "build-prod": "npm run tsc && npm run webpack-prod",
     "docker-start": "npm run build-dev && npm run start",
@@ -32,6 +32,8 @@
     "@types/node": "^10.10.3",
     "@types/qs": "^6.5.1",
     "@types/socket.io": "^1.4.38",
+    "babel-core": "^6.26.3",
+    "babel-loader": "^7.1.1",
     "chai": "^4.1.2",
     "css-loader": "^1.0.0",
     "dotenv-webpack": "^1.5.7",

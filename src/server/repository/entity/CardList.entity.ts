@@ -1,11 +1,14 @@
-import {BaseEntity, Column, ObjectIdColumn} from "typeorm";
-import {Exclude} from "class-transformer";
+import {BaseEntity, Column, Entity, ObjectIdColumn} from "typeorm";
 import {ICreatedAtUpdateAt} from "./ICreatedAtUpdateAt";
+import {Exclude} from "class-transformer";
 
 /**
- * TeamGroup entity
+ * The board card list, storage and sort card.
  */
-export class TeamGroupEntity extends BaseEntity implements ICreatedAtUpdateAt {
+@Entity({
+    name: 'cardList'
+})
+export class CardListEntity extends BaseEntity implements ICreatedAtUpdateAt {
 
     /**
      * pk
@@ -14,19 +17,19 @@ export class TeamGroupEntity extends BaseEntity implements ICreatedAtUpdateAt {
     public _id: string;
 
     /**
-     * The name of team
+     * The list name
      */
     @Column()
-    public teamName: string;
+    public name: string;
 
     /**
-     * The board id of this team
+     * The card ids in this list.
      */
     @Column()
-    public kanbanBoardId: string;
+    public cardIds: Array<string>;
 
     /**
-     * The date time for create TeamGroup entity.
+     * The date time for create KanbanBoard entity.
      */
     @Column({
         type: "date"
@@ -34,12 +37,13 @@ export class TeamGroupEntity extends BaseEntity implements ICreatedAtUpdateAt {
     public createdAt: Date;
 
     /**
-     * The date time for update TeamGroup entity.
+     * The date time for update KanbanBoard entity.
      */
     @Column({
         type: "date"
     })
     public updatedAt: Date;
+
     /**
      * The flag for check this entity has implemented ICreatedAtUpdateAt
      * @return createdAt

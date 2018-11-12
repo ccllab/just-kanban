@@ -1,14 +1,15 @@
 import {inject, injectable, named} from "inversify";
-import {IDbProvider, TeamGroupEntity, ITeamGroupRepository, GenericMongoRepository} from "..";
+import {IDbProvider, GenericMongoRepository, CardCommentEntity} from "..";
 import {TYPES} from "../../ioc";
 import {IExecutionContext} from "../../utils";
 import {Repository} from "typeorm";
+import {ICardCommentRepository} from "./interfaces/ICardCommentRepository";
 
 /**
- * The TeamGroupEntity repository implementation
+ * The CardComment repository implementation
  */
 @injectable()
-export class TeamGroupRepositoryImpl extends GenericMongoRepository<TeamGroupEntity> implements ITeamGroupRepository {
+export class CardCommentRepository extends GenericMongoRepository<CardCommentEntity> implements ICardCommentRepository {
 
     /**
      * constructor
@@ -23,11 +24,11 @@ export class TeamGroupRepositoryImpl extends GenericMongoRepository<TeamGroupEnt
     }
 
     /**
-     * Override getRepo, get the really TeamGroupEntity collection.
+     * Override getRepo, get the really CardComment collection.
      * @returns The repository for specified collection.
      */
-    public getRepo(): Repository<TeamGroupEntity> {
+    public getRepo(): Repository<CardCommentEntity> {
 
-        return this.dbConnection.getMongoRepository(TeamGroupEntity) as Repository<TeamGroupEntity>;
+        return this.dbConnection.getMongoRepository(CardCommentEntity) as Repository<CardCommentEntity>;
     }
 }

@@ -1,4 +1,8 @@
 $ease-out: all .3s cubic-bezier(0.23, 1, 0.32, 1);
+$on-hold: #FB7D44;
+$in-progress: #2A92BF;
+$needs-review: #F4CE46;
+$approved: #00B961;
 
 .drag-container {
     max-width: 1000px;
@@ -23,28 +27,9 @@ $ease-out: all .3s cubic-bezier(0.23, 1, 0.32, 1);
     @media (max-width: 690px) {
         display: block;
     }
-}
 
-.drag-column {
-    width: 300px;
-    margin: 0 10px;
-    position: relative;
-    overflow: hidden;
-    border-radius: 5px;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-
-    @media (max-width: 690px) {
-        margin-bottom: 30px;
-    }
-
-    h2 {
-        margin: 0;
-        text-transform: uppercase;
-        font-size: 14px;
-        line-height: 20px;
-        font-weight: 600;
+    &::-webkit-scrollbar {
+        display: none;
     }
 }
 
@@ -64,10 +49,14 @@ $ease-out: all .3s cubic-bezier(0.23, 1, 0.32, 1);
     margin: 0;
     flex-grow: 1;
     overflow-y: scroll;
+
+    &::-webkit-scrollbar {
+        display: none;
+    }
 }
 
 .drag-item {
-    padding: 10px;
+    padding: 5px;
     transition: $ease-out;
     background: #dfe3e6;
 
@@ -77,11 +66,11 @@ $ease-out: all .3s cubic-bezier(0.23, 1, 0.32, 1);
     }
 
     &:first-child {
-        padding-top: 20px;
+        padding-top: 10px;
     }
 
     &:last-child {
-        padding-bottom: 20px;
+        padding-bottom: 10px;
         border-bottom-left-radius: 5px;
         border-bottom-right-radius: 5px;
     }
@@ -121,6 +110,67 @@ $ease-out: all .3s cubic-bezier(0.23, 1, 0.32, 1);
             font-weight: 400;
             margin-left: 5px;
         }
+    }
+}
+
+.drag-column {
+    width: 300px;
+    margin: 0 10px;
+    position: relative;
+    overflow: hidden;
+    border-radius: 5px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+
+    .drag-column-header > h2 {
+        width: 100%;
+        margin: 0;
+        text-transform: uppercase;
+        font-size: 14px;
+        line-height: 20px;
+        font-weight: 600;
+
+        .newCard {
+            float: right;
+            cursor: pointer;
+        }
+    }
+
+    &-on-hold {
+        .drag-column-header,
+        .is-moved .card-item,
+        .drag-options {
+            background: $on-hold;
+        }
+    }
+
+    &-in-progress {
+        .drag-column-header,
+        .is-moved .card-item,
+        .drag-options {
+            background: $in-progress;
+        }
+    }
+
+    &-needs-review {
+        .drag-column-header,
+        .is-moved .card-item,
+        .drag-options{
+            background: $needs-review;
+        }
+    }
+
+    &-approved {
+        .drag-column-header,
+        .is-moved .card-item,
+        .drag-options {
+            background: $approved;
+        }
+    }
+
+    @media (max-width: 690px) {
+        margin-bottom: 30px;
     }
 }
 
