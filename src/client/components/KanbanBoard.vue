@@ -18,7 +18,7 @@
                 <div v-for="stage in stages" class="drag-column" :class="{['drag-column-' + stage]: true}" :key="stage">
                     <span class="drag-column-header">
                         <h2>
-                            {{ stage }}
+                            <input class="stageName" type="text" :value="stage" placeholder="Enter stage title...">
                             <router-link class="newCard" :to="{name: 'NewCard'}">+</router-link>
                         </h2>
                     </span>
