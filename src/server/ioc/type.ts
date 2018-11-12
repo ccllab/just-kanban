@@ -11,6 +11,8 @@ export const TYPES = {
     IBoardCardRepository: Symbol.for('IBoardCardRepository'),
     ITeamGroupRepository: Symbol.for('ITeamGroupRepository'),
     IKanbanBoardRepository: Symbol.for('IKanbanBoardRepository'),
+    ICardListRepository: Symbol.for('ICardListRepository'),
+    ICardCommentRepository: Symbol.for('ICardCommentRepository'),
 
     // Services
     IAuthService: Symbol.for('IAuthService'),
