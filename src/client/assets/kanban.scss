@@ -131,6 +131,12 @@ $approved: #00B961;
         line-height: 20px;
         font-weight: 600;
 
+        .stageName {
+            background-color: inherit;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
         .newCard {
             float: right;
             cursor: pointer;
