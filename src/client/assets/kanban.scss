@@ -80,39 +80,6 @@ $approved: #00B961;
     cursor: pointer;
 }
 
-.drag-options {
-    position: absolute;
-    top: 44px;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    padding: 10px;
-    transform: translateX(100%);
-    opacity: 0;
-    transition: $ease-out;
-
-    &.active {
-        transform: translateX(0);
-        opacity: 1;
-    }
-
-    &-label {
-        display: block;
-        margin: 0 0 5px 0;
-
-        input {
-            opacity: 0.6;
-        }
-
-        span {
-            display: inline-block;
-            font-size: 0.9rem;
-            font-weight: 400;
-            margin-left: 5px;
-        }
-    }
-}
-
 .drag-column {
     width: 300px;
     margin: 0 10px;
@@ -145,32 +112,28 @@ $approved: #00B961;
 
     &-on-hold {
         .drag-column-header,
-        .is-moved .card-item,
-        .drag-options {
+        .is-moved .card-item {
             background: $on-hold;
         }
     }
 
     &-in-progress {
         .drag-column-header,
-        .is-moved .card-item,
-        .drag-options {
+        .is-moved .card-item {
             background: $in-progress;
         }
     }
 
     &-needs-review {
         .drag-column-header,
-        .is-moved .card-item,
-        .drag-options{
+        .is-moved .card-item {
             background: $needs-review;
         }
     }
 
     &-approved {
         .drag-column-header,
-        .is-moved .card-item,
-        .drag-options {
+        .is-moved .card-item {
             background: $approved;
         }
     }

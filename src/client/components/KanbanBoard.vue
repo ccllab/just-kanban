@@ -22,7 +22,6 @@
                             <router-link class="newCard" :to="{name: 'NewCard'}">+</router-link>
                         </h2>
                     </span>
-                    <div class="drag-options"></div>
                     <ul class="drag-inner-list" ref="list" :data-status="stage">
                         <router-link tag="li" class="drag-item" v-for="block in getBlocks(stage)" :data-block-id="block._id" :key="block._id" :to="{name: 'CardEdit', params: {cardId: block._id}}">
                             <BoardCard :boardCard="block"></BoardCard>
