@@ -9,6 +9,7 @@
 <script lang="ts">
     import {Component, Prop, Vue} from 'vue-property-decorator';
     import {BoardCardModel} from "../models/BoardCard.model";
+    import { Card } from '../store/cards/types'
 
     /**
      * The board card in KanbanBoard
@@ -19,7 +20,7 @@
         /**
          * The board card info.
          */
-        @Prop(BoardCardModel) public boardCard: BoardCardModel;
+        @Prop(Card) public boardCard: Card;
     }
 </script>
 
