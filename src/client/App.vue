@@ -22,6 +22,7 @@
          * Set up config after creat App
          */
         public created(): void {
+            console.log(this.$store)
             this.$cookies.set('vue-cookie-test', 'fuckyouass');
         }
     }
