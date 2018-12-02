@@ -7,7 +7,7 @@ import { getters } from './getters'
 import { mutations } from './mutations'
 
 const state: AuthState = {
-  user: new User,
+  user: new User({_id: '8888', name: 'Jay'}),
   token: null
 }
 

@@ -6,7 +6,7 @@ import LoginView from '../views/LoginView.vue'
 import SignUpView from '../views/SignUpView.vue'
 import BoardRoute from './boards'
 import store from '../store'
-import types from '../store/auth/getters'
+import { types as authTypes } from '../store/auth/types'
 
 Vue.use(vueRouter);
 
@@ -25,7 +25,7 @@ const router =  new vueRouter({
  * 頁面導向權限管理
  */
 router.beforeEach((to, from, next) => {
-  let isLogin: boolean = store.getters[types.IS_LOGIN]
+  let isLogin: boolean = store.getters[authTypes.IS_LOGIN]
   let needLogin: boolean = to.meta.needLogin
   let needNonLogin: boolean = to.meta.needNonLogin
 

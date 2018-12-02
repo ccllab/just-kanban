@@ -25,12 +25,11 @@
 import { Component, Prop, Vue,  } from 'vue-property-decorator';
 import { Action, Getter, Mutation } from 'vuex-class'
 
-import { LoginParameters } from '../store/auth/types'
-import aTypes from '../store/auth/actions'
+import { LoginParameters, types as authTypes } from '../store/auth/types'
 
 @Component
 export default class LoginView extends Vue {
-    @Action(aTypes.AUTH_LOGIN) login
+    @Action(authTypes.AUTH_LOGIN) login
 
     public email: string = ''
     public password: string = ''

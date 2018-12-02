@@ -30,11 +30,11 @@
 import {Component, Prop, Vue} from 'vue-property-decorator';
 import { Getter } from 'vuex-class'
 
-import types from '../store/auth/getters'
+import { types as authTypes } from '../store/auth/types'
 
 @Component
 export default class UserCtrlBtn extends Vue {
-    @Getter(types.IS_LOGIN) isLogin: boolean
+    @Getter(authTypes.IS_LOGIN) isLogin: boolean
 
     public showMenu: boolean = false;
     public isClicked: boolean = false;

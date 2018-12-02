@@ -2,13 +2,13 @@
     <div id="kanbanBoard" v-if="board">
         <div class="boardHeader">
             <div class="boardName">{{ board.name }}</div>
-            <router-link :to="{name: 'BoardConfig'}" class="config">
+            <router-link :to="{name: 'BoardConfig'}" class="config" v-if="board.isCreated || board.isAdmin">
                 <i class="fas fa-cog"></i>
             </router-link>
-            <div class="memberList">
+            <div class="memberList" >
                 <div class="member">K</div>
                 <div class="member">J</div>
-                <div class="member add">
+                <div class="member add" v-if="board.isCreated || board.isAdmin">
                     <i class="fas fa-user-plus"></i>
                 </div>
             </div>
@@ -41,12 +41,8 @@
     import { Getter, Action } from 'vuex-class'
 
     import BoardCard from './BoardCard.vue';
-    import board_aTypes from '../store/boards/actions'
-    import board_gTypes from '../store/boards/getters'
-    import card_gTypes from '../store/cards/getters'
-    import card_aTypes from '../store/cards/actions'
-    import { Board } from '../store/boards/types'
-    import { Card } from '../store/cards/types'
+    import { types as boardTypes, Board } from '../store/boards/types'
+    import { types as cardTypes, Card } from '../store/cards/types'
 
     /**
      * The KanbanBoard
@@ -57,23 +53,34 @@
         }
     })
     export default class KanbanBoard extends Vue {
-        @Getter(board_gTypes.CURRENT_BOARD) board: Board
-        @Getter(card_gTypes.CARD_LIST_BY_STAGE) cardsByStages: (stage: string) => Card[]
-        @Action(board_aTypes.GET_CURRENT_BOARD) getCurrentBoard
-        @Action(card_aTypes.UPDATE_CARD_STAGE) updateCardStage
+        @Getter(boardTypes.CURRENT_BOARD) board: Board
+        @Getter(cardTypes.CARD_LIST_BY_STAGE) cardsByStages: (stage: string) => Card[]
+        @Getter(cardTypes.CARD_ASSIGNED) cardAssigned: (id: string) => boolean
+        @Action(boardTypes.GET_CURRENT_BOARD) getCurrentBoard
+        @Action(cardTypes.UPDATE_CARD_STAGE) updateCardStage
         @Prop(String) boardId: string
+
+        public async mounted() {
+            await this.getCurrentBoard(this.boardId)
+            this.dragulaInit()
+        }
 
         /**
          * Create Dragula instance and bind events when mounted.
          */
-        public async mounted() {
-            await this.getCurrentBoard(this.boardId)
-            // this.createFakeCard()
-
+        public dragulaInit() {
             // create Dragula instance
             let drag: Dragula.Drake = Dragula({
-                containers: (this.$refs.list) as Element[]
-            });
+                containers: (this.$refs.list) as Element[],
+                moves: (el: any, source, handle, sibling) => {
+                    let b = this.cardAssigned(el.dataset.blockId)
+                    console.log(b)
+                    if (this.board.isCreator || this.board.isAdmin || b) {
+                        return true
+                    }
+                    return false
+                }
+             });
 
             // bind drag event
             drag.on('drag', (el) => {
@@ -90,7 +97,7 @@
                     }
                 }
 
-                this.updateCardStage({cardId: block.dataset.blockId, stage: list.dataset.status})
+                this.updateCardStage({cardId: block.dataset.blockId, stage: list.dataset.status, index})
             });
 
             // bind dragend event
@@ -150,6 +157,7 @@
             .memberList {
                 display: flex;
                 align-items: center;
+                margin-left: 10px;
 
                 .member {
                     width: 26px;

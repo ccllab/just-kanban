@@ -59,6 +59,7 @@ $approved: #00B961;
     padding: 5px;
     transition: $ease-out;
     background: #dfe3e6;
+    -webkit-user-select: none;
 
     &.is-moving {
         transform: rotate(4deg) scale(1.1);

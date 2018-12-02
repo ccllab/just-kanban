@@ -1,13 +1,6 @@
 import { MutationTree } from 'vuex'
 
-import { Board ,BoardState } from './types'
-
-const types = {
-  SET_BOARD_LIST: 'setBoardList',
-  SET_CURRENT_BOARD: 'setCurrentBoard'
-}
-
-export default types
+import { Board ,BoardState, types } from './types'
 
 export const mutations: MutationTree<BoardState> = {
   [types.SET_BOARD_LIST](state, payload: Board[]): void {

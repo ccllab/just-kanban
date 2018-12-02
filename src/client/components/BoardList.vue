@@ -25,10 +25,9 @@
 import {Component, Prop, Vue} from 'vue-property-decorator';
 import { Getter, Action } from 'vuex-class'
 
-import gTypes from '../store/boards/getters'
-import aTypes from '../store/boards/actions'
+import { types as BoardTypes, Board} from '../store/boards/types'
 import BoardCreator from './BoardCreator.vue';
-import { Board } from '../store/boards/types';
+
 
 @Component({
     components: {
@@ -36,8 +35,8 @@ import { Board } from '../store/boards/types';
     }
 })
 export default class BoardList extends Vue {
-    @Getter(gTypes.BOARD_LIST) boardList: Board[]
-    @Action(aTypes.GET_BOARD_LIST) getBoardList
+    @Getter(BoardTypes.BOARD_LIST) boardList: Board[]
+    @Action(BoardTypes.GET_BOARD_LIST) getBoardList
 
     public showBoardCreator: boolean = false;
     

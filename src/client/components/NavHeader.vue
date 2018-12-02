@@ -14,7 +14,7 @@
 import {Component, Prop, Vue} from 'vue-property-decorator';
 import { Getter } from 'vuex-class'
 
-import types from '../store/auth/getters'
+import { types as authTypes } from '../store/auth/types'
 import BoardsCtrlBtn from './BoardsCtrlBtn.vue'
 import UserCtrlBtn from './UserCtrlBtn.vue'
 
@@ -25,7 +25,7 @@ import UserCtrlBtn from './UserCtrlBtn.vue'
   }
 })
 export default class NavHeader extends Vue {
-  @Getter(types.IS_LOGIN) isLogin: boolean
+  @Getter(authTypes.IS_LOGIN) isLogin: boolean
 }
 </script>
 

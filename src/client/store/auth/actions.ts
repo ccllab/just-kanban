@@ -1,22 +1,13 @@
 import { ActionTree, Action } from 'vuex'
 
 import authAPI from '../../api/AuthApiHelper'
-import mTypes from './mutations'
 import { RootState } from '../types'
 import { 
   AuthState, 
   User,
-  LoginParameters
+  LoginParameters,
+  types
 } from './types'
-
-
-const types = {
-  AUTH_LOGIN: 'login',
-  AUTH_LOGOUT: 'logout',
-  AUTH_SIGNUP: 'signup'
-}
-
-export default types
 
 export const actions: ActionTree<AuthState, RootState> = {
   async [types.AUTH_LOGIN]({ commit }, para: LoginParameters): Promise<boolean> {
@@ -24,22 +15,23 @@ export const actions: ActionTree<AuthState, RootState> = {
     let result = await authAPI.login(email, password)
 
     if (!result) {
-      commit(mTypes.SET_USER, null)
-      commit(mTypes.SET_TOKEN, null)
+      commit(types.SET_USER, null)
+      commit(types.SET_TOKEN, null)
       return false
     } else {
       let user: User = {
-        _id: 'oqwodnqowcnowq'
+        _id: 'oqwodnqowcnowq',
+        name: 'Jay'
       }
 
-      commit(mTypes.SET_USER, user)
-      commit(mTypes.SET_TOKEN, 'djksfndosjfnods')
+      commit(types.SET_USER, user)
+      commit(types.SET_TOKEN, 'djksfndosjfnods')
       return true
     }
   },
 
   [types.AUTH_LOGOUT]({ commit }): void {
-    commit(mTypes.SET_USER, null)
+    commit(types.SET_USER, null)
   },
 
   async [types.AUTH_SIGNUP]({ commit }): Promise<boolean> {
@@ -49,11 +41,12 @@ export const actions: ActionTree<AuthState, RootState> = {
       return false
     } else {
       let user: User = {
-        _id: 'oqwodnqowcnowq'
+        _id: 'oqwodnqowcnowq',
+        name: '123'
       }
       
-      commit(mTypes.SET_USER, user)
-      commit(mTypes.SET_TOKEN, 'djksfndosjfnods')
+      commit(types.SET_USER, user)
+      commit(types.SET_TOKEN, 'djksfndosjfnods')
       return false
     }
   }

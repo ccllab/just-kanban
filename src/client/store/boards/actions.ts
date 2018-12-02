@@ -1,19 +1,12 @@
 import { ActionTree } from 'vuex'
 
-import board_mTypes from './mutations'
-import card_mTypes from '../cards/mutations'
+import { types as cardTypes } from '../cards/types'
 import { RootState } from '../types'
 import { 
   Board,
-  BoardState
+  BoardState,
+  types
 } from './types'
-
-const types = {
-  GET_CURRENT_BOARD: 'getCurrentBoard',
-  GET_BOARD_LIST: 'getBoardList'
-}
-
-export default types
 
 export const actions: ActionTree<BoardState, RootState> = {
   [types.GET_CURRENT_BOARD]({ commit }, boardId: string): void {
@@ -21,15 +14,15 @@ export const actions: ActionTree<BoardState, RootState> = {
       _id: boardId,
       name: 'Board Name',
       stages: ['on-hold', 'in-progress', 'needs-review', 'approved'],
-      isCreator: true,
-      isAdmin: true
+      isCreator: false,
+      isAdmin: false
     })
 
-    commit(card_mTypes.SET_RANDOM_CARD_LIST, { 
+    commit(cardTypes.SET_RANDOM_CARD_LIST, { 
       stages: currentBoard.stages,
       count: 20
     })
-    commit(board_mTypes.SET_CURRENT_BOARD, currentBoard)
+    commit(types.SET_CURRENT_BOARD, currentBoard)
   },
 
   [types.GET_BOARD_LIST]({ commit }): void {
@@ -47,6 +40,6 @@ export const actions: ActionTree<BoardState, RootState> = {
       isAdmin: true
     })]
 
-    commit(board_mTypes.SET_BOARD_LIST, boardList)
+    commit(types.SET_BOARD_LIST, boardList)
   }
 }

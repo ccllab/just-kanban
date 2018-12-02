@@ -3,16 +3,9 @@ import * as faker from 'faker';
 
 import { 
   Card,
-  CardState
+  CardState,
+  types
 } from './types'
-
-const types = {
-  SET_CARD_LIST: 'setCardList',
-  SET_RANDOM_CARD_LIST: 'setRandomCardList',
-  SET_CARD_STAGE: 'setCardStage'
-}
-
-export default types
 
 export const mutations: MutationTree<CardState> = {
   [types.SET_CARD_LIST](state, payload: Card[]) {
@@ -26,7 +19,8 @@ export const mutations: MutationTree<CardState> = {
         _id: i.toString(),
         title: faker.company.bs(),
         status: payload.stages[Math.floor(Math.random() * payload.stages.length)],
-        index: 0
+        index: 0,
+        assigned: [Math.floor(Math.random() * payload.stages.length) ? '123' : '8888']
       })
       state.cardList.push(card)
     }
