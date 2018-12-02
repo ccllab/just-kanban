@@ -5,19 +5,19 @@
                     <span>K</span>
             </div>
             <div class="list" v-if="showMenu">
-                <router-link :to="{name: 'Login'}">
+                <router-link :to="{name: 'Login'}" v-if="!isLogin">
                     <div class="item">
                         <i class="fas fa-user"></i>
                         Login
                     </div>
                 </router-link>
-                <router-link :to="{name: 'SignUp'}">
+                <router-link :to="{name: 'SignUp'}" v-if="!isLogin">
                     <div class="item">
                         <i class="fas fa-book-reader"></i>
                         Sign Up
                     </div>
                 </router-link>
-                <div class="item">
+                <div class="item" v-if="isLogin">
                     <i class="fas fa-sign-out-alt"></i>
                     Logout
                 </div>
@@ -28,9 +28,14 @@
 
 <script lang="ts">
 import {Component, Prop, Vue} from 'vue-property-decorator';
+import { Getter } from 'vuex-class'
+
+import types from '../store/auth/getters'
 
 @Component
 export default class UserCtrlBtn extends Vue {
+    @Getter(types.IS_LOGIN) isLogin: boolean
+
     public showMenu: boolean = false;
     public isClicked: boolean = false;
 

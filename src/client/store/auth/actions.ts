@@ -5,13 +5,12 @@ import mTypes from './mutations'
 import { RootState } from '../types'
 import { 
   AuthState, 
-  ActionsTypes, 
   User,
   LoginParameters
 } from './types'
 
 
-const types: ActionsTypes = {
+const types = {
   AUTH_LOGIN: 'login',
   AUTH_LOGOUT: 'logout',
   AUTH_SIGNUP: 'signup'

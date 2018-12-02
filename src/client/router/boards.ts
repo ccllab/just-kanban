@@ -7,31 +7,46 @@ import BoardConfig from '../components/BoardConfig.vue';
 
 export default {
     path: '/boards', 
-    component: KanbanView, 
+    component: KanbanView,
     children: [{
         path: '',
         name: 'BoardList',
-        component: BoardList
+        component: BoardList,
+        meta: {
+            needLogin: true
+        }
     }, {
         path: ':boardId',
         name: 'Board',
         props: true,
         component: KanbanBoard,
+        meta: {
+            needLogin: true
+        },
         children: [{
             path: 'configuration',
             name: 'BoardConfig',
             props: true,
-            component: BoardConfig
+            component: BoardConfig,
+            meta: {
+                needLogin: true
+            }
         }, {
             path: 'new',
             name: 'NewCard',
             props: true,
-            component: CardEditor
+            component: CardEditor,
+            meta: {
+                needLogin: true
+            }
         }, {
             path: ':cardId',
             name: 'CardEdit',
             props: true,
-            component: CardEditor
+            component: CardEditor,
+            meta: {
+                needLogin: true
+            }
         }]
     }]
 }
