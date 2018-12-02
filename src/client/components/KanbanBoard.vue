@@ -1,7 +1,7 @@
 <template>
-    <div id="kanbanBoard">
+    <div id="kanbanBoard" v-if="board">
         <div class="boardHeader">
-            <div class="boardName">Board1</div>
+            <div class="boardName">{{ board.name }}</div>
             <router-link :to="{name: 'BoardConfig'}" class="config">
                 <i class="fas fa-cog"></i>
             </router-link>
@@ -15,16 +15,15 @@
         </div>
         <div class="drag-container">
             <div class="drag-list">
-                <div v-for="stage in stages" class="drag-column" :class="{['drag-column-' + stage]: true}" :key="stage">
+                <div v-for="stage in board.stages" class="drag-column" :class="{['drag-column-' + stage]: true}" :key="stage">
                     <span class="drag-column-header">
                         <h2>
                             <input class="stageName" type="text" :value="stage" placeholder="Enter stage title...">
                             <router-link class="newCard" :to="{name: 'NewCard'}">+</router-link>
                         </h2>
                     </span>
-                    <div class="drag-options"></div>
                     <ul class="drag-inner-list" ref="list" :data-status="stage">
-                        <router-link tag="li" class="drag-item" v-for="block in getBlocks(stage)" :data-block-id="block._id" :key="block._id" :to="{name: 'CardEdit', params: {cardId: block._id}}">
+                        <router-link tag="li" class="drag-item" v-for="block in cardsByStages(stage)" :data-block-id="block._id" :key="block._id" :to="{name: 'CardEdit', params: {cardId: block._id}}">
                             <BoardCard :boardCard="block"></BoardCard>
                         </router-link>
                     </ul>
@@ -39,10 +38,15 @@
     import {Component, Prop, Vue} from 'vue-property-decorator';
     import * as Dragula from 'dragula';
     import {debounce} from 'lodash';
-    import * as faker from 'faker';
-    import AuthApiHelper from '../api/AuthApiHelper';
+    import { Getter, Action } from 'vuex-class'
+
     import BoardCard from './BoardCard.vue';
-    import {BoardCardModel} from "../models/BoardCard.model";
+    import board_aTypes from '../store/boards/actions'
+    import board_gTypes from '../store/boards/getters'
+    import card_gTypes from '../store/cards/getters'
+    import card_aTypes from '../store/cards/actions'
+    import { Board } from '../store/boards/types'
+    import { Card } from '../store/cards/types'
 
     /**
      * The KanbanBoard
@@ -53,58 +57,18 @@
         }
     })
     export default class KanbanBoard extends Vue {
-        /**
-         * The stage for kanban board
-         */
-        public stages = ['on-hold', 'in-progress', 'needs-review', 'approved'];
-
-        /**
-         * The blocks in kanban board
-         */
-        public blocks: Array<BoardCardModel> = [];
-
-        /**
-         * Get blocks by status
-         * @param status Blocks status
-         * @return blocks after filter
-         */
-        public getBlocks(status: string): Array<BoardCardModel> {
-            return this.blocks.filter(block => block.status === status);
-        }
-
-        /**
-         * Update block
-         * @param id The id for updating block.
-         * @param status The status for updating block.
-         */
-        public updateBlock(id: string, status: string, index: number): void {
-
-            AuthApiHelper.login();
-
-            debounce(() => {
-                this.blocks.find(b => b._id === id).status = status;
-            }, 500)(); // need invoke.
-        }
-    
-        public createFakeCard(): void {
-            // fake data
-            for (let i = 0; i <= 10; i += 1) {
-
-                let item: BoardCardModel = new BoardCardModel();
-
-                item._id = i.toString();
-                item.status = this.stages[Math.floor(Math.random() * 4)];
-                item.title = faker.company.bs();
-
-                this.blocks.push(item);
-            }
-        }
+        @Getter(board_gTypes.CURRENT_BOARD) board: Board
+        @Getter(card_gTypes.CARD_LIST_BY_STAGE) cardsByStages: (stage: string) => Card[]
+        @Action(board_aTypes.GET_CURRENT_BOARD) getCurrentBoard
+        @Action(card_aTypes.UPDATE_CARD_STAGE) updateCardStage
+        @Prop(String) boardId: string
 
         /**
          * Create Dragula instance and bind events when mounted.
          */
-        public mounted():  void {
-            this.createFakeCard()
+        public async mounted() {
+            await this.getCurrentBoard(this.boardId)
+            // this.createFakeCard()
 
             // create Dragula instance
             let drag: Dragula.Drake = Dragula({
@@ -120,13 +84,13 @@
             drag.on('drop', (block, list) => {
                 let index;
 
-                for (index = 0; index < list.children.length; index += 1) {
+                for (index = 0; index < list.children.length; index++) {
                     if (list.children[index].classList.contains('is-moving')) {
                         break;
                     }
                 }
 
-                this.updateBlock( block.dataset.blockId, list.dataset.status, index);
+                this.updateCardStage({cardId: block.dataset.blockId, stage: list.dataset.status})
             });
 
             // bind dragend event

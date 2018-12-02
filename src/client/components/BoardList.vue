@@ -5,11 +5,11 @@
                 Board List
             </div>
             <div class="list">
-                <router-link class="item" v-for="board in boardList" :key="board.name" tag="div" :to="{name:'Board', params: {boardId: board.name}}">
+                <router-link class="item" v-for="board in boardList" :key="board.name" tag="div" :to="{name:'Board', params: {boardId: board._id}}">
                     <div class="boardTitle">{{board.name}}</div>
                     <div class="permissionIcon">
                         <i class="fas fa-user-secret" v-if="board.isCreator"></i>
-                        <i class="fas fa-user-edit" v-if="board.isCreator || board.canEdit"></i>
+                        <i class="fas fa-user-edit" v-if="board.isCreator || board.isAdmin"></i>
                     </div>
                 </router-link>
                 <div class="item addBoard" @click.stop="showBoardCreator = true">
@@ -23,7 +23,12 @@
 
 <script lang="ts">
 import {Component, Prop, Vue} from 'vue-property-decorator';
+import { Getter, Action } from 'vuex-class'
+
+import gTypes from '../store/boards/getters'
+import aTypes from '../store/boards/actions'
 import BoardCreator from './BoardCreator.vue';
+import { Board } from '../store/boards/types';
 
 @Component({
     components: {
@@ -31,28 +36,14 @@ import BoardCreator from './BoardCreator.vue';
     }
 })
 export default class BoardList extends Vue {
+    @Getter(gTypes.BOARD_LIST) boardList: Board[]
+    @Action(aTypes.GET_BOARD_LIST) getBoardList
+
     public showBoardCreator: boolean = false;
-    public boardList = [{
-        name: 'Board1',
-        isCreator: true,
-        canEdit: true
-    }, {
-        name: 'Board2',
-        isCreator: true,
-        canEdit: false
-    }, {
-        name: 'Board3',
-        isCreator:  false,
-        canEdit: true
-    }, {
-        name: 'Board4',
-        isCreator:  false,
-        canEdit: false
-    }, {
-        name: 'Board5',
-        isCreator:  true,
-        canEdit: true
-    }];
+    
+    public mounted() {
+        this.getBoardList()
+    }
 }
 </script>
 

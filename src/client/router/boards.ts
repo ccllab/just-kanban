@@ -15,6 +15,7 @@ export default {
     }, {
         path: ':boardId',
         name: 'Board',
+        props: true,
         component: KanbanBoard,
         children: [{
             path: 'configuration',
