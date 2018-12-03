@@ -1,6 +1,6 @@
 import * as express from 'express';
-import AuthError from "../exceptions/AuthError";
-import {IAuthService} from "..";
+import AuthError from "../../services/exceptions/AuthError";
+import {IAuthService} from "../../services";
 import {ILogger} from "../../utils";
 import {inject, injectable} from "inversify";
 import {interfaces} from 'inversify-express-utils';
