@@ -44,6 +44,7 @@ export const types = {
   CARD_LIST: 'cardList',
   CARD_LIST_BY_STAGE: 'cardListByStage',
   CARD_ASSIGNED: 'cardAssigned',
+  CARD_CAN_EDIT: 'cardCanEdit',
 
   // mutations
   SET_CARD_LIST: 'setCardList',

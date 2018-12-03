@@ -1,12 +1,12 @@
 import { GetterTree } from 'vuex'
 
-import { types as authTypes } from '../auth/types'
+import { types as authTypes, User } from '../auth/types'
+import { types as boardTypes, Board } from '../boards/types'
 import { RootState } from '../types'
-import { User } from '../auth/types'
 import { 
   Card,
   CardState,
-  types
+  types 
 } from './types'
 
 export const getters: GetterTree<CardState, RootState> = {
@@ -40,6 +40,14 @@ export const getters: GetterTree<CardState, RootState> = {
       let user: User = getters[authTypes.USER]
       let card: Card = state.cardList.find(card => card._id === id)
       return card.assigned.indexOf(user._id) !== -1
+    }
+  },
+
+  [types.CARD_CAN_EDIT](state, getters): (id: string) => boolean {
+    return (id: string) => {
+      let board: Board = getters[boardTypes.CURRENT_BOARD]
+      let isAssignedCard: boolean = getters[types.CARD_ASSIGNED](id)
+      return board.isCreator || board.isAdmin || isAssignedCard
     }
   }
 }

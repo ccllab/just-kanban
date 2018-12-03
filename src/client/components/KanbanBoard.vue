@@ -19,7 +19,7 @@
                     <span class="drag-column-header">
                         <h2>
                             <input class="stageName" type="text" :value="stage" placeholder="Enter stage title...">
-                            <router-link class="newCard" :to="{name: 'NewCard'}">+</router-link>
+                            <router-link class="newCard" :to="{name: 'NewCard'}" v-if="board.isCreated || board.isAdmin">+</router-link>
                         </h2>
                     </span>
                     <ul class="drag-inner-list" ref="list" :data-status="stage">
@@ -55,7 +55,7 @@
     export default class KanbanBoard extends Vue {
         @Getter(boardTypes.CURRENT_BOARD) board: Board
         @Getter(cardTypes.CARD_LIST_BY_STAGE) cardsByStages: (stage: string) => Card[]
-        @Getter(cardTypes.CARD_ASSIGNED) cardAssigned: (id: string) => boolean
+        @Getter(cardTypes.CARD_CAN_EDIT) cardCanEdit: (id: string) => boolean
         @Action(boardTypes.GET_CURRENT_BOARD) getCurrentBoard
         @Action(cardTypes.UPDATE_CARD_STAGE) updateCardStage
         @Prop(String) boardId: string
@@ -73,9 +73,8 @@
             let drag: Dragula.Drake = Dragula({
                 containers: (this.$refs.list) as Element[],
                 moves: (el: any, source, handle, sibling) => {
-                    let b = this.cardAssigned(el.dataset.blockId)
-                    console.log(b)
-                    if (this.board.isCreator || this.board.isAdmin || b) {
+                    let isCanEdit = this.cardCanEdit(el.dataset.blockId)
+                    if (this.board.isCreator || this.board.isAdmin || isCanEdit) {
                         return true
                     }
                     return false
