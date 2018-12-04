@@ -10,35 +10,26 @@ import {
 
 export const actions: ActionTree<BoardState, RootState> = {
   [types.GET_CURRENT_BOARD]({ commit }, boardId: string): void {
-    let currentBoard = new Board({
+    let currentBoard: Board = {
       _id: boardId,
-      name: 'Board Name',
-      stages: ['on-hold', 'in-progress', 'needs-review', 'approved'],
-      isCreator: false,
-      isAdmin: false
-    })
-
-    commit(cardTypes.SET_RANDOM_CARD_LIST, { 
-      stages: currentBoard.stages,
-      count: 20
-    })
-    commit(types.SET_CURRENT_BOARD, currentBoard)
+      boardName: 'Board Name',
+      admins: [],
+      members: []
+    }
   },
 
   [types.GET_BOARD_LIST]({ commit }): void {
-    let boardList = [new Board({
-      _id: 'asdwdewew',
-      name: 'Board1',
-      stages: ['on-hold', 'in-progress', 'needs-review', 'approved'],
-      isCreator: true,
-      isAdmin: true
-    }), new Board({
-      _id: 'cdsvdsfds',
-      name: 'Board2',
-      stages: ['on-hold', 'in-progress', 'needs-review', 'approved'],
-      isCreator: true,
-      isAdmin: true
-    })]
+    let boardList: Board[] = [{
+      _id: 'boardId',
+      boardName: 'Board Name1',
+      admins: [],
+      members: []
+    }, {
+      _id: 'boardId',
+      boardName: 'Board Name2',
+      admins: [],
+      members: []
+    }]
 
     commit(types.SET_BOARD_LIST, boardList)
   }

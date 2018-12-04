@@ -151,6 +151,7 @@ export default class CardEditor extends Vue {
                 border: 0px;
                 padding: 10px;
                 box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.3);
+                resize: none;
             }
 
             button {
@@ -161,6 +162,16 @@ export default class CardEditor extends Vue {
                 border-radius: 3px;
                 cursor: pointer;
                 box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+            }
+        }
+
+        .describe {
+            button {
+                display: none;
+            }
+
+            textarea:focus + button {
+                display: block;
             }
         }
 

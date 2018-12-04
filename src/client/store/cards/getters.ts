@@ -39,15 +39,20 @@ export const getters: GetterTree<CardState, RootState> = {
     return (id: string) => {
       let user: User = getters[authTypes.USER]
       let card: Card = state.cardList.find(card => card._id === id)
-      return card.assigned.indexOf(user._id) !== -1
+      return card.assigned.indexOf(user.userId) !== -1
     }
   },
 
+  /**
+   * 用以指示特定卡片是否可被編輯或拖移改變 status
+   * @param state 
+   * @param getters 
+   */
   [types.CARD_CAN_EDIT](state, getters): (id: string) => boolean {
     return (id: string) => {
       let board: Board = getters[boardTypes.CURRENT_BOARD]
       let isAssignedCard: boolean = getters[types.CARD_ASSIGNED](id)
-      return board.isCreator || board.isAdmin || isAssignedCard
+      return false
     }
   }
 }

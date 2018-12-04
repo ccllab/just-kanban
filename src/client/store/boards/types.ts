@@ -1,26 +1,13 @@
+import { User } from '../auth/types'
+
 /**
  * The kanban board information
  */
-interface BoardConsructPatameters {
+export interface Board {
   _id: string
-  name: string
-  stages: string[]
-  isCreator: boolean
-  isAdmin: boolean
-  members?: string[]
-}
-
-export class Board {
-  _id: string
-  name: string
-  stages: string[]
-  isCreator: boolean
-  isAdmin: boolean
-  members: string[]
-
-  constructor(para: BoardConsructPatameters) {
-    Object.assign(this, para)
-  }
+  boardName: string
+  admins: User[]
+  members: User[]
 } 
 
 export interface BoardState {

@@ -1,58 +1,53 @@
-import axios, { AxiosResponse, AxiosRequestConfig } from 'axios'
 import VueCookie from '../utils/cookies/VueCookies';
+import { ApiRequestor } from './ApiRequestor'
+import { IAuthApiHelper } from './interfaces/auth'
 
 /**
  * Authentication api helper
  */
-export default class AuthApiHelper {
+export const AuthApi: IAuthApiHelper = {
+
+     /**
+     * Signup
+     */
+    signup(param) {
+        return ApiRequestor.request({
+            url: '/api/user',
+            method: 'POST',
+            data: param
+        })
+    },
 
     /**
      * Login
      */
-    public static login(email: string, password: string): Promise<boolean> {
-        let config: AxiosRequestConfig = {
+    login(param) {
+        return ApiRequestor.request({
+            url: '/api/user/login',
             method: 'POST',
-            data: {
-                email,
-                password
-            }
-        }
+            data: param
+        })
+    },
 
-        return axios('/api/auth/login', config)
-            .then(successHandler)
-            .catch(failHandler)
+    getUserInfo() {
+        return ApiRequestor.request({
+            url: '/api/user/me',
+            method: 'POST'
+        })
+    },
 
-        function successHandler(res: AxiosResponse) {
-            return true
-        }
-
-        function failHandler(res: AxiosResponse) {
-            return false
-        }
-    }
+    queryUserInfo(param) {
+        return ApiRequestor.request({
+            url: '/api/user/search',
+            method: 'POST',
+            data: param
+        })
+    },
 
     /**
      * Logout
      */
-    public static logout(): Promise<any> {
-        return axios('/api/auth/logout')
-    }
-
-    /**
-     * Signup
-     */
-    public static signup(): Promise<any> {
-        let config: AxiosRequestConfig = {}
-        return axios('/api/auth/signup', config)
-            .then(successHandler)
-            .catch(failHandler)
-
-        function successHandler(res: AxiosResponse) {
-            return true
-        }
-
-        function failHandler(res: AxiosResponse) {
-            return false
-        }
+    logout() {
+        
     }
 }

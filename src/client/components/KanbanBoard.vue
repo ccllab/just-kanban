@@ -74,9 +74,6 @@
                 containers: (this.$refs.list) as Element[],
                 moves: (el: any, source, handle, sibling) => {
                     let isCanEdit = this.cardCanEdit(el.dataset.blockId)
-                    if (this.board.isCreator || this.board.isAdmin || isCanEdit) {
-                        return true
-                    }
                     return false
                 }
              });

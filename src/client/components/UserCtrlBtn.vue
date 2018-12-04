@@ -2,7 +2,8 @@
     <div id="userCtrlBtn">
         <div class="container" @click="iconBtnClick">
             <div class="iconBtn">
-                    <span>K</span>
+                    <span v-if="isLogin">{{ iconName }}</span>
+                    <i class="far fa-address-book" v-if="!isLogin"></i>
             </div>
             <div class="list" v-if="showMenu">
                 <router-link :to="{name: 'Login'}" v-if="!isLogin">
@@ -30,14 +31,19 @@
 import {Component, Prop, Vue} from 'vue-property-decorator';
 import { Getter } from 'vuex-class'
 
-import { types as authTypes } from '../store/auth/types'
+import { types as authTypes, User } from '../store/auth/types'
 
 @Component
 export default class UserCtrlBtn extends Vue {
     @Getter(authTypes.IS_LOGIN) isLogin: boolean
+    @Getter(authTypes.USER) user: User
 
     public showMenu: boolean = false;
     public isClicked: boolean = false;
+
+    get iconName(): string {
+        return this.isLogin ? this.user.username.slice(0, 2).toUpperCase() : '';
+    }
 
     public created(): void {
         document.addEventListener('click', this.documentClick);

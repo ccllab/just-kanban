@@ -33,7 +33,15 @@ export class Card {
 }
 
 export interface CardState {
-  cardList: Card[]
+  /**
+   * 指定看板頁面後的所有卡片
+   */
+  cardList: Card[],
+
+  /**
+   * 查看之指定卡片
+   */
+  currentCard: Card
 }
 
 export const types = {

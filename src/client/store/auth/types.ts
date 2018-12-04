@@ -1,15 +1,9 @@
-interface UserConstructorParameter {
-  _id: string,
-  name: string
-}
+type userId = string
 
-export class User {
-  _id: string
-  name: string
-
-  constructor(para: UserConstructorParameter) {
-    Object.assign(this, para)
-  }
+export interface User {
+  userId: userId
+  username: string
+  email?: string
 }
 
 export interface AuthState {

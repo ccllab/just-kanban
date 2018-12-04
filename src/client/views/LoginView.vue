@@ -35,11 +35,10 @@ export default class LoginView extends Vue {
     public password: string = ''
 
     public async loginEventHandler() {
-        let config = {
+        let result = await this.login({
             email: this.email,
             password: this.password
-        }
-        let result = await this.login(config)
+        })
     }
 }
 </script>

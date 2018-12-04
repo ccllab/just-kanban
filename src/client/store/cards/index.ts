@@ -1,13 +1,14 @@
 import { Module } from 'vuex'
 
-import { CardState } from './types'
+import { CardState, Card } from './types'
 import { RootState } from '../types'
 import { actions } from './actions'
 import { getters } from './getters'
 import { mutations } from './mutations'
 
 const state: CardState = {
-  cardList: []
+  cardList: [],
+  currentCard: null
 }
 
 export const cards: Module<CardState, RootState> = {
