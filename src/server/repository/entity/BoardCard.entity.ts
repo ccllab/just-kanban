@@ -35,6 +35,12 @@ export class BoardCardEntity extends BaseEntity implements ICreatedAtUpdateAt {
     public label: number;
 
     /**
+     * Task description
+     */
+    @Column()
+    public description: string;
+
+    /**
      * The comment ids
      */
     @Column()

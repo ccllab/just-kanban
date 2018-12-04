@@ -67,9 +67,11 @@ export abstract class GenericMongoRepository<TEntity extends DeepPartial<TEntity
 
                     // decrypt columns that decorated with encrypt
                     await decrypt(foundEntity);
-                }
 
-                return foundEntity;
+                    return foundEntity;
+                } else {
+                    throw new Error("Entity not found.");
+                }
             })
             .catch((err) => {
                 throw err;
@@ -89,9 +91,11 @@ export abstract class GenericMongoRepository<TEntity extends DeepPartial<TEntity
 
                     // decrypt columns that decorated with encrypt
                     await decrypt(foundEntity);
-                }
 
-                return foundEntity;
+                    return foundEntity;
+                } else {
+                    throw new Error("Entity not found.");
+                }
             })
             .catch((err) => {
                 throw err;

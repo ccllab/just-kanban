@@ -29,6 +29,12 @@ export class KanbanBoardEntity extends BaseEntity implements ICreatedAtUpdateAt 
     public admins: Array<string>;
 
     /**
+     * The member user ids for this board.
+     */
+    @Column()
+    public memberIds: Array<string>;
+
+    /**
      * The ids for child board cards list.
      */
     @Column()
