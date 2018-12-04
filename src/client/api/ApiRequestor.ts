@@ -35,11 +35,11 @@ export class ApiRequestor {
     this.resFailMiddleProcesses.push(fn)
   }
 
-  public static execSuccessMiddleProcesses(res: AxiosResponse): void {
+  private static execSuccessMiddleProcesses(res: AxiosResponse): void {
     this.resSuccessMiddleProcesses.forEach(fn => fn(res))
   }
 
-  public static execFailMiddleProcesses(res: AxiosError): void {
+  private static execFailMiddleProcesses(res: AxiosError): void {
     this.resFailMiddleProcesses.forEach(fn => fn(res))
   }
 }
