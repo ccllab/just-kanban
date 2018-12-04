@@ -1,14 +1,4 @@
-import { User } from '../auth/types'
-
-/**
- * The kanban board information
- */
-export interface Board {
-  _id: string
-  boardName: string
-  admins: User[]
-  members: User[]
-} 
+import { Board } from '../../models/Board.model'
 
 export interface BoardState {
   boardList: Board[],

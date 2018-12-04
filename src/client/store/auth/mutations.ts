@@ -1,6 +1,7 @@
 import { MutationTree } from 'vuex'
 
-import { AuthState, User, types } from './types'
+import { AuthState, types } from './types'
+import { User } from '../../models/User.model'
 
 export const mutations: MutationTree<AuthState> = {
   [types.SET_USER](state, payload: User): void {

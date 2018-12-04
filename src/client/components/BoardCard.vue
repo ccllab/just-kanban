@@ -11,8 +11,8 @@
     import {Component, Prop, Vue} from 'vue-property-decorator';
     import { Getter } from 'vuex-class'
 
-    import {BoardCardModel} from "../models/BoardCard.model";
-    import { Card, types as cardTypes } from '../store/cards/types'
+    import { types as cardTypes } from '../store/cards/types'
+    import { Card } from '../models/Card.model'
 
     /**
      * The board card in KanbanBoard

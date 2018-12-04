@@ -1,6 +1,6 @@
 import { Module } from 'vuex'
 
-import { CardState, Card } from './types'
+import { CardState } from './types'
 import { RootState } from '../types'
 import { actions } from './actions'
 import { getters } from './getters'

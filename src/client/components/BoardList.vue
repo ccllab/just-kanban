@@ -25,7 +25,8 @@
 import {Component, Prop, Vue} from 'vue-property-decorator';
 import { Getter, Action } from 'vuex-class'
 
-import { types as BoardTypes, Board} from '../store/boards/types'
+import { Board } from '../models/Board.model'
+import { types as BoardTypes} from '../store/boards/types'
 import BoardCreator from './BoardCreator.vue';
 
 

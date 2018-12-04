@@ -31,7 +31,8 @@
 import {Component, Prop, Vue} from 'vue-property-decorator';
 import { Getter } from 'vuex-class'
 
-import { types as authTypes, User } from '../store/auth/types'
+import { types as authTypes } from '../store/auth/types'
+import { User } from '../models/User.model'
 
 @Component
 export default class UserCtrlBtn extends Vue {

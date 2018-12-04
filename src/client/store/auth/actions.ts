@@ -4,7 +4,6 @@ import { AuthApi } from '../../api'
 import { RootState } from '../types'
 import { 
   AuthState, 
-  User,
   LoginParameters,
   types
 } from './types'
@@ -18,20 +17,7 @@ export const actions: ActionTree<AuthState, RootState> = {
       isRememberMe: false
     })
 
-    if (!result) {
-      commit(types.SET_USER, null)
-      commit(types.SET_TOKEN, null)
-      return false
-    } else {
-      let user: User = {
-        userId: 'oqwodnqowcnowq',
-        username: 'Jay'
-      }
-
-      commit(types.SET_USER, user)
-      commit(types.SET_TOKEN, 'djksfndosjfnods')
-      return true
-    }
+    return false
   },
 
   [types.AUTH_LOGOUT]({ commit }): void {
@@ -51,13 +37,6 @@ export const actions: ActionTree<AuthState, RootState> = {
     if (!res.result) {
       return false
     } else {
-      let user: User = {
-        userId: 'oqwodnqowcnowq',
-        username: '123'
-      }
-      
-      commit(types.SET_USER, user)
-      commit(types.SET_TOKEN, 'djksfndosjfnods')
       return false
     }
   }

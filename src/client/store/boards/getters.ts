@@ -1,8 +1,8 @@
 import { GetterTree } from 'vuex'
 
+import { Board } from '../../models/Board.model'
 import { RootState } from '../types'
 import { 
-  Board,
   BoardState,
   types
 } from './types'

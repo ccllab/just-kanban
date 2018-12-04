@@ -1,5 +1,5 @@
 import { BaseResponseData } from './base'
-import { Board } from '../../store/boards/types'
+import { Board } from '../../models/Board.model'
 
 export interface CreateBoardRequest {
   boardName: string

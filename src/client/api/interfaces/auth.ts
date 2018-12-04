@@ -1,7 +1,7 @@
 import { BaseResponseData } from './base'
-import { User } from '../../store/auth/types'
+import { User } from '../../models/User.model'
 
-export interface SignupRequest extends User{
+export interface SignupRequest extends User {
   password: string
   confirm: string
 }

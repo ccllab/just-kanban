@@ -41,8 +41,10 @@
     import { Getter, Action } from 'vuex-class'
 
     import BoardCard from './BoardCard.vue';
-    import { types as boardTypes, Board } from '../store/boards/types'
-    import { types as cardTypes, Card } from '../store/cards/types'
+    import { types as boardTypes } from '../store/boards/types'
+    import { types as cardTypes } from '../store/cards/types'
+    import { Board } from '../models/Board.model'
+    import { Card } from '../models/Card.model'
 
     /**
      * The KanbanBoard

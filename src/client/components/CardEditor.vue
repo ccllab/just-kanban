@@ -40,11 +40,11 @@
 
 <script lang="ts">
 import {Component, Prop, Vue} from 'vue-property-decorator';
-import {BoardCardModel} from "../models/BoardCard.model";
+import { Card } from "../models/Card.model";
 
 @Component
 export default class CardEditor extends Vue {
-    @Prop(BoardCardModel) card: BoardCardModel
+    @Prop(Card) card: Card
     @Prop(String) boardId: string
     @Prop(String) cardId: string
 

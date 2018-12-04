@@ -1,36 +1,4 @@
-interface CardContructParameters {
-  _id: string
-  title: string
-  status: string,
-  index: number,
-  assigned: string[]
-}
-
-export class Card {
-  /**
-   * pk
-   */
-  public _id: string;
-
-  /**
-   * Board card title
-   */
-  public title: string;
-
-  /**
-   * Board card status
-   */
-  public status: string;
-
-  /**
-   * Users who are assigned to this card.
-   */
-  public assigned: string[]
-
-  constructor(para: CardContructParameters) {
-    Object.assign(this, para)
-  }
-}
+import { Card } from '../../models/Card.model'
 
 export interface CardState {
   /**

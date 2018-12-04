@@ -1,10 +1,4 @@
-type userId = string
-
-export interface User {
-  userId: userId
-  username: string
-  email?: string
-}
+import { User } from '../../models/User.model'
 
 export interface AuthState {
   user: User,
