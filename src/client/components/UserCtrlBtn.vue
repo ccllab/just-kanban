@@ -18,7 +18,7 @@
                         Sign Up
                     </div>
                 </router-link>
-                <div class="item" v-if="isLogin">
+                <div class="item" v-if="isLogin" @click="logoutClick">
                     <i class="fas fa-sign-out-alt"></i>
                     Logout
                 </div>
@@ -28,16 +28,17 @@
 </template>
 
 <script lang="ts">
-import {Component, Prop, Vue} from 'vue-property-decorator';
-import { Getter } from 'vuex-class'
+import { Component, Prop, Vue } from 'vue-property-decorator';
+import { Getter, Action } from 'vuex-class'
 
-import { types as authTypes } from '../store/auth/types'
+import { types as authTypes, LogoutFunc } from '../store/auth/types'
 import { User } from '../models/User.model'
 
 @Component
 export default class UserCtrlBtn extends Vue {
     @Getter(authTypes.IS_LOGIN) isLogin: boolean
     @Getter(authTypes.USER) user: User
+    @Action(authTypes.AUTH_LOGOUT) logout: LogoutFunc
 
     public showMenu: boolean = false;
     public isClicked: boolean = false;
@@ -48,6 +49,11 @@ export default class UserCtrlBtn extends Vue {
 
     public created(): void {
         document.addEventListener('click', this.documentClick);
+    }
+
+    public logoutClick() {
+        this.logout()
+        this.$router.push("/")
     }
 
     public iconBtnClick():void {

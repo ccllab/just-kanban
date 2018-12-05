@@ -25,11 +25,11 @@
 import { Component, Prop, Vue,  } from 'vue-property-decorator';
 import { Action, Getter, Mutation } from 'vuex-class'
 
-import { LoginParameters, types as authTypes } from '../store/auth/types'
+import { LoginFunc, types as authTypes } from '../store/auth/types'
 
 @Component
 export default class LoginView extends Vue {
-    @Action(authTypes.AUTH_LOGIN) login
+    @Action(authTypes.AUTH_FAKE_LOGIN) login: LoginFunc
 
     public email: string = ''
     public password: string = ''
@@ -37,8 +37,11 @@ export default class LoginView extends Vue {
     public async loginEventHandler() {
         let result = await this.login({
             email: this.email,
-            password: this.password
+            password: this.password,
+            isRememberMe: true
         })
+
+        result && this.$router.push('/')
     }
 }
 </script>

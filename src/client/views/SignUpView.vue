@@ -32,18 +32,24 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
-import { Getter } from 'vuex-class'
+import { Action } from 'vuex-class'
+import * as _ from 'lodash'
+
+import { types as authTypes, SignupFunc } from '../store/auth/types'
 
 @Component
 export default class LoginView extends Vue {
+    @Action(authTypes.AUTH_SIGNUP) signup: SignupFunc
+
     public userId: string = ''
     public username: string = ''
     public email: string = ''
     public password: string = ''
     public confirm: string = ''
 
-    public signupClick() {
-
+    public async signupClick() {
+        let parameters = _.pick(this, ['userId', 'username', 'email', 'password', 'confirm'])
+        let result = await this.signup(parameters)
     }
 }
 </script>
