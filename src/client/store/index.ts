@@ -6,8 +6,7 @@ import { mutations } from './mutations'
 import { getters } from './getters'
 import { actions } from './actions'
 import { auth } from './auth'
-import { boards } from './boards'
-import { cards } from './cards'
+import { boards } from './board'
 
 Vue.use(Vuex)
 
@@ -22,8 +21,7 @@ const store: StoreOptions<RootState> = {
   mutations,
   modules: {
     auth,
-    boards,
-    cards
+    boards
   },
   strict: true
 }
