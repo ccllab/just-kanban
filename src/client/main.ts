@@ -4,7 +4,7 @@ import store from './store'
 import router from './router';
 import App from './App.vue';
 import VueCookies from './utils/cookies/VueCookies';
-import { ApiRequestor } from './api'
+import { ApiRequestor } from './utils/ApiRequestor'
 import { HttpErrorProcessor } from './api/middle-process/HttpErrorProcessor' 
 
 Vue.config.productionTip = false;

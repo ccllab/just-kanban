@@ -1,5 +1,5 @@
 import { IBoardApiHelper } from './interfaces/board'
-import { ApiRequestor } from './ApiRequestor'
+import { ApiRequestor } from '../utils/ApiRequestor'
 
 export const BoardApi: IBoardApiHelper = {
   /**

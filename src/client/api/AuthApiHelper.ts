@@ -1,5 +1,5 @@
 import VueCookie from '../utils/cookies/VueCookies';
-import { ApiRequestor } from './ApiRequestor'
+import { ApiRequestor } from '../utils/ApiRequestor'
 import { IAuthApiHelper } from './interfaces/auth'
 
 /**

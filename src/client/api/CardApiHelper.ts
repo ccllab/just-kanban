@@ -1,5 +1,5 @@
 import { ICardApiHelper } from './interfaces/card'
-import { ApiRequestor } from './ApiRequestor'
+import { ApiRequestor } from '../utils/ApiRequestor'
 
 export const CardApi: ICardApiHelper = {
   createCard(param) {

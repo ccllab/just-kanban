@@ -1,5 +1,5 @@
 import { ICardListApiHelper } from './interfaces/card-list'
-import { ApiRequestor } from './ApiRequestor'
+import { ApiRequestor } from '../utils/ApiRequestor'
 
 export const CardListApi: ICardListApiHelper = {
   getCardList(boardId) {

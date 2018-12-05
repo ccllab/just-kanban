@@ -1,4 +1,4 @@
-import { failMiddleProcess } from '../ApiRequestor'
+import { failMiddleProcess } from '../../utils/ApiRequestor'
 import store from '../../store'
 import { types } from '../../store/types'
 
