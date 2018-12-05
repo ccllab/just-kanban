@@ -3,7 +3,6 @@ import ApiControllerBase from "./ApiControllerBase";
 import {controller, httpPost, request, response} from 'inversify-express-utils';
 import {IAuthService} from "../services";
 import {inject} from 'inversify';
-import {methodAdvice} from '../utils';
 import {TYPES} from '../ioc';
 import {IUserRepository, User} from '../repository';
 
@@ -32,7 +31,6 @@ export class UserController extends ApiControllerBase {
      * @return Promise<Response>
      */
     @httpPost('/')
-    @methodAdvice()
     private addUser(
         @response() res: express.Response,
         @request() req: express.Request): Promise<express.Response> {
@@ -73,7 +71,6 @@ export class UserController extends ApiControllerBase {
      * @return Promise<response>
      */
     @httpPost('/login')
-    @methodAdvice()
     private login(
         @response() res: express.Response,
         @request() req: express.Request): Promise<express.Response> {
@@ -106,12 +103,10 @@ export class UserController extends ApiControllerBase {
      * @return Promise<Response>
      */
     @httpPost('/me')
-    @methodAdvice()
     private async getMe(
         @response() res: express.Response,
         @request() req: express.Request): Promise<express.Response> {
 
-        // console.log(await this.httpContext.user.isAuthenticated());
 
         if (! await this.isAuthenticated()) {
             return res.status(401).send('Please login, and try again.');
@@ -144,6 +139,12 @@ export class UserController extends ApiControllerBase {
         let {email} = req.body;
 
         return this.userRepository.getBy({email}).then((user) => {
+            if (!user) {
+                return res.status(400).send({
+                    error: "User not found."
+                });
+            }
+
             return res.send({
                 userId: user.userId,
                 username: user.username,

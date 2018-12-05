@@ -44,7 +44,7 @@ export class BoardCardEntity extends BaseEntity implements ICreatedAtUpdateAt {
      * The comment ids
      */
     @Column()
-    public comments: Array<string>;
+    public comments: Array<string> = [];
 
     /**
      * The userId that create this card.

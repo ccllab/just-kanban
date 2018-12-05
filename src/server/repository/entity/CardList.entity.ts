@@ -26,7 +26,7 @@ export class CardListEntity extends BaseEntity implements ICreatedAtUpdateAt {
      * The card ids in this list.
      */
     @Column()
-    public cardIds: Array<string>;
+    public cardIds: Array<string> = [];
 
     /**
      * The date time for create KanbanBoard entity.

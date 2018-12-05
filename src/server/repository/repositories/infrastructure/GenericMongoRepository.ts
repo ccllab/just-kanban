@@ -51,7 +51,7 @@ export abstract class GenericMongoRepository<TEntity extends DeepPartial<TEntity
             entity.updatedAt = this.executionContext.dateNow;
         }
 
-        return super.add(entity);
+        return super.update(entity);
     }
 
     /**
@@ -67,11 +67,9 @@ export abstract class GenericMongoRepository<TEntity extends DeepPartial<TEntity
 
                     // decrypt columns that decorated with encrypt
                     await decrypt(foundEntity);
-
-                    return foundEntity;
-                } else {
-                    throw new Error("Entity not found.");
                 }
+
+                return foundEntity;
             })
             .catch((err) => {
                 throw err;
@@ -91,11 +89,9 @@ export abstract class GenericMongoRepository<TEntity extends DeepPartial<TEntity
 
                     // decrypt columns that decorated with encrypt
                     await decrypt(foundEntity);
-
-                    return foundEntity;
-                } else {
-                    throw new Error("Entity not found.");
                 }
+
+                return foundEntity;
             })
             .catch((err) => {
                 throw err;
