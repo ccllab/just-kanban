@@ -20,7 +20,7 @@ export interface GetBoardListResponseData extends BaseResponseData {
 export interface CreateBoardResponseData extends BaseResponseData {
   _id: string,
   boardName: string,
-  isAdmin: string
+  isAdmin: boolean
 }
 export interface GetBoardInfoResponseData extends BaseResponseData, Board {}
 export interface UpdateBoardResponseData extends BaseResponseData, Board {}

@@ -27,6 +27,7 @@
     transform: translateX(-50%);
     left: 50%;
     margin-top: 70px;
+    z-index: 10;
   }
 
   .fade-enter-active, 

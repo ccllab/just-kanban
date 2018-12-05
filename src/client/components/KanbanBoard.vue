@@ -41,8 +41,7 @@
     import { Getter, Action } from 'vuex-class'
 
     import BoardCard from './BoardCard.vue';
-    import { types as boardTypes } from '../store/boards/types'
-    import { types as cardTypes } from '../store/cards/types'
+    import { types as boardTypes } from '../store/board/types'
     import { Board } from '../models/Board.model'
     import { Card } from '../models/Card.model'
 
@@ -56,14 +55,9 @@
     })
     export default class KanbanBoard extends Vue {
         @Getter(boardTypes.CURRENT_BOARD) board: Board
-        @Getter(cardTypes.CARD_LIST_BY_STAGE) cardsByStages: (stage: string) => Card[]
-        @Getter(cardTypes.CARD_CAN_EDIT) cardCanEdit: (id: string) => boolean
-        @Action(boardTypes.GET_CURRENT_BOARD) getCurrentBoard
-        @Action(cardTypes.UPDATE_CARD_STAGE) updateCardStage
         @Prop(String) boardId: string
 
         public async mounted() {
-            await this.getCurrentBoard(this.boardId)
             this.dragulaInit()
         }
 
@@ -75,7 +69,6 @@
             let drag: Dragula.Drake = Dragula({
                 containers: (this.$refs.list) as Element[],
                 moves: (el: any, source, handle, sibling) => {
-                    let isCanEdit = this.cardCanEdit(el.dataset.blockId)
                     return false
                 }
              });
@@ -94,8 +87,6 @@
                         break;
                     }
                 }
-
-                this.updateCardStage({cardId: block.dataset.blockId, stage: list.dataset.status, index})
             });
 
             // bind dragend event

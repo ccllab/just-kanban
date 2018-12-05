@@ -11,7 +11,6 @@
     import {Component, Prop, Vue} from 'vue-property-decorator';
     import { Getter } from 'vuex-class'
 
-    import { types as cardTypes } from '../store/cards/types'
     import { Card } from '../models/Card.model'
 
     /**
@@ -19,17 +18,7 @@
      */
     @Component
     export default class BoardCard extends Vue {
-        @Getter(cardTypes.CARD_ASSIGNED) isCardAssigned: (id: string) => boolean
-        @Getter(cardTypes.CARD_CAN_EDIT) cardCanEdit: (id: string) => boolean
         @Prop(Card) public boardCard: Card;
-
-        get isAssigned(): boolean {
-            return this.isCardAssigned(this.boardCard._id)
-        }
-
-        get isCanEdit(): boolean {
-            return this.cardCanEdit(this.boardCard._id)
-        }
     }
 </script>
 
