@@ -1,20 +1,24 @@
 <template>
     <div id="app">
+        <ErrorHintBlock />
         <NavHeader class="navHeader"/>
         <router-view class="viewContainer"/>
     </div>
 </template>
 
 <script lang="ts">
-    import {Component, Vue} from 'vue-property-decorator';
+    import { Component, Vue } from 'vue-property-decorator';
+    
     import NavHeader from './components/NavHeader.vue';
+    import ErrorHintBlock from './components/ErrorHintBlock.vue'
 
     /**
      * Vue app
      */
     @Component({
         components: {
-            NavHeader
+            NavHeader,
+            ErrorHintBlock
         },
     })
     export default class App extends Vue {
@@ -33,7 +37,7 @@
     }
 
     a {
-        text-decoration: none;
+        text-decoration: none!important;
         color: #17394d;
     }
 
@@ -68,5 +72,10 @@
             height: 100%;
             overflow: hidden;
         }
+    }
+
+    .container {
+        width: auto;
+        max-width: none;
     }
 </style>

@@ -1,4 +1,4 @@
-import { ActionTree, Action } from 'vuex'
+import { ActionTree } from 'vuex'
 
 import { AuthApi } from '../../api'
 import { RootState } from '../types'

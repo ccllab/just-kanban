@@ -1,7 +1,7 @@
 import axios, { AxiosRequestConfig, AxiosResponse, AxiosError } from 'axios'
 
-type successMiddleProcess = (res: AxiosResponse) => void
-type failMiddleProcess = (res: AxiosError) => void
+export type successMiddleProcess = (res: AxiosResponse) => void
+export type failMiddleProcess = (res: AxiosError) => void
 
 export class ApiRequestor {
   private static resSuccessMiddleProcesses: successMiddleProcess[] = []
