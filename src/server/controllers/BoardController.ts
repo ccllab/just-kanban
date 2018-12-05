@@ -111,4 +111,48 @@ export class BoardController extends ApiControllerBase {
             });
         });
     }
+
+    /**
+     * Update specified board
+     * @param id The board id
+     * @param res Response
+     * @param req Request
+     */
+    private async updateBoard(
+        @requestParam("id") id: string,
+        @response() res: express.Response,
+        @request() req: express.Request
+    ): Promise<express.Response> {
+            
+        if (! await this.isAuthenticated()) {
+            return res.status(401).send('Please login, and try again.');
+        }
+
+        if (!id) {
+            return Promise.resolve(res.status(400).send({
+                error: "Board id undefined."
+            }));
+        }
+
+        if (id === '') {
+            return Promise.resolve(res.status(400).send({
+                error: "Empty board id."
+            }));
+        }
+
+        let {boardName, admins, members} = req.body;
+        let reqDto = {
+            name: boardName as string,
+            admins: admins as string[],
+            members: members as string[]
+        };
+
+        return this.boardService.updateBoardInfo(id, reqDto).then((dto) => {
+            return res.send(dto);
+        }, err => {
+            return res.status(400).send({
+                error: err.message
+            });
+        });
+    }
 }

@@ -124,6 +124,15 @@ export class BoardServiceImpl implements IBoardService {
      * @return Promise
      */
     public updateBoardInfo(boardId: string, dto: {name: string, admins: string[], members: string[]}): Promise<BoardMembersInfoDto> {
-        throw new Error();
+        return this.boardRepository.get(boardId).then(async (board) => {
+            board.admins = dto.admins;
+            board.memberIds = dto.members;
+
+            let updated = await this.boardRepository.update(board);
+
+            return this.getBoardInfo(updated._id);
+        }, err => {
+            throw err;
+        });
     }
 }
