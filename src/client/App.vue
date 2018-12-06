@@ -78,4 +78,9 @@
         width: auto;
         max-width: none;
     }
+
+    .btn {
+        font-weight: bold;
+        background-color: #2A92BF;
+    }
 </style>

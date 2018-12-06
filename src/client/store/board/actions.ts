@@ -50,6 +50,22 @@ export const actions: ActionTree<BoardState, RootState> = {
     }
   },
 
+  async [types.UPDATE_BOARD]({ commit }, board: Board): Promise<boolean> {
+    let resData = await BoardApi.updateBoard(board._id, {
+      boardName: board.boardName,
+      admins: board.admins.map(user => user.userId),
+      members: board.members.map(user => user.userId)
+    })
+
+    if (resData.result) {
+      let board: Board = _.pick(resData, ['_id', 'boardName', 'admins', 'members'])
+      commit(types.SET_CURRENT_BOARD, board)
+      return true
+    } else {
+      return false
+    }
+  },
+
   async [types.GET_FAKE_BOARD_LIST]({ commit }): Promise<boolean> {
     console.warn('Get fake board list mode !')
     let boardList: BoardList = [{
@@ -62,6 +78,17 @@ export const actions: ActionTree<BoardState, RootState> = {
       isAdmin: false
     }]
     commit(types.SET_BOARD_LIST, boardList)
+    return true
+  },
+
+  async [types.GET_FAKE_BOARD_INFO]({ commit }, boardId: string): Promise<boolean> {
+    let board: Board = {
+      _id: boardId,
+      boardName: 'Fake board',
+      admins: [{ userId: 'asdsas', username: 'Jay', email: ''}],
+      members: [{ userId: 'asdsas', username: 'Jay', email: '' }]
+    }
+    commit(types.SET_CURRENT_BOARD, board)
     return true
   },
 

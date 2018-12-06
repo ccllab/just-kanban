@@ -1,4 +1,5 @@
 import axios, { AxiosRequestConfig, AxiosResponse, AxiosError } from 'axios'
+import * as _ from 'lodash'
 
 export type successMiddleProcess = (res: AxiosResponse) => void
 export type failMiddleProcess = (res: AxiosError) => void
@@ -20,8 +21,8 @@ export class ApiRequestor {
     }
 
     function failHandler(res: AxiosError) {
-      ApiRequestor.execFailMiddleProcesses(res)
-      res.response.data || (res.response.data = {})
+      ApiRequestor.execFailMiddleProcesses(res);
+      (<string>res.response.headers['content-type']).includes("application/json") || (res.response.data = {})
       res.response.data.result = false
       return res.response.data
     }

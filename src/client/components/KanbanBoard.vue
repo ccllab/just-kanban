@@ -1,16 +1,13 @@
 <template>
     <div id="kanbanBoard" v-if="board">
         <div class="boardHeader">
-            <div class="boardName">{{ board.name }}</div>
-            <router-link :to="{name: 'BoardConfig'}" class="config" v-if="board.isCreated || board.isAdmin">
+            <div class="boardName">{{ board.boardName }}</div>
+            <router-link :to="{name: 'BoardConfig'}" class="config" v-if="isAdmin">
                 <i class="fas fa-cog"></i>
             </router-link>
             <div class="memberList" >
                 <div class="member">K</div>
                 <div class="member">J</div>
-                <div class="member add" v-if="board.isCreated || board.isAdmin">
-                    <i class="fas fa-user-plus"></i>
-                </div>
             </div>
         </div>
         <div class="drag-container">
@@ -41,7 +38,7 @@
     import { Getter, Action } from 'vuex-class'
 
     import BoardCard from './BoardCard.vue';
-    import { types as boardTypes } from '../store/board/types'
+    import { types as boardTypes, GetBoardInfoFunc } from '../store/board/types'
     import { Board } from '../models/Board.model'
     import { Card } from '../models/Card.model'
 
@@ -55,9 +52,12 @@
     })
     export default class KanbanBoard extends Vue {
         @Getter(boardTypes.CURRENT_BOARD) board: Board
+        @Getter(boardTypes.IS_ADMIN) isAdmin: boolean
+        @Action(boardTypes.GET_FAKE_BOARD_INFO) getBoardInfo: GetBoardInfoFunc
         @Prop(String) boardId: string
 
         public async mounted() {
+            await this.getBoardInfo(this.boardId)
             this.dragulaInit()
         }
 
@@ -135,7 +135,7 @@
                 background-color: rgba(0, 0, 0, 0.4);
                 color: white;
                 border-radius: 5px;
-                margin-right: 20px;
+                margin-left: 10px;
                 cursor: pointer;
 
                 &:hover {

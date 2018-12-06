@@ -23,11 +23,11 @@
 import { Component, Prop, Vue } from 'vue-property-decorator'
 import { Action } from 'vuex-class'
 
-import { types as BoardTypes, CreateBoard } from '../store/board/types'
+import { types as BoardTypes, CreateBoardFunc } from '../store/board/types'
 
 @Component
 export default class BoardCreator extends Vue {
-    @Action(BoardTypes.CREATE_FAKE_BOARD) createBoard: CreateBoard
+    @Action(BoardTypes.CREATE_FAKE_BOARD) createBoard: CreateBoardFunc
 
     public boardName: string = ''
 
