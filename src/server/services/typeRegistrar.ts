@@ -9,6 +9,7 @@ import {TYPES} from "../ioc";
 const registerServices = (container: Container) => {
 
     container.bind<services.IAuthService>(TYPES.IAuthService).to(services.AuthServiceImpl);
+    container.bind<services.IBoardService>(TYPES.IBoardService).to(services.BoardServiceImpl);
 };
 
 export default registerServices;
