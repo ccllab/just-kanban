@@ -6,8 +6,11 @@
                 <i class="fas fa-cog"></i>
             </router-link>
             <div class="memberList" >
-                <div class="member">K</div>
-                <div class="member">J</div>
+                <div class="member" 
+                    v-for="member in board.members" 
+                    :key="member._id">
+                    {{ member.username.slice(0, 2).toUpperCase() }}    
+                </div>
             </div>
         </div>
         <div class="drag-container">

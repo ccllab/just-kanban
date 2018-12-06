@@ -1,13 +1,20 @@
 import { BaseResponseData } from './base'
 import { Board } from '../../models/Board.model'
+import { userId } from '../../models/User.model'
 
 export interface CreateBoardRequest {
   boardName: string
 }
 export interface UpdateBoardRequest {
   boardName: string,
-  admins: string[],
-  members: string[]
+  admins: {
+    insert: userId[],
+    remove: userId[]
+  },
+  members: {
+    insert: userId[],
+    remove: userId[]
+  }
 }
 
 export interface GetBoardListResponseData extends BaseResponseData {

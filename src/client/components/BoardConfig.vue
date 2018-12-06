@@ -116,10 +116,8 @@ export default class BoardConfig extends Vue {
 
     public async updateClick() {
         let result = await this.updataboard(this.copyedBoard)
-        console.log(result)
         if (!result) {
             this.copyedBoard = _.cloneDeep(this.board)
-            console.log(1)
         }
     }
 

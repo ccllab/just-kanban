@@ -50,11 +50,17 @@ export const actions: ActionTree<BoardState, RootState> = {
     }
   },
 
-  async [types.UPDATE_BOARD]({ commit }, board: Board): Promise<boolean> {
+  async [types.UPDATE_BOARD]({ commit, state }, board: Board): Promise<boolean> {
     let resData = await BoardApi.updateBoard(board._id, {
       boardName: board.boardName,
-      admins: board.admins.map(user => user.userId),
-      members: board.members.map(user => user.userId)
+      admins: {
+        insert: _.differenceWith(board.admins, state.displayedBoard.admins, _.isEqual).map(user => user.userId),
+        remove: _.differenceWith(state.displayedBoard.admins, board.admins, _.isEqual).map(user => user.userId)
+      },
+      members: {
+        insert: _.differenceWith(board.members, state.displayedBoard.members, _.isEqual).map(user => user.userId),
+        remove: _.differenceWith(state.displayedBoard.members, board.members, _.isEqual).map(user => user.userId)     
+      }
     })
 
     if (resData.result) {
