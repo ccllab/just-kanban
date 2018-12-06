@@ -64,8 +64,8 @@ export const actions: ActionTree<BoardState, RootState> = {
     })
 
     if (resData.result) {
-      let board: Board = _.pick(resData, ['_id', 'boardName', 'admins', 'members'])
-      commit(types.SET_CURRENT_BOARD, board)
+      let _board: Board = _.pick(resData, ['_id', 'boardName', 'admins', 'members'])
+      commit(types.SET_CURRENT_BOARD, _board)
       return true
     } else {
       return false

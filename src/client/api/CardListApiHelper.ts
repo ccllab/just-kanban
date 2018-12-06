@@ -11,7 +11,15 @@ export const CardListApi: ICardListApiHelper = {
 
   cardChangeStatus(param) {
     return ApiRequestor.request({
-      url: 'api/card-list/drag',
+      url: '/api/card-list/drag',
+      method: 'POST',
+      data: param
+    })
+  },
+
+  createCardList(boardId, param) {
+    return ApiRequestor.request({
+      url: `/api/card-list/add/${boardId}`,
       method: 'POST',
       data: param
     })
