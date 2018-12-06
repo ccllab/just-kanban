@@ -1,4 +1,4 @@
-import {BaseEntity, Column, Entity, ObjectIdColumn} from "typeorm";
+import {BaseEntity, Column, Entity, ObjectID, ObjectIdColumn} from "typeorm";
 import {ICreatedAtUpdateAt} from "./ICreatedAtUpdateAt";
 import {Exclude} from "class-transformer";
 
@@ -14,7 +14,7 @@ export class CardListEntity extends BaseEntity implements ICreatedAtUpdateAt {
      * pk
      */
     @ObjectIdColumn()
-    public _id: string;
+    public _id: ObjectID;
 
     /**
      * The list name
@@ -26,7 +26,7 @@ export class CardListEntity extends BaseEntity implements ICreatedAtUpdateAt {
      * The card ids in this list.
      */
     @Column()
-    public cardIds: Array<string> = [];
+    public cardIds: Array<ObjectID> = [];
 
     /**
      * The date time for create KanbanBoard entity.

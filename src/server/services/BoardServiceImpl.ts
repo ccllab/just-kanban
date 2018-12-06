@@ -1,9 +1,14 @@
+import '../utils/extensions/extension'; // import extension method
 import {IBoardService} from "./interfaces/IBoardService";
 import {BoardBasicDto} from "./dtos/board/BoardBasicDto";
 import {IKanbanBoardRepository, IUserRepository, KanbanBoardEntity, User} from "../repository";
 import {BoardMembersInfoDto} from "./dtos/board/BoardMembersInfoDto";
 import {inject, injectable} from "inversify";
 import {TYPES} from "../ioc";
+import {union} from 'lodash';
+import {BoardMemberUpdateDto} from "./dtos/board/BoardMemberUpdateDto";
+import {ObjectID} from "typeorm";
+import * as mongodb from 'mongodb';
 
 /**
  * Board management service impl
@@ -27,7 +32,7 @@ export class BoardServiceImpl implements IBoardService {
      * @param userObjectId The user id who create this board
      * @return Promise
      */
-    public async createNewBoard(boardName: string, userObjectId: string): Promise<BoardBasicDto> {
+    public async createNewBoard(boardName: string, userObjectId: ObjectID): Promise<BoardBasicDto> {
         if (await this.boardRepository.getBy({boardName: boardName})) {
             throw new Error("The board name already used");
         }
@@ -89,7 +94,7 @@ export class BoardServiceImpl implements IBoardService {
      * @param boardId The board id
      * @return Promise
      */
-    public getBoardInfo(boardId: string): Promise<BoardMembersInfoDto> {
+    public getBoardInfo(boardId: ObjectID): Promise<BoardMembersInfoDto> {
         return this.boardRepository.get(boardId).then(async (board) => {
             let dto = new BoardMembersInfoDto();
             dto._id = board._id;
@@ -123,11 +128,65 @@ export class BoardServiceImpl implements IBoardService {
      * @param dto The update data
      * @return Promise
      */
-    public updateBoardInfo(boardId: string, dto: {name: string, admins: string[], members: string[]}): Promise<BoardMembersInfoDto> {
+    public updateBoardInfo(boardId: string, dto: BoardMemberUpdateDto): Promise<BoardMembersInfoDto> {
         return this.boardRepository.get(boardId).then(async (board) => {
-            board.admins = dto.admins;
-            board.memberIds = dto.members;
+            board.boardName = dto.boardName;
 
+            dto.admins.insert = union(dto.admins.insert);
+            dto.admins.remove = union(dto.admins.remove);
+            dto.members.insert = union(dto.members.insert);
+            dto.members.remove = union(dto.members.remove);
+
+            /**
+             * inner func insert boardId to user.
+             * @param userIds array of user id.
+             * @param originUsers The user list that not updated.
+             */
+            let insertBoardIdToUser = async (userIds: string[], originUsers: ObjectID[]) => {
+                let boardObjId = mongodb.ObjectID.createFromHexString(boardId);
+
+                for (let userId of userIds) {
+                    let user = await this.userRepository.getBy({userId});
+                    user.boardIds.push(boardObjId); // todo bug storage as a string
+                    user.boardIds = union(user.boardIds);
+
+                    this.userRepository.update(user).catch(err => {
+                        throw err;
+                    });
+
+                    originUsers.push(user._id);
+                }
+            };
+
+            // invoke
+            await insertBoardIdToUser(dto.admins.insert, board.admins);
+            await insertBoardIdToUser(dto.members.insert, board.memberIds);
+
+            // get users that remove from this board(both admins and members)
+            let userRemoving = dto.admins.remove.intersect(dto.members.remove);
+            for (let userId of userRemoving) {
+                let user = await this.userRepository.getBy({userId});
+                user.boardIds = user.boardIds.objectIdRemove(boardId);
+                user.boardIds = union(user.boardIds);
+
+                this.userRepository.update(user).catch(err => {
+                    throw err;
+                });
+            }
+
+            // update specified board admins and members
+            for (let userId of dto.admins.remove) {
+                let user = await this.userRepository.getBy({userId});
+                board.admins = board.admins.objectIdRemove(user._id);
+            }
+
+            for (let userId of dto.members.remove) {
+                let user = await this.userRepository.getBy({userId});
+                board.memberIds = board.memberIds.objectIdRemove(user._id);
+            }
+
+            board.admins = union(board.admins);
+            board.memberIds = union(board.memberIds);
             let updated = await this.boardRepository.update(board);
 
             return this.getBoardInfo(updated._id);

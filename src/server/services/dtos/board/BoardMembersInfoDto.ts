@@ -1,3 +1,5 @@
+import {ObjectID} from "typeorm";
+
 /**
  * Board members information
  */
@@ -6,7 +8,7 @@ export class BoardMembersInfoDto {
     /**
      * Board id
      */
-    public _id: string;
+    public _id: ObjectID;
 
     /**
      * Board name

@@ -14,7 +14,7 @@ export class KanbanBoardEntity extends BaseEntity implements ICreatedAtUpdateAt 
      * pk
      */
     @ObjectIdColumn()
-    public _id: string;
+    public _id: ObjectID;
 
     /**
      * The name of kanban board
@@ -26,19 +26,19 @@ export class KanbanBoardEntity extends BaseEntity implements ICreatedAtUpdateAt 
      * The admin users' ObjectIds for this board.
      */
     @Column()
-    public admins: Array<string> = [];
+    public admins: Array<ObjectID> = [];
 
     /**
      * The member user ObjectIds for this board.
      */
     @Column()
-    public memberIds: Array<string> = [];
+    public memberIds: Array<ObjectID> = [];
 
     /**
      * The ids for child board cards list.
      */
     @Column()
-    public cardListIds: Array<string> = [];
+    public cardListIds: Array<ObjectID> = [];
 
     /**
      * The date time for create KanbanBoard entity.

@@ -8,3 +8,4 @@ export * from './dtos/UserAuthenticationDto';
 export * from './dtos/JwtPayload';
 export * from './dtos/board/BoardBasicDto';
 export * from './dtos/board/BoardMembersInfoDto';
+export * from './dtos/board/BoardMemberUpdateDto';

@@ -1,3 +1,5 @@
+import {ObjectID} from "typeorm";
+
 /**
  * Board information for specified user
  */
@@ -6,7 +8,7 @@ export class BoardBasicDto {
     /**
      * board id
      */
-    public _id: string;
+    public _id: ObjectID;
 
     /**
      * board name

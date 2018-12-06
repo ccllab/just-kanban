@@ -1,8 +1,9 @@
 import ApiControllerBase from "./ApiControllerBase";
-import {controller, httpPost, request, requestParam, response} from "inversify-express-utils";
+import {controller, httpPatch, httpPost, request, requestParam, response} from "inversify-express-utils";
 import {inject} from "inversify";
 import {TYPES} from "../ioc";
-import {IBoardService} from "../services";
+import {BoardMemberUpdateDto, IBoardService} from "../services";
+import {ObjectID} from "typeorm";
 import * as express from "express";
 
 /**
@@ -82,7 +83,7 @@ export class BoardController extends ApiControllerBase {
      */
     @httpPost("/:id")
     private async getBoardInfo(
-        @requestParam("id") id: string,
+        @requestParam("id") id: ObjectID,
         @response() res: express.Response,
         @request() req: express.Request
     ): Promise<express.Response> {
@@ -94,12 +95,6 @@ export class BoardController extends ApiControllerBase {
         if (!id) {
             return Promise.resolve(res.status(400).send({
                 error: "Board id undefined."
-            }));
-        }
-
-        if (id === '') {
-            return Promise.resolve(res.status(400).send({
-                error: "Empty board id."
             }));
         }
 
@@ -118,12 +113,13 @@ export class BoardController extends ApiControllerBase {
      * @param res Response
      * @param req Request
      */
+    @httpPatch("/:id")
     private async updateBoard(
         @requestParam("id") id: string,
         @response() res: express.Response,
         @request() req: express.Request
     ): Promise<express.Response> {
-            
+
         if (! await this.isAuthenticated()) {
             return res.status(401).send('Please login, and try again.');
         }
@@ -134,20 +130,13 @@ export class BoardController extends ApiControllerBase {
             }));
         }
 
-        if (id === '') {
-            return Promise.resolve(res.status(400).send({
-                error: "Empty board id."
-            }));
-        }
-
         let {boardName, admins, members} = req.body;
-        let reqDto = {
-            name: boardName as string,
-            admins: admins as string[],
-            members: members as string[]
-        };
+        let dto = new BoardMemberUpdateDto();
+        dto.boardName = boardName;
+        dto.admins = admins;
+        dto.members = members;
 
-        return this.boardService.updateBoardInfo(id, reqDto).then((dto) => {
+        return this.boardService.updateBoardInfo(id, dto).then((dto) => {
             return res.send(dto);
         }, err => {
             return res.status(400).send({

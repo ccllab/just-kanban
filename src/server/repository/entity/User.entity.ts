@@ -1,4 +1,4 @@
-import {BaseEntity, Column, Entity, ObjectIdColumn,} from 'typeorm';
+import {BaseEntity, Column, Entity, ObjectID, ObjectIdColumn,} from 'typeorm';
 import {Exclude} from "class-transformer";
 import {ExtendedColumnOptions} from 'typeorm-encrypted';
 import {ICreatedAtUpdateAt} from "./ICreatedAtUpdateAt";
@@ -13,7 +13,7 @@ export class User extends BaseEntity implements ICreatedAtUpdateAt {
      * pk
      */
     @ObjectIdColumn()
-    public _id: string;
+    public _id: ObjectID;
 
     /**
      * User Id
@@ -61,7 +61,7 @@ export class User extends BaseEntity implements ICreatedAtUpdateAt {
      * The board ids of this user
      */
     @Column()
-    public boardIds: Array<string> = [];
+    public boardIds: Array<ObjectID | any> = []; // because god damn typeorm ObjectID declare different from mongodb
 
     /**
      * The token for refresh authentication.
