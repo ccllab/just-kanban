@@ -1,9 +1,9 @@
 <template>
-    <div id="cardEditor" @click="close">
-        <div class="container" @click.stop="">
+    <div id="cardCreator" @click="close">
+        <div class="container" @click.stop="" v-if="board">
             <div class="title">
                 <i class="icon far fa-credit-card"></i>
-                <input type="text" placeholder="Add title for this card...">   
+                <input type="text" placeholder="Add title for this card..." v-model="title">   
             </div>
             <div class="content">
                 <div class="left">
@@ -11,61 +11,84 @@
                         <i class="icon fas fa-align-left"></i>
                         <div class="wrapper">
                             <div class="wrapperTitle">Description</div>
-                            <textarea type="text" placeholder="Add a more detailed description..."></textarea>
-                            <button>Save</button>
-                        </div>
-                    </div>
-                    <div class="comment" v-if="!isNewCard">
-                        <i class="icon far fa-comment"></i>
-                        <div class="wrapper">
-                            <div class="wrapperTitle">Add Comment</div>
-                            <textarea type="text" placeholder="Write a Comment..."></textarea>
-                            <button>Save</button>
+                            <textarea type="text" v-model="description" placeholder="Add a more detailed description..."></textarea>
                         </div>
                     </div>
                 </div>
-                <div class="right" v-if="!isNewCard">
-                    <div class="buttons">
-                        <button><i class="fas fa-user-plus"></i>Add Member</button>
-                    </div>
-                    <div class="members">
-                        <div class="member">K</div>
-                        <div class="member">J</div>
-                    </div>
+                <div class="right">
+					<div class="assign-member-block">
+						<div class="assign-member-title">
+							<i class="fas fa-user-plus"></i>
+							Assign Member
+						</div>
+						<div class="members">
+							<label class="member" 
+								:id="`member-${member.userId}`"
+								v-for="member in board.members"
+								:key="member.userId">
+								<input type="radio" 
+									name="assignedUser" 
+									:value="member.userId" 
+									v-model="assignedUserId"
+									:for="`member-${member.userId}`">
+								<div class="member-name">
+									{{ member.username.slice(0, 2).toUpperCase()}}
+								</div>
+							</label>
+						</div>
+					</div>
                 </div>
             </div>
+			<button class="btn btn-primary btn-save" @click.stop="btnSaveClick">Save</button>
         </div>
     </div>
 </template>
 
 <script lang="ts">
 import {Component, Prop, Vue} from 'vue-property-decorator';
-import { Action } from 'vuex-class'
+import { Action, Getter } from 'vuex-class'
 
 import { Card } from "../models/Card.model";
-import { types as boardTypes } from '../store/board/types'
+import { Board } from '../models/Board.model';
+import { userId } from '../models/User.model';
+import { types as boardTypes, CreateCardFunc } from '../store/board/types'
 
 @Component
 export default class CardEditor extends Vue {
-    @Prop(String) boardId: string
-    @Prop(String) cardId: string
+	@Getter(boardTypes.CURRENT_BOARD) board: Board
+	// @Action(boardTypes.CREATE_CARD) createCard: CreateCardFunc
+	@Action(boardTypes.CREATE_FAKE_CARD) createCard: CreateCardFunc
+	@Prop() listId: string
 
-    get isNewCard(): boolean {
-        return !this.cardId
-    }
+	public assignedUserId: userId = ''
+	public title: string = ''
+	public description: string = ''
 
     public mounted(): void {
-        console.log(this.cardId)
-    }
+        console.log(this.listId)
+	}
+	
+	public async btnSaveClick(): Promise<void> {
+		// 至少 title 不可空白
+		if (!this.title) return
+
+		let { listId, title, description, assignedUserId } = this
+		await this.createCard({
+			listId,
+			title,
+			description,
+			assignedUserId
+		})
+	}
 
     public close(): void {
-        this.$router.push({name: 'Board', params: {boardId: this.boardId}})
+        this.$router.push({ name: 'Board', params: { boardId: this.board._id }})
     }
 }
 </script>
 
 <style lang="scss" scoped>
-    #cardEditor {
+    #cardCreator {
         position: fixed;
         left: 0;
         top: 0;
@@ -74,13 +97,21 @@ export default class CardEditor extends Vue {
         height: 100vh;
 
         .container {
-            max-width: 600px;
+            max-width: 650px;
             margin: 0 auto;
             background-color: #ebeef0;
             padding: 20px;
             margin-top: 50px;
-            color: #17394d;
+			color: #17394d;
+			position: relative;
         }
+
+		.btn-save {
+			position: absolute;
+			right: 0;
+			bottom: 0;
+			transform: translateY(calc(100% + 5px));
+		}
 
         .title {
             display: flex;
@@ -105,37 +136,19 @@ export default class CardEditor extends Vue {
             }
 
             .right {
-                width: 150px;
+                width: 165px;
                 padding-left: 20px;
                 margin-top: 20px;
 
-                .buttons {
-                    
-                    button {
-                        width: 100%;
-                        padding: 10px;
-                        text-align: left;
-                        box-shadow: 0 1px 0 0 #c2ccd1;
-                        background-color: #dfe3e6;
-                        font-weight: bold;
-                        cursor: pointer;
-
-                        i {
-                            width: 22px;
-                        }
-
-                        &:hover {
-                            background-color: #c2ccd1;
-                            box-shadow: 0 1px 0 0 #b3bec4;
-                            border: none;
-                        }
-                    }
-                }
+                .assign-member-block {
+					.assign-member-title {
+						font-weight: bold;
+					}
+				}
             }
         }
 
-        .describe,
-        .comment {
+        .describe {
             display: flex;
             margin-top: 20px;
 
@@ -171,29 +184,16 @@ export default class CardEditor extends Vue {
                 font-weight: bold;
                 border-radius: 3px;
                 cursor: pointer;
-                box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
-            }
-        }
-
-        .describe {
-            button {
-                display: none;
-            }
-
-            textarea:focus + button {
-                display: block;
-            }
-        }
-
-        .comment textarea {
-            background-color: white;
+				box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+			}
         }
 
         .members {
             display: flex;
-            margin-top: 10px;
+			margin-top: 10px;
+			flex-wrap: wrap;
 
-            .member {
+            .member-name {
                 width: 26px;
                 height: 26px;
                 font-size: 12px;
@@ -205,8 +205,16 @@ export default class CardEditor extends Vue {
                 justify-content: center;
                 align-items: center;
                 margin-right: 5px;
-                cursor: default;
-            }
+                cursor: pointer;
+			}
+			
+			input[type=radio] {
+				display: none;
+
+				&:checked + .member-name {
+					box-shadow: 1px 1px 10px rgba(0, 0, 0, 1);
+				}
+			}
         }
 
         .icon {

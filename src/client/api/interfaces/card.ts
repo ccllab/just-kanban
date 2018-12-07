@@ -6,13 +6,24 @@ export interface CreateCardRequest {
   description: string,
   assignedUserId: string
 }
-
-export interface CreateCardResponsrData {
-  _id: string,
+export interface UpdateCardRequest {
+  listId: string,
   title: string,
   description: string,
+  assignedUserId: string
+}
+export interface CreateCardCommentRequest {
+  content: string
 }
 
+export interface CreateCardResponsrData extends BaseResponseData {
+  _id: string,
+  title: string,
+  assignedUser: {
+    userId: string,
+    username: string
+  }
+}
 export interface GetCardInfoResponseData extends BaseResponseData {
   title: string,
   description: string,
@@ -24,17 +35,6 @@ export interface GetCardInfoResponseData extends BaseResponseData {
     _id: string,
     content: string
   }]
-}
-
-export interface UpdateCardRequest {
-  listId: string,
-  title: string,
-  description: string,
-  assignedUserId: string
-}
-
-export interface CreateCardCommentRequest {
-  content: string
 }
 
 export interface ICardApiHelper {

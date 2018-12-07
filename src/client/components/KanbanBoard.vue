@@ -22,7 +22,9 @@
                     <span class="drag-column-header">
                         <h2>
                             <input class="stageName" type="text" :value="list.name" placeholder="Enter stage title...">
-                            <router-link class="newCard" :to="{name: 'NewCard'}" v-if="isAdmin">+</router-link>
+                            <router-link class="newCard" 
+                                :to="{name: 'NewCard', params: { listId: list._id }}" 
+                                v-if="isAdmin">+</router-link>
                         </h2>
                     </span>
                     <ul class="drag-inner-list" 

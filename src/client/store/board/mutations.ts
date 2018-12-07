@@ -10,6 +10,7 @@ import {
   CardList,
   CardLists,
   DragCardParameters,
+  AddNewCarParameters,
   types } from './types'
 import { Card } from '../../models/Card.model';
 
@@ -45,5 +46,11 @@ export const mutations: MutationTree<BoardState> = {
     let card = srcList.cards.find(card => card._id === payload.cardId)
     _.pullAllWith(srcList.cards, [card], _.isEqual)
     dstList.cards.splice(payload.dstIndex, 0, card)
-  } 
+  },
+
+  [types.ADD_NEW_CARD](state, payload: AddNewCarParameters): void {
+    let list = state.cardLists.find(list => list._id === payload.listId)
+    if (!list) return
+    list.cards.push(payload.card)
+  }
 }

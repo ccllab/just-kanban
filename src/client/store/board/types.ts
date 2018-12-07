@@ -20,12 +20,24 @@ export interface BoardState {
   displayedCard: Card
 }
 
+// Mutations Functions Prameters
+export type AddNewCarParameters = {
+  listId: string,
+  card: Card
+}
+
 // Actions Functions Parameters
 export type DragCardParameters = {
   cardId: string
   srcListId: string,
   dstListId: string,
   dstIndex: number
+}
+export type CreateCardParameters = {
+  listId: string,
+  title: string,
+  description: string,
+  assignedUserId: string
 }
 
 // Actions Functions
@@ -37,6 +49,7 @@ export type GetCardListsFunc = (boardId: string) => Promise<boolean>
 export type CreateCardListsFunc = (listName: string) => Promise<boolean>
 export type GetCardInfoFunc = (cardId: string) => Promise<boolean>
 export type DragCardFunc = (param: DragCardParameters) => Promise<boolean>
+export type CreateCardFunc = (param: CreateCardParameters) => Promise<boolean>
 
 // Getters Functions
 export type IsAssignedCardFunc = (card: Card) => boolean
@@ -52,12 +65,14 @@ export const types = {
   CREATE_CARD_LIST: 'createCardList',
   GET_CARD_INFO: 'getCardInfo',
   DRAG_CARD: 'dragCard',
+  CREATE_CARD: 'createCard',
 
   GET_FAKE_BOARD_LIST: 'getFakeBoardList',
   GET_FAKE_BOARD_INFO: 'getFakeBoardInfo',
   CREATE_FAKE_BOARD: 'createFakeBoard',
   GET_FAKE_CARD_LISTS: 'getFakeCardLists',
   CREATE_FAKE_CARD_LIST: 'createFakeCardList',
+  CREATE_FAKE_CARD: 'createFakeCard',
 
   // getters
   BOARD_LIST: 'boardList',
@@ -74,5 +89,6 @@ export const types = {
   SET_CARD_LISTS: 'setCardList',
   ADD_NEW_CARD_LIST: 'addNewCardList',
   SET_CURRENT_CARD: 'setCurrentCard',
-  UPDATE_CARD_LISTS: 'updateCardLists'
+  UPDATE_CARD_LISTS: 'updateCardLists',
+  ADD_NEW_CARD: 'addNewCard',
 }

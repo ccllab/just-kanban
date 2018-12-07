@@ -12,6 +12,8 @@ import {
   CardList,
   CardLists,
   DragCardParameters,
+  CreateCardParameters,
+  AddNewCarParameters,
   types
 } from './types'
 
@@ -188,6 +190,29 @@ export const actions: ActionTree<BoardState, RootState> = {
     }
   },
 
+  /**
+   * 新增卡片
+   * @param param0 
+   * @param payload 
+   */
+  async [types.CREATE_CARD]({ commit }, param: CreateCardParameters): Promise<boolean> {
+    let resData = await CardApi.createCard(param)
+
+    if (resData.result) {
+      let card: Card = {
+        ..._.pick(resData, ['_id', 'title', 'assignedUser'])
+      }
+      let mutationsParam: AddNewCarParameters = {
+        listId: param.listId,
+        card
+      }
+      commit(types.ADD_NEW_CARD, mutationsParam)
+      return true
+    } else {
+      return false
+    }
+  },
+
   async [types.GET_FAKE_BOARD_LIST]({ commit }): Promise<boolean> {
     console.warn('Get fake board list mode !')
     let boardList: BoardList = [{
@@ -208,8 +233,10 @@ export const actions: ActionTree<BoardState, RootState> = {
     let board: Board = {
       _id: boardId,
       boardName: 'Fake board',
-      admins: [{ userId: '6666', username: 'Jay', email: ''}],
-      members: [{ userId: '666', username: 'Jay', email: '' }]
+      admins: [{ userId: '666', username: 'Jay', email: ''}],
+      members: [
+        { userId: '666', username: 'Jay', email: '' }, 
+        { userId: '777', username: 'Han', email: '' }]
     }
     commit(types.SET_CURRENT_BOARD, board)
     return true
@@ -263,6 +290,24 @@ export const actions: ActionTree<BoardState, RootState> = {
       cards: []
     }
     commit(types.ADD_NEW_CARD_LIST, cardList)
+    return true
+  },
+
+  async [types.CREATE_FAKE_CARD]({ commit }, param: CreateCardParameters): Promise<boolean> {
+    console.warn('create fake card mode !')
+    let card: Card = {
+      _id: Math.floor(Math.random() * 99999).toString(),
+      title: param.title,
+      assignedUser: {
+        userId: param.assignedUserId,
+        username: 'whatever'
+      }
+    }
+    let mutationsParam: AddNewCarParameters = {
+      listId: param.listId,
+      card
+    }
+    commit(types.ADD_NEW_CARD, mutationsParam)
     return true
   },
 }
