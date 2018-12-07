@@ -17,8 +17,8 @@ export interface GetCardInfoResponseData extends BaseResponseData {
   title: string,
   description: string,
   assignedUser: {
-    _id: string,
-    name: string
+    userId: string,
+    username: string
   },
   comments: [{
     _id: string,

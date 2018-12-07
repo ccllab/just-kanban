@@ -1,4 +1,6 @@
 import { BaseResponseData } from './base'
+import { User } from '../../models/User.model'
+import { Card } from '../../models/Card.model'
 
 export interface CardChangeStatusRequest {
   source: {
@@ -7,7 +9,7 @@ export interface CardChangeStatusRequest {
   },
   distination: {
     _id: string,
-    cards: []
+    cards: string[]
   }
 }
 export interface CreateCardListRequest {
@@ -18,11 +20,7 @@ export interface GetCardListResponseData extends BaseResponseData {
   cardList: [{
     _id: string,
     name: string,
-    cards: [{
-      _id: string,
-      title: string,
-      isAssigned: string
-    }]
+    cards: [Card]
   }]
 }
 export interface CreateCardListResponseData extends BaseResponseData {
@@ -31,7 +29,7 @@ export interface CreateCardListResponseData extends BaseResponseData {
 }
 
 export interface ICardListApiHelper {
-  getCardList(boardId: string): Promise<GetCardListResponseData>
+  getCardLists(boardId: string): Promise<GetCardListResponseData>
   createCardList(boardId: string, param: CreateCardListRequest): Promise<CreateCardListResponseData>
   cardChangeStatus(param: CardChangeStatusRequest): Promise<BaseResponseData>
 }

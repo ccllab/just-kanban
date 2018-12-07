@@ -1,7 +1,7 @@
 <template>
-    <div class="card-item" :class="{ isCanEdit }">
+    <div class="card-item" :class="{ isCanEdit: isBoardAdmin || isAssigned }">
         <div>
-            {{ boardCard.title }}
+            {{ card.title }}
             <i class="fas fa-briefcase isAssignedIcon" v-if="isAssigned"></i>
         </div>
     </div>
@@ -12,13 +12,20 @@
     import { Getter } from 'vuex-class'
 
     import { Card } from '../models/Card.model'
+    import { 
+        types as boardTypes, 
+        IsAssignedCardFunc,
+    } from '../store/board/types'
 
-    /**
-     * The board card in KanbanBoard
-     */
     @Component
     export default class BoardCard extends Vue {
-        @Prop(Card) public boardCard: Card;
+        @Getter(boardTypes.IS_ASSIGNED_CARD) isAssignedCard: IsAssignedCardFunc
+        @Getter(boardTypes.IS_ADMIN) isBoardAdmin: boolean
+        @Prop() public card: Card;
+
+        get isAssigned(): boolean {
+            return this.isAssignedCard(this.card)
+        }
     }
 </script>
 

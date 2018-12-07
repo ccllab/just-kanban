@@ -44,7 +44,7 @@ export const actions: ActionTree<AuthState, RootState> = {
 
   async [types.AUTH_FAKE_LOGIN]({ commit }, para: LoginParameters): Promise<boolean> {
     let user: User = {
-      userId: 'asdsas',
+      userId: '666',
       username: 'Jay',
       email: 'test@gmail.com'
     }

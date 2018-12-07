@@ -15,19 +15,33 @@
         </div>
         <div class="drag-container">
             <div class="drag-list">
-                <div v-for="stage in board.stages" class="drag-column" :class="{['drag-column-' + stage]: true}" :key="stage">
+                <div class="drag-column" 
+                    :class="{['drag-column-' + index]: true}"
+                    v-for="(list, index) in cardLists"
+                    :key="list._id">
                     <span class="drag-column-header">
                         <h2>
-                            <input class="stageName" type="text" :value="stage" placeholder="Enter stage title...">
-                            <router-link class="newCard" :to="{name: 'NewCard'}" v-if="board.isCreated || board.isAdmin">+</router-link>
+                            <input class="stageName" type="text" :value="list.name" placeholder="Enter stage title...">
+                            <router-link class="newCard" :to="{name: 'NewCard'}" v-if="isAdmin">+</router-link>
                         </h2>
                     </span>
-                    <ul class="drag-inner-list" ref="list" :data-status="stage">
-                        <router-link tag="li" class="drag-item" v-for="block in cardsByStages(stage)" :data-block-id="block._id" :key="block._id" :to="{name: 'CardEdit', params: {cardId: block._id}}">
-                            <BoardCard :boardCard="block"></BoardCard>
+                    <ul class="drag-inner-list" 
+                        ref="list" 
+                        :data-status="list.name" 
+                        :data-list-id="list._id">
+                        <router-link 
+                            tag="li" 
+                            class="drag-item" 
+                            v-for="card in list.cards" 
+                            :data-card-id="card._id"
+                            :data-is-assigned="isAssignedCard(card)"
+                            :key="card._id" 
+                            :to="{name: 'CardEdit', params: {cardId: card._id}}">
+                            <BoardCard :card="card"></BoardCard>
                         </router-link>
                     </ul>
                 </div>
+                <CardListCreator />
             </div>
         </div>
         <router-view />
@@ -41,26 +55,44 @@
     import { Getter, Action } from 'vuex-class'
 
     import BoardCard from './BoardCard.vue';
-    import { types as boardTypes, GetBoardInfoFunc } from '../store/board/types'
+    import CardListCreator from './CardListCreator.vue'
     import { Board } from '../models/Board.model'
     import { Card } from '../models/Card.model'
+    import { User } from '../models/User.model'
+    import { types as authTypes } from '../store/auth/types'
+    import { 
+        types as boardTypes, 
+        GetBoardInfoFunc, 
+        GetCardListsFunc, 
+        IsAssignedCardFunc,
+        DragCardFunc,
+        CardLists
+    } from '../store/board/types'
 
     /**
      * The KanbanBoard
      */
     @Component({
         components: {
-            BoardCard
+            BoardCard,
+            CardListCreator
         }
     })
     export default class KanbanBoard extends Vue {
         @Getter(boardTypes.CURRENT_BOARD) board: Board
+        @Getter(authTypes.USER) user: User
         @Getter(boardTypes.IS_ADMIN) isAdmin: boolean
+        @Getter(boardTypes.CARD_LISTS) cardLists: CardLists
+        @Getter(boardTypes.IS_ASSIGNED_CARD) isAssignedCard: IsAssignedCardFunc
         @Action(boardTypes.GET_FAKE_BOARD_INFO) getBoardInfo: GetBoardInfoFunc
+        @Action(boardTypes.GET_FAKE_CARD_LISTS) getCardLists: GetCardListsFunc
+        @Action(boardTypes.DRAG_CARD) dragCard: DragCardFunc
         @Prop(String) boardId: string
 
         public async mounted() {
-            await this.getBoardInfo(this.boardId)
+            let p1 = this.getBoardInfo(this.boardId)
+            let p2 = this.getCardLists(this.boardId)
+            await Promise.all([p1, p2])
             this.dragulaInit()
         }
 
@@ -68,11 +100,21 @@
          * Create Dragula instance and bind events when mounted.
          */
         public dragulaInit() {
+            // buffer of storing source list id of moving card
+            let srcListId: string = ''
+            let boardId = this.boardId
+
             // create Dragula instance
             let drag: Dragula.Drake = Dragula({
                 containers: (this.$refs.list) as Element[],
-                moves: (el: any, source, handle, sibling) => {
-                    return false
+                moves: (el: any, source: any, handle, sibling) => {
+                    srcListId = source.dataset.listId
+                    let isAssigned: boolean = el.dataset.isAssigned
+                    if (this.isAdmin || isAssigned) {
+                        return true
+                    } else {
+                        return false
+                    }
                 }
              });
 
@@ -82,14 +124,18 @@
             });
 
             // bind drop event
-            drag.on('drop', (block, list) => {
-                let index;
+            drag.on('drop', async (card, list) => {
+                let dstIndex = 0;
+                let dstListId: string = list.dataset.listId
+                let cardId: string = card.dataset.cardId
 
-                for (index = 0; index < list.children.length; index++) {
-                    if (list.children[index].classList.contains('is-moving')) {
+                for (dstIndex = 0; dstIndex < list.children.length; dstIndex++) {
+                    if (list.children[dstIndex].classList.contains('is-moving')) {
                         break;
                     }
                 }
+
+                this.dragCard({ srcListId, dstListId, cardId, dstIndex })
             });
 
             // bind dragend event

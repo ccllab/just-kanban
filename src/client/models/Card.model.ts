@@ -1,28 +1,46 @@
 import { User } from './User.model'
 
-export class Card {
+export class BaseCard {
+  // /**
+  //  * Card ObjectID
+  //  */
+  // _id: string
+
+  // /**
+  //  * Card's title
+  //  */
+  // title: string
+
+  // /**
+  //  * User who assigned to this card
+  //  */
+  // assignedUser: User
+}
+
+export class Card extends BaseCard{
   /**
-   * Card ObjectID
-   */
-  public _id: string
+ * Card ObjectID
+ */
+  _id: string
 
   /**
    * Card's title
    */
-  public title: string
-
-  /**
-   * Card's description
-   */
-  public description: string
+  title: string
 
   /**
    * User who assigned to this card
    */
-  public assignedUser: User
+  assignedUser: User
+  
+  /**
+   * Card's description
+   */
+  description?: string
 
   /**
    * Card's comments
    */
-  public comments: [{ id: string, content: string }]
+  comments?: [{ _id: string, content: string }]
 }
+

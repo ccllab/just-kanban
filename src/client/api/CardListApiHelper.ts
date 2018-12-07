@@ -2,7 +2,7 @@ import { ICardListApiHelper } from './interfaces/card-list'
 import { ApiRequestor } from '../utils/ApiRequestor'
 
 export const CardListApi: ICardListApiHelper = {
-  getCardList(boardId) {
+  getCardLists(boardId) {
     return ApiRequestor.request({
       url: `/api/card-list/${boardId}`,
       method: 'POST'

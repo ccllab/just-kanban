@@ -79,7 +79,7 @@
         max-width: none;
     }
 
-    .btn {
+    .btn-primary {
         font-weight: bold;
         background-color: #2A92BF;
     }

@@ -44,7 +44,6 @@ import { Card } from "../models/Card.model";
 
 @Component
 export default class CardEditor extends Vue {
-    @Prop(Card) card: Card
     @Prop(String) boardId: string
     @Prop(String) cardId: string
 
