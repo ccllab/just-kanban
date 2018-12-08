@@ -12,6 +12,7 @@ import {
   DragCardParameters,
   AddNewCarParameters,
   updateCardInListParameters,
+  addCommentToCurrentCardParameters,
   types } from './types'
 import { Card } from '../../models/Card.model';
 
@@ -63,5 +64,15 @@ export const mutations: MutationTree<BoardState> = {
     card.title = payload.title
     card.assignedUser.userId = payload.assignedUserId
     card.assignedUser.username = ''
+  },
+
+  [types.ADD_COMMENT_TO_CURRENT_CARD](state, payload: addCommentToCurrentCardParameters): void {
+    let card = state.displayedCard
+    if (!card) return
+console.log(card)
+    card.comments.splice(0, 0, {
+      _id: '',
+      content: payload.content
+    })
   }
 }

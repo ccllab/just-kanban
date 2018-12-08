@@ -32,6 +32,9 @@ export type updateCardInListParameters = {
   title: string,
   assignedUserId: userId
 }
+export type addCommentToCurrentCardParameters = {
+  content: string
+}
 
 // Actions Functions Parameters
 export type DragCardParameters = {
@@ -53,6 +56,10 @@ export type UpdateCardParameters = {
   description: string,
   assignedUserId: string
 }
+export type CreateCommentParameters = {
+  cardId: string,
+  content: string
+}
 
 // Actions Functions
 export type GetBoardListFunc = () => Promise<boolean>
@@ -65,10 +72,10 @@ export type GetCardInfoFunc = (cardId: string) => Promise<boolean>
 export type DragCardFunc = (param: DragCardParameters) => Promise<boolean>
 export type CreateCardFunc = (param: CreateCardParameters) => Promise<boolean>
 export type UpdateCardFunc = (param: UpdateCardParameters) => Promise<boolean>
+export type CreateCommentFunc = (param: CreateCommentParameters) => Promise<boolean>
 
 // Getters Functions
 export type IsAssignedCardFunc = (card: Card) => boolean
-
 
 export const types = {
   // actions 
@@ -82,6 +89,7 @@ export const types = {
   DRAG_CARD: 'dragCard',
   CREATE_CARD: 'createCard',
   UPDATE_CARD: 'updateCard',
+  CREATE_COMMENT: 'createComment',
 
   GET_FAKE_BOARD_LIST: 'getFakeBoardList',
   GET_FAKE_BOARD_INFO: 'getFakeBoardInfo',
@@ -91,6 +99,7 @@ export const types = {
   CREATE_FAKE_CARD: 'createFakeCard',
   GET_FAKE_CARD_INFO: 'getFakeCardInfo',
   UPDATE_FAKE_CARD: 'updateFakeCard',
+  CREATE_FAKE_COMMENT: 'createFakeCardComment',
 
   // getters
   BOARD_LIST: 'boardList',
@@ -109,5 +118,6 @@ export const types = {
   UPDATE_CARD_LISTS: 'updateCardLists',
   SET_CURRENT_CARD: 'setCurrentCard',
   ADD_NEW_CARD: 'addNewCard',
-  UPDATE_CARD_IN_LIST: 'updateCardInList'
+  UPDATE_CARD_IN_LIST: 'updateCardInList',
+  ADD_COMMENT_TO_CURRENT_CARD: 'addComment2CurrentCard'
 }

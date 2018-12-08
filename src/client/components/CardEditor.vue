@@ -19,7 +19,7 @@
                         <div class="wrapper">
                             <div class="wrapperTitle">Add Comment</div>
                             <textarea type="text" placeholder="Write a Comment..." v-model="comment"></textarea>
-                            <button class="btn btn-primary btn-add-comment" @click.stop="" v-if="comment">Add</button>
+                            <button class="btn btn-primary btn-add-comment" @click.stop="btnAddCommentClick" v-if="comment">Add</button>
                             <div class="comment-list">
                                 <div class="comment-item" 
                                     v-for="comment in copyedCard.comments"
@@ -68,7 +68,12 @@ import * as _ from 'lodash'
 import { Card } from "../models/Card.model";
 import { Board } from '../models/Board.model';
 import { userId } from '../models/User.model';
-import { types as boardTypes, GetCardInfoFunc, UpdateCardFunc } from '../store/board/types'
+import { 
+    types as boardTypes, 
+    GetCardInfoFunc, 
+    UpdateCardFunc ,
+    CreateCommentFunc
+} from '../store/board/types'
 
 @Component
 export default class CardEditor extends Vue {
@@ -78,6 +83,8 @@ export default class CardEditor extends Vue {
     @Action(boardTypes.GET_FAKE_CARD_INFO) getCardInfo: GetCardInfoFunc
     // @Action(boardTypes.UPDATE_CARD) updateCard: UpdateCardFunc
     @Action(boardTypes.UPDATE_FAKE_CARD) updateCard: UpdateCardFunc
+    // @Action(boardTypes.CREATE_COMMENT) createComment: CreateCommentFunc
+    @Action(boardTypes.CREATE_FAKE_COMMENT) createComment: CreateCommentFunc
     @Prop() cardId: string
     @Prop() listId: string
     
@@ -111,7 +118,23 @@ export default class CardEditor extends Vue {
             this.copyedCard = _.cloneDeep(this.card)
             this.assignedUserId = this.card.assignedUser.userId
         }
-	}
+    }
+    
+    public async btnAddCommentClick() {
+        let commentContent = this.comment
+        let cardId = this.cardId
+
+        if (!commentContent) return
+        let result = await this.createComment({
+            cardId,
+            content: commentContent
+        })
+
+        if (result) {
+            this.comment = ''
+            this.copyedCard.comments = _.cloneDeep(this.card.comments)
+        }
+    }
 
     public close(): void {
         this.$router.push({ name: 'Board', params: { boardId: this.board._id }})
@@ -222,6 +245,8 @@ export default class CardEditor extends Vue {
         .comment-list {
             background-color: white;
             box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.3);
+            max-height: 200px;
+            overflow-y: scroll;
         }
 
         .comment-item {

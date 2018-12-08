@@ -16,6 +16,8 @@ import {
   AddNewCarParameters,
   UpdateCardParameters,
   updateCardInListParameters,
+  CreateCommentParameters,
+  addCommentToCurrentCardParameters,
   types
 } from './types'
 
@@ -238,6 +240,27 @@ export const actions: ActionTree<BoardState, RootState> = {
     }
   },
 
+  /**
+   * 新增卡片留言
+   * @param param0 
+   * @param param 
+   */
+  async [types.CREATE_COMMENT]({ commit }, param: CreateCommentParameters): Promise<boolean> {
+    let resData = await CardApi.createCardComment(param.cardId, {
+      content: param.content
+    })
+
+    if (resData.result) {
+      let mutationsParam: addCommentToCurrentCardParameters = {
+        content: param.content
+      }
+      commit(types.ADD_COMMENT_TO_CURRENT_CARD, mutationsParam)
+      return true
+    } else {
+      return false
+    }
+  },
+
   async [types.GET_FAKE_BOARD_LIST]({ commit }): Promise<boolean> {
     console.warn('Get fake board list mode !')
     let boardList: BoardList = [{
@@ -366,6 +389,14 @@ export const actions: ActionTree<BoardState, RootState> = {
       assignedUserId: param.assignedUserId
     }
     commit(types.UPDATE_CARD_IN_LIST, mutationsParam)
+    return true
+  },
+
+  async [types.CREATE_FAKE_COMMENT]({ commit }, param: CreateCommentParameters): Promise<boolean> {
+    let mutationsParam: addCommentToCurrentCardParameters = {
+      content: param.content
+    }
+    commit(types.ADD_COMMENT_TO_CURRENT_CARD, mutationsParam)
     return true
   },
 }
