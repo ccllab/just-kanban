@@ -22,6 +22,17 @@ const router =  new vueRouter({
 
 /**
  * 全局路由守衛
+ * 初訪頁面時身份認證
+ */
+router.beforeEach(async (to, from, next) => {
+  let isAuthenticated = store.getters[authTypes.IS_AUTHENTICATED]
+  if (!isAuthenticated) await store.dispatch(authTypes.AUTH_INIT)
+
+  next()
+})
+
+/**
+ * 全局路由守衛
  * 頁面導向權限管理
  */
 router.beforeEach((to, from, next) => {

@@ -38,6 +38,17 @@ export const actions: ActionTree<AuthState, RootState> = {
     }
   },
 
+  async [types.AUTH_INIT]({ commit }): Promise<void> {
+    let resData = await AuthApi.getUserInfo()
+
+    if (resData.result) {
+      let user: User = _.pick(resData, ['userId', 'username', 'email'])
+      commit(types.SET_USER, user)
+    }
+
+    commit(types.SET_IS_AUTHENTICATED)
+  },
+
   [types.AUTH_LOGOUT]({ commit }): void {
     commit(types.SET_USER, null)
   },

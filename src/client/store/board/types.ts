@@ -14,6 +14,7 @@ export type CardList = {
   cards: Card[]
 }
 export type CardLists = CardList[]
+
 export interface BoardState {
   boardList: BoardList,
   displayedBoard: Board,

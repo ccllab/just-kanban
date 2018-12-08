@@ -18,10 +18,11 @@ import { Card } from '../../models/Card.model';
 
 export const mutations: MutationTree<BoardState> = {
   [types.SET_BOARD_LIST](state, payload: BoardList): void {
-    state.boardList = payload || null
+    state.boardList = payload || []
   },
 
   [types.INSERT_BOARD_TO_LIST](state, payload: BoardListItem): void {
+    state.boardList || (state.boardList = [])
     state.boardList.push(payload)
   },
 
@@ -69,7 +70,7 @@ export const mutations: MutationTree<BoardState> = {
   [types.ADD_COMMENT_TO_CURRENT_CARD](state, payload: addCommentToCurrentCardParameters): void {
     let card = state.displayedCard
     if (!card) return
-console.log(card)
+
     card.comments.splice(0, 0, {
       _id: '',
       content: payload.content

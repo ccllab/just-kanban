@@ -1,5 +1,6 @@
 import { IBoardApiHelper } from './interfaces/board'
 import { ApiRequestor } from '../utils/ApiRequestor'
+import InjectAuthToken from './middle-process/InjectAuthToken'
 
 export const BoardApi: IBoardApiHelper = {
   /**
@@ -9,7 +10,7 @@ export const BoardApi: IBoardApiHelper = {
     return ApiRequestor.request({
       url: '/api/board/all',
       method: 'POST'
-    })
+    }, InjectAuthToken)
   },
 
   /**
@@ -21,7 +22,7 @@ export const BoardApi: IBoardApiHelper = {
       url: '/api/board',
       method: 'POST',
       data: param
-    })
+    }, InjectAuthToken)
   },
 
   /**
@@ -32,7 +33,7 @@ export const BoardApi: IBoardApiHelper = {
     return ApiRequestor.request({
       url: `/api/board/${id}`,
       method: 'POST'
-    })
+    }, InjectAuthToken)
   },
 
   /**
@@ -45,6 +46,6 @@ export const BoardApi: IBoardApiHelper = {
       url: `/api/board/${id}`,
       method: 'PATCH',
       data: param
-    })
+    }, InjectAuthToken)
   }
 }

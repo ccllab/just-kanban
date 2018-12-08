@@ -7,7 +7,8 @@ import { getters } from './getters'
 import { mutations } from './mutations'
 
 const state: AuthState = {
-  user: null
+  user: null,
+  isAuthenticated: false
 }
 
 export const auth: Module<AuthState, RootState> = {

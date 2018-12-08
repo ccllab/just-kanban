@@ -31,7 +31,7 @@ export const actions: ActionTree<BoardState, RootState> = {
     let resData = await BoardApi.getBoardList()
 
     if (resData.result) {
-      let boardList: BoardList = resData.boards
+      let boardList: BoardList = resData.array
       commit(types.SET_BOARD_LIST, boardList)
       return true
     } else {
@@ -111,7 +111,7 @@ export const actions: ActionTree<BoardState, RootState> = {
     let resData = await CardListApi.getCardLists(boardId)
 
     if (resData.result) {
-      let cardLists: CardLists = resData.cardList
+      let cardLists: CardLists = resData.array
       commit(types.SET_CARD_LISTS, cardLists)
       return true
     } else {

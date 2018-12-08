@@ -86,8 +86,8 @@
         @Getter(boardTypes.IS_ADMIN) isAdmin: boolean
         @Getter(boardTypes.CARD_LISTS) cardLists: CardLists
         @Getter(boardTypes.IS_ASSIGNED_CARD) isAssignedCard: IsAssignedCardFunc
-        @Action(boardTypes.GET_FAKE_BOARD_INFO) getBoardInfo: GetBoardInfoFunc
-        @Action(boardTypes.GET_FAKE_CARD_LISTS) getCardLists: GetCardListsFunc
+        @Action(boardTypes.GET_BOARD_INFO) getBoardInfo: GetBoardInfoFunc
+        @Action(boardTypes.GET_CARD_LISTS) getCardLists: GetCardListsFunc
         @Action(boardTypes.DRAG_CARD) dragCard: DragCardFunc
         @Prop(String) boardId: string
 

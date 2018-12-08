@@ -1,7 +1,8 @@
 import { User } from '../../models/User.model'
 
 export interface AuthState {
-  user: User
+  user: User,
+  isAuthenticated: boolean
 }
 
 export interface LoginParameters {
@@ -29,12 +30,16 @@ export const types = {
   AUTH_SIGNUP: 'signup',
   AUTH_LOGIN: 'login',
   AUTH_LOGOUT: 'logout',
+  AUTH_INIT: 'authInit',
+
   AUTH_FAKE_LOGIN: 'loginFake',
 
   // getters
   USER: 'user',
   IS_LOGIN: 'isLogin',
+  IS_AUTHENTICATED: 'isAuthenticated',
 
   // mutations
   SET_USER: 'setUser',
+  SET_IS_AUTHENTICATED: 'setIsAuthenticated'
 }

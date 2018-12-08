@@ -24,6 +24,5 @@ export interface IAuthApiHelper {
   login(param: LoginRequest): Promise<LoginResponseData>;
   getUserInfo(): Promise<GetUserResponseData>;
   queryUserInfo(param: QueryUserRequest): Promise<QueryUserResponseData>;
-  logout(): void;
 }
 

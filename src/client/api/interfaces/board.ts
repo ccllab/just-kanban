@@ -18,7 +18,7 @@ export interface UpdateBoardRequest {
 }
 
 export interface GetBoardListResponseData extends BaseResponseData {
-  boards: [{
+  array: [{
     _id: string,
     boardName: string,
     isAdmin: boolean

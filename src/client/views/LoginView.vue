@@ -29,7 +29,8 @@ import { LoginFunc, types as authTypes } from '../store/auth/types'
 
 @Component
 export default class LoginView extends Vue {
-    @Action(authTypes.AUTH_FAKE_LOGIN) login: LoginFunc
+    @Action(authTypes.AUTH_LOGIN) login: LoginFunc
+    // @Action(authTypes.AUTH_FAKE_LOGIN) login: LoginFunc
 
     public email: string = ''
     public password: string = ''

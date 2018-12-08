@@ -17,7 +17,7 @@ export interface CreateCardListRequest {
 }
 
 export interface GetCardListResponseData extends BaseResponseData {
-  cardList: [{
+  array: [{
     _id: string,
     name: string,
     cards: [Card]

@@ -39,7 +39,8 @@ import {
 })
 export default class BoardList extends Vue {
     @Getter(BoardTypes.BOARD_LIST) boardList: BoardListType
-    @Action(BoardTypes.GET_FAKE_BOARD_LIST) getBoardList: GetBoardListFunc
+    @Action(BoardTypes.GET_BOARD_LIST) getBoardList: GetBoardListFunc
+    // @Action(BoardTypes.GET_FAKE_BOARD_LIST) getBoardList: GetBoardListFunc
 
     public showBoardCreator: boolean = false;
     

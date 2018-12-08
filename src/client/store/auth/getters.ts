@@ -11,5 +11,9 @@ export const getters: GetterTree<AuthState, RootState> = {
 
   [types.IS_LOGIN](state): boolean {
     return !!state.user
+  },
+
+  [types.IS_AUTHENTICATED](state): boolean {
+    return state.isAuthenticated
   }
 }
