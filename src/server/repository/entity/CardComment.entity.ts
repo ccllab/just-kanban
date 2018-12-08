@@ -1,4 +1,4 @@
-import {BaseEntity, Column, Entity, ObjectIdColumn} from "typeorm";
+import {BaseEntity, Column, Entity, ObjectID, ObjectIdColumn} from "typeorm";
 import {ICreatedAtUpdateAt} from "./ICreatedAtUpdateAt";
 import {Exclude} from "class-transformer";
 
@@ -14,7 +14,7 @@ export class CardCommentEntity extends BaseEntity implements ICreatedAtUpdateAt 
      * pk
      */
     @ObjectIdColumn()
-    public _id: string;
+    public _id: ObjectID;
 
     /**
      * Comment content

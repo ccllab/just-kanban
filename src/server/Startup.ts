@@ -5,7 +5,7 @@ import * as fs from 'fs';
 import * as http from 'http';
 import * as path from 'path';
 import * as socketIO from 'socket.io';
-import {AppAuthProvider} from "./services/providers/AppAuthProvider";
+import {AppAuthProvider} from "./controllers/providers/AppAuthProvider";
 import {Container} from 'inversify';
 import {createConnections} from 'typeorm';
 import {DependencyResolverImpl, TYPES} from './ioc';
