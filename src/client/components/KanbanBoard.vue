@@ -38,7 +38,7 @@
                             :data-card-id="card._id"
                             :data-is-assigned="isAssignedCard(card)"
                             :key="card._id" 
-                            :to="{name: 'CardEdit', params: {cardId: card._id}}">
+                            :to="{name: 'CardEdit', params: { listId: list._id, cardId: card._id}}">
                             <BoardCard :card="card"></BoardCard>
                         </router-link>
                     </ul>

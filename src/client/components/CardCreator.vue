@@ -63,22 +63,19 @@ export default class CardEditor extends Vue {
 	public assignedUserId: userId = ''
 	public title: string = ''
 	public description: string = ''
-
-    public mounted(): void {
-        console.log(this.listId)
-	}
 	
 	public async btnSaveClick(): Promise<void> {
 		// 至少 title 不可空白
 		if (!this.title) return
 
 		let { listId, title, description, assignedUserId } = this
-		await this.createCard({
+		let result = await this.createCard({
 			listId,
 			title,
 			description,
 			assignedUserId
-		})
+        })
+        if (result) this.close()
 	}
 
     public close(): void {

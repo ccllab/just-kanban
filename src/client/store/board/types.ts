@@ -1,3 +1,4 @@
+import { userId } from '../../models/User.model'
 import { Board } from '../../models/Board.model'
 import { Card } from '../../models/Card.model'
 
@@ -25,6 +26,12 @@ export type AddNewCarParameters = {
   listId: string,
   card: Card
 }
+export type updateCardInListParameters = {
+  listId: string,
+  cardId: string,
+  title: string,
+  assignedUserId: userId
+}
 
 // Actions Functions Parameters
 export type DragCardParameters = {
@@ -34,6 +41,13 @@ export type DragCardParameters = {
   dstIndex: number
 }
 export type CreateCardParameters = {
+  listId: string,
+  title: string,
+  description: string,
+  assignedUserId: string
+}
+export type UpdateCardParameters = {
+  _id: string,
   listId: string,
   title: string,
   description: string,
@@ -50,6 +64,7 @@ export type CreateCardListsFunc = (listName: string) => Promise<boolean>
 export type GetCardInfoFunc = (cardId: string) => Promise<boolean>
 export type DragCardFunc = (param: DragCardParameters) => Promise<boolean>
 export type CreateCardFunc = (param: CreateCardParameters) => Promise<boolean>
+export type UpdateCardFunc = (param: UpdateCardParameters) => Promise<boolean>
 
 // Getters Functions
 export type IsAssignedCardFunc = (card: Card) => boolean
@@ -66,6 +81,7 @@ export const types = {
   GET_CARD_INFO: 'getCardInfo',
   DRAG_CARD: 'dragCard',
   CREATE_CARD: 'createCard',
+  UPDATE_CARD: 'updateCard',
 
   GET_FAKE_BOARD_LIST: 'getFakeBoardList',
   GET_FAKE_BOARD_INFO: 'getFakeBoardInfo',
@@ -73,6 +89,8 @@ export const types = {
   GET_FAKE_CARD_LISTS: 'getFakeCardLists',
   CREATE_FAKE_CARD_LIST: 'createFakeCardList',
   CREATE_FAKE_CARD: 'createFakeCard',
+  GET_FAKE_CARD_INFO: 'getFakeCardInfo',
+  UPDATE_FAKE_CARD: 'updateFakeCard',
 
   // getters
   BOARD_LIST: 'boardList',
@@ -88,7 +106,8 @@ export const types = {
   SET_CURRENT_BOARD: 'setCurrentBoard',
   SET_CARD_LISTS: 'setCardList',
   ADD_NEW_CARD_LIST: 'addNewCardList',
-  SET_CURRENT_CARD: 'setCurrentCard',
   UPDATE_CARD_LISTS: 'updateCardLists',
+  SET_CURRENT_CARD: 'setCurrentCard',
   ADD_NEW_CARD: 'addNewCard',
+  UPDATE_CARD_IN_LIST: 'updateCardInList'
 }

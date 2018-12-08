@@ -14,6 +14,8 @@ import {
   DragCardParameters,
   CreateCardParameters,
   AddNewCarParameters,
+  UpdateCardParameters,
+  updateCardInListParameters,
   types
 } from './types'
 
@@ -148,14 +150,14 @@ export const actions: ActionTree<BoardState, RootState> = {
     let resData = await CardApi.getCardInfo(cardId)
 
     if (resData.result) {
-      let cardList: Card = {
+      let card: Card = {
         _id: cardId,
         ..._.pick(resData, ['title', 'description', 'assignedUser', 'comments'])
       }
-      commit(types.SET_CARD_LISTS, cardList)
+      commit(types.SET_CURRENT_CARD, card)
       return true
     } else {
-      commit(types.SET_CARD_LISTS, [])
+      commit(types.SET_CURRENT_CARD, null)
       return false
     }
   },
@@ -208,6 +210,29 @@ export const actions: ActionTree<BoardState, RootState> = {
       }
       commit(types.ADD_NEW_CARD, mutationsParam)
       return true
+    } else {
+      return false
+    }
+  },
+
+  /**
+   * 更新指定的卡片內容
+   * 若更新成功，會更改在卡片列表內的該卡片資訊
+   * @param param0 
+   * @param param 
+   */
+  async [types.UPDATE_CARD]({ commit }, param: UpdateCardParameters): Promise<boolean> {
+    let reqParam = _.pick(param, ['listId', 'title', 'description', 'assignedUserId'])
+    let resData = await CardApi.updateCard(param._id, reqParam)
+
+    if (resData.result) {
+      let mutationsParam: updateCardInListParameters = {
+        listId: param.listId,
+        cardId: param._id,
+        title: param.title,
+        assignedUserId: param.assignedUserId
+      }
+      commit(types.UPDATE_CARD_IN_LIST, mutationsParam)
     } else {
       return false
     }
@@ -308,6 +333,39 @@ export const actions: ActionTree<BoardState, RootState> = {
       card
     }
     commit(types.ADD_NEW_CARD, mutationsParam)
+    return true
+  },
+
+  async [types.GET_FAKE_CARD_INFO]({ commit }, cardId: string): Promise<boolean> {
+    console.warn('Get fake card mode !')
+    let card: Card = {
+      _id: 'sddwfecw',
+      title: 'card1',
+      description: 'hahhahaha',
+      assignedUser: {
+        userId: '666',
+        username: 'Jay'
+      },
+      comments: [{
+        _id: Math.floor(Math.random() * 9999).toString(),
+        content: '1111111111'
+      }, {
+        _id: Math.floor(Math.random() * 9999).toString(),
+        content: '22222222222'
+      }]
+    }
+    commit(types.SET_CURRENT_CARD, card)
+    return true
+  },
+
+  async [types.UPDATE_FAKE_CARD]({ commit }, param: UpdateCardParameters): Promise<boolean> {
+    let mutationsParam: updateCardInListParameters = {
+      listId: param.listId,
+      cardId: param._id,
+      title: param.title,
+      assignedUserId: param.assignedUserId
+    }
+    commit(types.UPDATE_CARD_IN_LIST, mutationsParam)
     return true
   },
 }

@@ -33,7 +33,7 @@ export default {
                 needLogin: true
             }
         }, {
-            path: ':listId/new',
+            path: 'new',
             name: 'NewCard',
             props: true,
             component: CardCreator,

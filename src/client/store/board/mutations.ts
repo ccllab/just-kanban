@@ -11,6 +11,7 @@ import {
   CardLists,
   DragCardParameters,
   AddNewCarParameters,
+  updateCardInListParameters,
   types } from './types'
 import { Card } from '../../models/Card.model';
 
@@ -52,5 +53,15 @@ export const mutations: MutationTree<BoardState> = {
     let list = state.cardLists.find(list => list._id === payload.listId)
     if (!list) return
     list.cards.push(payload.card)
+  },
+
+  [types.UPDATE_CARD_IN_LIST](state, payload: updateCardInListParameters): void {
+    let list = state.cardLists.find(list => list._id === payload.listId)
+    if (!list) return
+    let card = list.cards.find(card => card._id === payload.cardId)
+    if (!card) return
+    card.title = payload.title
+    card.assignedUser.userId = payload.assignedUserId
+    card.assignedUser.username = ''
   }
 }
