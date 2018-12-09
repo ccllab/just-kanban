@@ -43,7 +43,7 @@
                         </router-link>
                     </ul>
                 </div>
-                <CardListCreator />
+                <CardListCreator v-if="isAdmin"/>
             </div>
         </div>
         <router-view />

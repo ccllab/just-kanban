@@ -15,6 +15,7 @@ import {
   addCommentToCurrentCardParameters,
   types } from './types'
 import { Card } from '../../models/Card.model';
+import { User } from '../../models/User.model';
 
 export const mutations: MutationTree<BoardState> = {
   [types.SET_BOARD_LIST](state, payload: BoardList): void {
@@ -28,6 +29,10 @@ export const mutations: MutationTree<BoardState> = {
 
   [types.SET_CURRENT_BOARD](state, payload: Board): void {
     state.displayedBoard = payload || null
+  },
+
+  [types.SET_QUERYED_USER](state, payload: User): void {
+    state.queryedUser = payload
   },
 
   [types.SET_CARD_LISTS](state, payload: CardLists): void {

@@ -50,6 +50,10 @@ export default class LoginView extends Vue {
     public async signupClick() {
         let parameters = _.pick(this, ['userId', 'username', 'email', 'password', 'confirm'])
         let result = await this.signup(parameters)
+
+        if (result) {
+            this.$router.push({ name: 'BoardList' })
+        }
     }
 }
 </script>

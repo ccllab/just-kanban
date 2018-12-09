@@ -13,7 +13,7 @@ export const HttpErrorProcessor: failMiddleProcess = (res) => {
 
     default:
       store.dispatch(types.SHOW_ERROR, {
-        msg: '發生了一些錯誤！',
+        msg: res.response.data.error,
         duration: 3000
       })
       break

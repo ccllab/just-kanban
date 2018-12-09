@@ -1,6 +1,14 @@
-import { userId } from '../../models/User.model'
+import { userId, User } from '../../models/User.model'
 import { Board } from '../../models/Board.model'
 import { Card } from '../../models/Card.model'
+
+export interface BoardState {
+  boardList: BoardList,
+  displayedBoard: Board,
+  cardLists: CardLists
+  displayedCard: Card,
+  queryedUser: User
+}
 
 export type BoardListItem = {
   _id: string,
@@ -14,13 +22,6 @@ export type CardList = {
   cards: Card[]
 }
 export type CardLists = CardList[]
-
-export interface BoardState {
-  boardList: BoardList,
-  displayedBoard: Board,
-  cardLists: CardLists
-  displayedCard: Card
-}
 
 // Mutations Functions Prameters
 export type AddNewCarParameters = {
@@ -66,6 +67,7 @@ export type CreateCommentParameters = {
 export type GetBoardListFunc = () => Promise<boolean>
 export type GetBoardInfoFunc = (boardId: string) => Promise<boolean>
 export type CreateBoardFunc = (boardName: string) => Promise<boolean>
+export type QueryUserFunc = (email: string) => Promise<boolean>
 export type UpdateBoardFunc = (board: Board) => Promise<boolean>
 export type GetCardListsFunc = (boardId: string) => Promise<boolean>
 export type CreateCardListsFunc = (listName: string) => Promise<boolean>
@@ -84,6 +86,7 @@ export const types = {
   GET_BOARD_INFO: 'getBoardInfo',
   CREATE_BOARD: 'createBoard',
   UPDATE_BOARD: 'updateBoard',
+  QUERY_USER: 'queryUser',
   GET_CARD_LISTS: 'getCardList',
   CREATE_CARD_LIST: 'createCardList',
   GET_CARD_INFO: 'getCardInfo',
@@ -109,11 +112,13 @@ export const types = {
   CARD_LISTS: 'cardLists',
   CURRENT_CARD: 'currentCard',
   IS_ASSIGNED_CARD: 'isAssignedCard',
+  QUERYED_USER: 'queryedUser',
 
   // mutations
   SET_BOARD_LIST: 'setBoardList',
   INSERT_BOARD_TO_LIST: 'insertBoardToList',
   SET_CURRENT_BOARD: 'setCurrentBoard',
+  SET_QUERYED_USER: 'setQueryedUser',
   SET_CARD_LISTS: 'setCardList',
   ADD_NEW_CARD_LIST: 'addNewCardList',
   UPDATE_CARD_LISTS: 'updateCardLists',

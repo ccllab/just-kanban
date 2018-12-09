@@ -3,7 +3,8 @@ import * as _ from 'lodash'
 
 import { Board } from '../../models/Board.model';
 import { Card } from '../../models/Card.model';
-import { BoardApi, CardListApi, CardApi } from '../../api'
+import { User } from '../../models/User.model'
+import { BoardApi, CardListApi, CardApi, AuthApi } from '../../api'
 import { RootState } from '../types'
 import { 
   BoardState,
@@ -20,7 +21,6 @@ import {
   addCommentToCurrentCardParameters,
   types
 } from './types'
-
 
 export const actions: ActionTree<BoardState, RootState> = {
   /**
@@ -69,6 +69,24 @@ export const actions: ActionTree<BoardState, RootState> = {
     if (resData.result) {
       let boardListItem: BoardListItem = _.pick(resData, ['_id', 'boardName', 'isAdmin'])
       commit(types.INSERT_BOARD_TO_LIST, boardListItem)
+      return true
+    } else {
+      return false
+    }
+  },
+
+  /**
+   * 用 email 查詢使用者並將其暫時放置 board member list
+   * 需要執行更新 board api 才會寫入資料庫
+   * @param param0 
+   * @param email 
+   */
+  async [types.QUERY_USER]({ commit }, email: string): Promise<boolean> {
+    let resData = await AuthApi.queryUserInfo({ email })
+
+    if (resData.result) {
+      let user: User = _.pick(resData, ['userId', 'username', 'email'])
+      commit(types.SET_QUERYED_USER, user)
       return true
     } else {
       return false

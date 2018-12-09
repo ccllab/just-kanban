@@ -10,7 +10,8 @@ const state: BoardState = {
   boardList: [],
   displayedBoard: null,
   cardLists: [],
-  displayedCard: null
+  displayedCard: null,
+  queryedUser: null
 }
 
 export const boards: Module<BoardState, RootState> = {

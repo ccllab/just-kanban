@@ -41,32 +41,45 @@
                         </div>
                     </div>
                     <div class="search">
-                        <input type="text" placeholder="Enter New member id...">
+                        <input type="text" 
+                            placeholder="Enter New member email..."
+                            v-model="email"
+                            @keydown.enter="addMember">
                     </div>
                 </div>
             </div>
-            <button type="button" class="btn btn-primary update-btn" v-if="isEdited" @click="updateClick"> Update </button>
+            <button type="button" 
+                class="btn btn-primary update-btn" 
+                v-if="isAdmin && isEdited" 
+                @click="updateClick"> Update </button>
         </div>
     </div>
 </template>
 
 <script lang="ts">
-import {Component, Prop, Vue} from 'vue-property-decorator';
+import {Component, Prop, Vue} from 'vue-property-decorator'
 import { Action, Getter } from 'vuex-class'
 import * as _ from 'lodash'
 
-import { Board } from '../models/Board.model';
+import { Board } from '../models/Board.model'
+import { User } from '../models/User.model'
 import { 
     types as boardTypes, 
     GetBoardInfoFunc, 
+    QueryUserFunc,
     UpdateBoardFunc 
 } from '../store/board/types'
 
 @Component
 export default class BoardConfig extends Vue {
-    @Action(boardTypes.GET_FAKE_BOARD_INFO) getBoardInfo: GetBoardInfoFunc
-    @Action(boardTypes.UPDATE_BOARD) updataboard: UpdateBoardFunc
-    @Getter(boardTypes.CURRENT_BOARD) board: Board
+    @Action(boardTypes.GET_BOARD_INFO)  getBoardInfo: GetBoardInfoFunc
+    @Action(boardTypes.QUERY_USER)      queryUser: QueryUserFunc
+    @Action(boardTypes.UPDATE_BOARD)    updateboard: UpdateBoardFunc
+
+    @Getter(boardTypes.CURRENT_BOARD)   board: Board
+    @Getter(boardTypes.IS_ADMIN)        isAdmin: boolean
+    @Getter(boardTypes.QUERYED_USER)    queryedUser: User
+
     @Prop(String) boardId: string
 
     /**
@@ -75,13 +88,17 @@ export default class BoardConfig extends Vue {
     public copyedBoard: Board = null
 
     /**
+     * 欲查詢某用戶的 email
+     */
+    public email: string = ''
+
+    /**
      * 指示有無更新過內容
      */
     get isEdited(): boolean {
-        if (!this.copyedBoard || !this.board)
-            return false
+        if (!this.board || !this.copyedBoard) return
 
-        return !_.isEqual(this.copyedBoard, this.board)
+        return !_.isEqual(this.board, this.copyedBoard)
     }
 
     public async  mounted() {
@@ -114,11 +131,19 @@ export default class BoardConfig extends Vue {
         }
     }
 
-    public async updateClick() {
-        let result = await this.updataboard(this.copyedBoard)
-        if (!result) {
-            this.copyedBoard = _.cloneDeep(this.board)
+    public async addMember() {
+        if (!this.email) return
+
+        let result = await this.queryUser(this.email)
+        if (result || this.queryedUser) {
+            this.email = ''
+            this.copyedBoard.members.push(this.queryedUser)
         }
+    }
+
+    public async updateClick() {
+        let result = await this.updateboard(this.copyedBoard)
+        this.copyedBoard = _.cloneDeep(this.board)
     }
 
     public close(): void {

@@ -27,7 +27,6 @@ import { types as BoardTypes, CreateBoardFunc } from '../store/board/types'
 
 @Component
 export default class BoardCreator extends Vue {
-    // @Action(BoardTypes.CREATE_FAKE_BOARD) createBoard: CreateBoardFunc
     @Action(BoardTypes.CREATE_BOARD) createBoard: CreateBoardFunc
 
     public boardName: string = ''

@@ -15,11 +15,11 @@ import { Card } from '../../models/Card.model';
 
 export const getters: GetterTree<BoardState, RootState> = {
   [types.BOARD_LIST](state): BoardList {
-    return state.boardList
+    return state.boardList || []
   },
 
   [types.CURRENT_BOARD](state): Board {
-    return state.displayedBoard
+    return state.displayedBoard || null
   },
 
   [types.IS_ADMIN](state, getters): boolean {
@@ -27,12 +27,16 @@ export const getters: GetterTree<BoardState, RootState> = {
     return state.displayedBoard.admins.findIndex(u => u.userId === user.userId) !== -1
   },
 
+  [types.QUERYED_USER](state): User {
+    return state.queryedUser || null
+  },
+
   [types.CARD_LISTS](state): CardLists {
-    return state.cardLists
+    return state.cardLists || []
   },
 
   [types.CURRENT_CARD](state): Card {
-    return state.displayedCard
+    return state.displayedCard || null
   },
 
   [types.IS_ASSIGNED_CARD](state, getters): IsAssignedCardFunc {
