@@ -6,6 +6,9 @@ import {TYPES} from "../ioc";
 import {ICardListService} from "../services";
 import * as express from "express";
 
+/**
+ * Card list api controller
+ */
 @controller('/api/card-list')
 export class CardListController extends ApiControllerBase {
 
