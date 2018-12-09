@@ -1,6 +1,7 @@
 import { ActionTree } from 'vuex'
 import * as _ from 'lodash'
 
+import { TokenManager } from '../../utils/TokenManager'
 import { User } from '../../models/User.model'
 import { AuthApi } from '../../api'
 import { RootState } from '../types'
@@ -51,6 +52,7 @@ export const actions: ActionTree<AuthState, RootState> = {
 
   [types.AUTH_LOGOUT]({ commit }): void {
     commit(types.SET_USER, null)
+    TokenManager.clear()
   },
 
   async [types.AUTH_FAKE_LOGIN]({ commit }, para: LoginParameters): Promise<boolean> {

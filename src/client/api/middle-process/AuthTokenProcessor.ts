@@ -1,13 +1,14 @@
 import { successMiddleProcess } from '../../utils/ApiRequestor'
-import CookieUtil from '../../utils/cookies/VueCookies'
-import { authToken, refreshToken } from '../cookie-header-pair'
+import { TokenManager } from '../../utils/TokenManager'
+import { TokenConfig } from '../../config'
 
 export const AuthTokenProccessor: successMiddleProcess = (res) => {
-  const cookie = CookieUtil.getInstance()
+  let authKey = TokenConfig.auth.key
+  let refreshKey = TokenConfig.refresh.key
+  
+  let authTokenValue: string = res.headers[authKey]
+  let refreshTokenValue: string = res.headers[refreshKey]
 
-  let authTokenValue: string = res.headers[authToken.HeaderName]
-  let refreshTokenValue: string = res.headers[refreshToken.HeaderName]
-
-  cookie.set(authToken.CookieName, authTokenValue)
-  cookie.set(refreshToken.CookieName, refreshTokenValue)
+  TokenManager.set(authKey, authTokenValue)
+  TokenManager.set(refreshKey, refreshTokenValue)
 }
