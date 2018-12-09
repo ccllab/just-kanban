@@ -7,10 +7,18 @@
                 </div>
                 <div class="inputList">
                     <div class="inputItem">
-                        <input type="email" id="kanbanEmail" placeholder="Email" v-model="email">
+                        <input type="email" 
+                            id="kanbanEmail" 
+                            placeholder="Email" 
+                            v-model="email"
+                            @keydown.enter="loginEventHandler">
                     </div>
                     <div class="inputItem">
-                        <input type="password" id="kanbanPassword" placeholder="Password" v-model="password">
+                        <input type="password" 
+                            id="kanbanPassword" 
+                            placeholder="Password" 
+                            v-model="password"
+                            @keydown.enter="loginEventHandler">
                     </div>
                 </div>
                 <div class="submitBtn">
