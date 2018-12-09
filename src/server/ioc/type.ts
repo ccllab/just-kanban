@@ -17,6 +17,7 @@ export const TYPES = {
     // Services
     IAuthService: Symbol.for('IAuthService'),
     IBoardService: Symbol.for('IBoardService'),
+    ICardListService: Symbol.for('ICardListService'),
 
     // other utils
     ILogger: Symbol.for('ILogger'),
