@@ -53,8 +53,8 @@ export class UserController extends ApiControllerBase {
                 'x-auth': userAuthDto.accessToken,
                 'x-refresh': userAuthDto.userDetail.refreshToken
             }).send({
-                id: userAuthDto.userDetail.userId,
-                name: userAuthDto.userDetail.username,
+                userId: userAuthDto.userDetail.userId,
+                username: userAuthDto.userDetail.username,
                 email: userAuthDto.userDetail.email
             });
         }, (err) => {
@@ -85,8 +85,8 @@ export class UserController extends ApiControllerBase {
                 'x-auth': userAuthDto.accessToken,
                 'x-refresh': userAuthDto.userDetail.refreshToken
             }).send({
-                id: userAuthDto.userDetail.userId,
-                name: userAuthDto.userDetail.username,
+                userId: userAuthDto.userDetail.userId,
+                username: userAuthDto.userDetail.username,
                 email: userAuthDto.userDetail.email
             });
         }, (err) => {
