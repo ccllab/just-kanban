@@ -1,4 +1,5 @@
 import {ObjectID} from "typeorm";
+import {CardListAndCardsDto} from "..";
 
 /**
  * Card list management service interface
@@ -18,4 +19,10 @@ export interface ICardListService {
      * @param cardListId
      */
     updateCardListName(newName: string, cardListId: ObjectID): Promise<{_id: ObjectID, name: string}>;
+
+    /**
+     * Get specified board's card lists and card lists' cards.
+     * @param boardId The specified board id
+     */
+    getCardListsAndCards(boardId: ObjectID): Promise<Array<CardListAndCardsDto>>;
 }
