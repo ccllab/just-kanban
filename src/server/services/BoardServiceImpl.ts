@@ -37,6 +37,11 @@ export class BoardServiceImpl implements IBoardService {
             throw new Error("The board name already used");
         }
 
+        let user = await this.userRepository.get(userObjectId);
+        if (!user) {
+            return Promise.reject(new Error(`User ${userObjectId.toString()} not exist.`));
+        }
+
         let board = new KanbanBoardEntity();
         board.boardName = boardName;
         board.admins.push(userObjectId);
@@ -48,7 +53,6 @@ export class BoardServiceImpl implements IBoardService {
             dto.boardName = board.boardName;
             dto.isAdmin = true;
 
-            let user = await this.userRepository.get(userObjectId);
             user.boardIds.push(board._id);
 
             this.userRepository.update(user).catch(err => {
@@ -96,6 +100,10 @@ export class BoardServiceImpl implements IBoardService {
      */
     public getBoardInfo(boardId: ObjectID): Promise<BoardMembersInfoDto> {
         return this.boardRepository.get(boardId).then(async (board) => {
+            if (!board) {
+                return Promise.reject(new Error(`The board ${boardId.toString()} is not exist.`));
+            }
+
             let dto = new BoardMembersInfoDto();
             dto._id = board._id;
             dto.boardName = board.boardName;
@@ -130,6 +138,10 @@ export class BoardServiceImpl implements IBoardService {
      */
     public updateBoardInfo(boardId: string, dto: BoardMemberUpdateDto): Promise<BoardMembersInfoDto> {
         return this.boardRepository.get(boardId).then(async (board) => {
+            if (!board) {
+                return Promise.reject(new Error(`The board ${boardId.toString()} is not exist.`));
+            }
+
             board.boardName = dto.boardName;
 
             dto.admins.insert = union(dto.admins.insert);
@@ -147,7 +159,7 @@ export class BoardServiceImpl implements IBoardService {
 
                 for (let userId of userIds) {
                     let user = await this.userRepository.getBy({userId});
-                    user.boardIds.push(boardObjId); // todo bug storage as a string
+                    user.boardIds.push(boardObjId); // todo use any, so... lol
                     user.boardIds = union(user.boardIds);
 
                     this.userRepository.update(user).catch(err => {
