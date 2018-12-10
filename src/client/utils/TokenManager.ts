@@ -15,7 +15,7 @@ export class Token {
   /**
    * The key name in storage to access the token value
    */
-  aliasName: string
+  aliasName?: string
 
   /**
    * Token storage util
@@ -28,6 +28,10 @@ export class TokenManager {
    * instances of token
    */
   private static tokens: Token[] = []
+
+  /**
+   * The default storage to store token
+   */
   private static defaultStorage: IStorage = null
 
   /**
@@ -82,7 +86,6 @@ export class TokenManager {
 
   /**
    * Clear specified tokens or all tokens.
-   * TODO: Clear the storage token values.
    * @param _token 
    */
   public static clear(...tokenNames: string[]): void {
