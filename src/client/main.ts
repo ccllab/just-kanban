@@ -10,17 +10,10 @@ import { Token, TokenManager } from './utils/TokenManager'
 import { TokenConfig } from './config'
 
 Vue.config.productionTip = false;
-
 Vue.use(VueCookies, {
     expires: '3d',
     path: '/'
 });
-
-new Vue({
-    render: h => h(App),
-    store,
-    router
-}).$mount('#app');
 
 /**
  * 註冊 api 中介函數
@@ -41,3 +34,11 @@ let refreshToken: Token = {
 }
 TokenManager.register(authToken, refreshToken)
 TokenManager.setDefaultStorage(VueCookies.getInstance())
+
+new Vue({
+    render: h => h(App),
+    store,
+    router
+}).$mount('#app');
+
+

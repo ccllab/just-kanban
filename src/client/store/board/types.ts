@@ -35,6 +35,7 @@ export type updateCardInListParameters = {
   assignedUserId: userId
 }
 export type addCommentToCurrentCardParameters = {
+  _id: string
   content: string
 }
 
@@ -94,16 +95,6 @@ export const types = {
   CREATE_CARD: 'createCard',
   UPDATE_CARD: 'updateCard',
   CREATE_COMMENT: 'createComment',
-
-  GET_FAKE_BOARD_LIST: 'getFakeBoardList',
-  GET_FAKE_BOARD_INFO: 'getFakeBoardInfo',
-  CREATE_FAKE_BOARD: 'createFakeBoard',
-  GET_FAKE_CARD_LISTS: 'getFakeCardLists',
-  CREATE_FAKE_CARD_LIST: 'createFakeCardList',
-  CREATE_FAKE_CARD: 'createFakeCard',
-  GET_FAKE_CARD_INFO: 'getFakeCardInfo',
-  UPDATE_FAKE_CARD: 'updateFakeCard',
-  CREATE_FAKE_COMMENT: 'createFakeCardComment',
 
   // getters
   BOARD_LIST: 'boardList',

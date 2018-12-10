@@ -45,7 +45,7 @@ export const mutations: MutationTree<BoardState> = {
   },
 
   [types.SET_CURRENT_CARD](state, payload: Card): void {
-    state.displayedCard = payload
+    state.displayedCard = _.assign(state.displayedCard, payload)
   },
 
   [types.UPDATE_CARD_LISTS](state, payload: DragCardParameters): void {
@@ -76,9 +76,6 @@ export const mutations: MutationTree<BoardState> = {
     let card = state.displayedCard
     if (!card) return
 
-    card.comments.splice(0, 0, {
-      _id: '',
-      content: payload.content
-    })
+    card.comments.push(payload)
   }
 }

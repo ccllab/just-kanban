@@ -4,7 +4,10 @@
       + Add List
     </div>
     <div class="edit-block" v-if="isEditing">
-      <input type="text" placeholder="Enter list title..." v-model="listName">
+      <input type="text" 
+        placeholder="Enter list title..." 
+        v-model="listName"
+        @keydown.enter="btnAddClick">
       <button class="btn btn-success btn-add" @click="btnAddClick">Add</button>
     </div>
   </div>
@@ -18,8 +21,7 @@ import { types as boardTypes, CreateCardListsFunc } from '../store/board/types'
 
 @Component
 export default class CardListCreator extends Vue {
-  // @Action(boardTypes.CREATE_CARD_LIST) createCardList: CreateCardListsFunc
-  @Action(boardTypes.CREATE_FAKE_CARD_LIST) createCardList: CreateCardListsFunc
+  @Action(boardTypes.CREATE_CARD_LIST) createCardList: CreateCardListsFunc
 
   public listName: string = ''
   public isEditing: boolean = false

@@ -9,7 +9,10 @@
             </div>
             <div class="settingForm">
                 <div class="boardName">
-                    <input type="text" v-model="boardName" placeholder="Add board title">
+                    <input type="text" 
+                        v-model="boardName" 
+                        @keydown.enter="createClick"
+                        placeholder="Add board title">
                 </div>
             </div>
             <div class="submitBtn">

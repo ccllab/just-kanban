@@ -22,7 +22,7 @@
                             <button class="btn btn-primary btn-add-comment" @click.stop="btnAddCommentClick" v-if="comment">Add</button>
                             <div class="comment-list">
                                 <div class="comment-item" 
-                                    v-for="comment in copyedCard.comments"
+                                    v-for="comment in comments"
                                     :key="comment._id">
                                     {{ comment.content }}
                                 </div>
@@ -55,7 +55,9 @@
 					</div>
                 </div>
             </div>
-            <button class="btn btn-primary btn-save" @click.stop="btnSaveClick">Save</button>
+            <button class="btn btn-primary btn-save" 
+                @click.stop="btnSaveClick"
+                v-if="isEdited">Save</button>
         </div>
     </div>
 </template>
@@ -79,18 +81,26 @@ import {
 export default class CardEditor extends Vue {
     @Getter(boardTypes.CURRENT_BOARD) board: Board
     @Getter(boardTypes.CURRENT_CARD) card: Card
-	// @Action(boardTypes.GET_CARD_INFO) getCardInfo: GetCardInfoFunc
-    @Action(boardTypes.GET_FAKE_CARD_INFO) getCardInfo: GetCardInfoFunc
-    // @Action(boardTypes.UPDATE_CARD) updateCard: UpdateCardFunc
-    @Action(boardTypes.UPDATE_FAKE_CARD) updateCard: UpdateCardFunc
-    // @Action(boardTypes.CREATE_COMMENT) createComment: CreateCommentFunc
-    @Action(boardTypes.CREATE_FAKE_COMMENT) createComment: CreateCommentFunc
+	@Action(boardTypes.GET_CARD_INFO) getCardInfo: GetCardInfoFunc
+    @Action(boardTypes.UPDATE_CARD) updateCard: UpdateCardFunc
+    @Action(boardTypes.CREATE_COMMENT) createComment: CreateCommentFunc
     @Prop() cardId: string
     @Prop() listId: string
     
     public copyedCard: Card = null
     public assignedUserId: string = ''
     public comment: string = ''
+
+    get comments() {
+        return this.copyedCard.comments ? this.copyedCard.comments.reverse() : []
+    }
+
+    get isEdited(): boolean {
+        if (!this.copyedCard) return false
+        return this.copyedCard.title !== this.card.title ||
+            this.copyedCard.description !== this.card.description ||
+            this.assignedUserId !== this.card.assignedUser.userId
+    }
 
     public async  mounted() {
         let result = await this.getCardInfo(this.cardId)
@@ -113,11 +123,8 @@ export default class CardEditor extends Vue {
             assignedUserId: this.assignedUserId
         })
 
-        // 若失敗則返回原始修改前狀態
-        if (!result) {
-            this.copyedCard = _.cloneDeep(this.card)
-            this.assignedUserId = this.card.assignedUser.userId
-        }
+        this.copyedCard = _.cloneDeep(this.card)
+        this.assignedUserId = this.card.assignedUser.userId
     }
     
     public async btnAddCommentClick() {

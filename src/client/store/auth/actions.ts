@@ -53,16 +53,5 @@ export const actions: ActionTree<AuthState, RootState> = {
   [types.AUTH_LOGOUT]({ commit }): void {
     commit(types.SET_USER, null)
     TokenManager.clear()
-  },
-
-  async [types.AUTH_FAKE_LOGIN]({ commit }, para: LoginParameters): Promise<boolean> {
-    let user: User = {
-      userId: '666',
-      username: 'Jay',
-      email: 'test@gmail.com'
-    }
-    commit(types.SET_USER, user)
-    console.warn('Fake login mode !!!!!!!!')
-    return true
-  },
+  }
 }

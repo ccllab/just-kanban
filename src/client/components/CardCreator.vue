@@ -56,8 +56,7 @@ import { types as boardTypes, CreateCardFunc } from '../store/board/types'
 @Component
 export default class CardEditor extends Vue {
 	@Getter(boardTypes.CURRENT_BOARD) board: Board
-	// @Action(boardTypes.CREATE_CARD) createCard: CreateCardFunc
-	@Action(boardTypes.CREATE_FAKE_CARD) createCard: CreateCardFunc
+	@Action(boardTypes.CREATE_CARD) createCard: CreateCardFunc
 	@Prop() listId: string
 
 	public assignedUserId: userId = ''

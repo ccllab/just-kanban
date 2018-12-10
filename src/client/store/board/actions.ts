@@ -205,9 +205,7 @@ export const actions: ActionTree<BoardState, RootState> = {
       return true
     } else {
       // 新增卡片列表失敗，重新向 Server 取得卡片列表及卡片資料
-      // dispatch(types.GET_CARD_LISTS, currentBoarId)
-      // fake area
-      dispatch(types.GET_FAKE_CARD_LISTS, currentBoarId)
+      dispatch(types.GET_CARD_LISTS, currentBoarId)
       return false
     }
   },
@@ -246,12 +244,14 @@ export const actions: ActionTree<BoardState, RootState> = {
     let resData = await CardApi.updateCard(param._id, reqParam)
 
     if (resData.result) {
+      let card: Card = _.pick(resData, ['_id', 'title', 'description', 'assignedUser'])
       let mutationsParam: updateCardInListParameters = {
         listId: param.listId,
         cardId: param._id,
         title: param.title,
         assignedUserId: param.assignedUserId
       }
+      commit(types.SET_CURRENT_CARD, card)
       commit(types.UPDATE_CARD_IN_LIST, mutationsParam)
     } else {
       return false
@@ -270,151 +270,13 @@ export const actions: ActionTree<BoardState, RootState> = {
 
     if (resData.result) {
       let mutationsParam: addCommentToCurrentCardParameters = {
-        content: param.content
+        _id: resData._id,
+        content: resData.content
       }
       commit(types.ADD_COMMENT_TO_CURRENT_CARD, mutationsParam)
       return true
     } else {
       return false
     }
-  },
-
-  async [types.GET_FAKE_BOARD_LIST]({ commit }): Promise<boolean> {
-    console.warn('Get fake board list mode !')
-    let boardList: BoardList = [{
-      _id: 'ksdfmodsvs',
-      boardName: 'Board 1',
-      isAdmin: true
-    }, {
-      _id: 'kldmfklremver',
-      boardName: 'Board 2',
-      isAdmin: false
-    }]
-    commit(types.SET_BOARD_LIST, boardList)
-    return true
-  },
-
-  async [types.GET_FAKE_BOARD_INFO]({ commit }, boardId: string): Promise<boolean> {
-    console.warn('Get fake board info mode !')
-    let board: Board = {
-      _id: boardId,
-      boardName: 'Fake board',
-      admins: [{ userId: '666', username: 'Jay', email: ''}],
-      members: [
-        { userId: '666', username: 'Jay', email: '' }, 
-        { userId: '777', username: 'Han', email: '' }]
-    }
-    commit(types.SET_CURRENT_BOARD, board)
-    return true
-  },
-
-  async [types.CREATE_FAKE_BOARD]({ commit }, boardName: string): Promise<boolean> {
-    console.warn('Create fake card !')
-    let boardListItem: BoardListItem = {
-      _id: (Math.random() * 1000000000).toString(),
-      boardName,
-      isAdmin: true
-    }
-    commit(types.INSERT_BOARD_TO_LIST, boardListItem)
-    return true
-  },
-
-  async [types.GET_FAKE_CARD_LISTS]({ commit }, boardId: string): Promise<boolean> {
-    console.warn('Get fake card lists mode !')
-    let cardList: CardLists = [{
-      _id: 'ascdvsdcs',
-      name: 'list1',
-      cards: [{
-        _id: 'sddwfecw',
-        title: 'card1',
-        assignedUser: {
-          userId: '666',
-          username: 'Jay'
-        }
-      }]
-    }, {
-      _id: 'sdfdsfeww',
-      name: 'list12',
-      cards: [{
-        _id: 'lskdmfeowkmf',
-        title: 'card2',
-        assignedUser: {
-          userId: 'sdfds',
-          username: 'Jay'
-        }
-      }]
-    }]
-    commit(types.SET_CARD_LISTS, cardList)
-    return true
-  },
-
-  async [types.CREATE_FAKE_CARD_LIST]({ state, commit }, cardListName: string): Promise<boolean> {
-    console.warn('create fake card list mode !')
-    let cardList: CardList = {
-      _id: Math.floor(Math.random() * 99999999999).toString(),
-      name: cardListName,
-      cards: []
-    }
-    commit(types.ADD_NEW_CARD_LIST, cardList)
-    return true
-  },
-
-  async [types.CREATE_FAKE_CARD]({ commit }, param: CreateCardParameters): Promise<boolean> {
-    console.warn('create fake card mode !')
-    let card: Card = {
-      _id: Math.floor(Math.random() * 99999).toString(),
-      title: param.title,
-      assignedUser: {
-        userId: param.assignedUserId,
-        username: 'whatever'
-      }
-    }
-    let mutationsParam: AddNewCarParameters = {
-      listId: param.listId,
-      card
-    }
-    commit(types.ADD_NEW_CARD, mutationsParam)
-    return true
-  },
-
-  async [types.GET_FAKE_CARD_INFO]({ commit }, cardId: string): Promise<boolean> {
-    console.warn('Get fake card mode !')
-    let card: Card = {
-      _id: 'sddwfecw',
-      title: 'card1',
-      description: 'hahhahaha',
-      assignedUser: {
-        userId: '666',
-        username: 'Jay'
-      },
-      comments: [{
-        _id: Math.floor(Math.random() * 9999).toString(),
-        content: '1111111111'
-      }, {
-        _id: Math.floor(Math.random() * 9999).toString(),
-        content: '22222222222'
-      }]
-    }
-    commit(types.SET_CURRENT_CARD, card)
-    return true
-  },
-
-  async [types.UPDATE_FAKE_CARD]({ commit }, param: UpdateCardParameters): Promise<boolean> {
-    let mutationsParam: updateCardInListParameters = {
-      listId: param.listId,
-      cardId: param._id,
-      title: param.title,
-      assignedUserId: param.assignedUserId
-    }
-    commit(types.UPDATE_CARD_IN_LIST, mutationsParam)
-    return true
-  },
-
-  async [types.CREATE_FAKE_COMMENT]({ commit }, param: CreateCommentParameters): Promise<boolean> {
-    let mutationsParam: addCommentToCurrentCardParameters = {
-      content: param.content
-    }
-    commit(types.ADD_COMMENT_TO_CURRENT_CARD, mutationsParam)
-    return true
-  },
+  }
 }

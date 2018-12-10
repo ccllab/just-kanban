@@ -1,17 +1,19 @@
 import { beforeRequestPeocess } from '../../utils/ApiRequestor'
-import CookieUtil from '../../utils/cookies/VueCookies'
-import { authToken, refreshToken } from '../cookie-header-pair'
+import { TokenManager } from '../../utils/TokenManager'
+import { TokenConfig } from '../../config'
 
 const InjectAuthToken: beforeRequestPeocess = (config) => {
-  const cookie = CookieUtil.getInstance()
-  let authTokenValue = cookie.get(authToken.CookieName)
-  let refreshTokenValue = cookie.get(refreshToken.CookieName)
+  let authKey = TokenConfig.auth.key
+  let refreshKey = TokenConfig.refresh.key
+
+  let authTokenValue = TokenManager.get(authKey)
+  let refreshTokenValue = TokenManager.get(refreshKey)
 
   if (!authTokenValue || !refreshTokenValue) return
-  
+
   config.headers || (config.headers = {})
-  config.headers[authToken.HeaderName] = authTokenValue
-  config.headers[refreshToken.HeaderName] = refreshTokenValue
+  config.headers[authKey] = authTokenValue
+  config.headers[refreshKey] = refreshTokenValue
 }
 
 export default InjectAuthToken

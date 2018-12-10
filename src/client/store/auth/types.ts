@@ -32,8 +32,6 @@ export const types = {
   AUTH_LOGOUT: 'logout',
   AUTH_INIT: 'authInit',
 
-  AUTH_FAKE_LOGIN: 'loginFake',
-
   // getters
   USER: 'user',
   IS_LOGIN: 'isLogin',
