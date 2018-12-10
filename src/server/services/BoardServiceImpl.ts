@@ -39,7 +39,7 @@ export class BoardServiceImpl implements IBoardService {
 
         let user = await this.userRepository.get(userObjectId);
         if (!user) {
-            return Promise.reject(new Error("User not exist."));
+            return Promise.reject(new Error(`User ${userObjectId.toString()} not exist.`));
         }
 
         let board = new KanbanBoardEntity();
@@ -101,7 +101,7 @@ export class BoardServiceImpl implements IBoardService {
     public getBoardInfo(boardId: ObjectID): Promise<BoardMembersInfoDto> {
         return this.boardRepository.get(boardId).then(async (board) => {
             if (!board) {
-                return Promise.reject(new Error("The board is not exist."));
+                return Promise.reject(new Error(`The board ${boardId.toString()} is not exist.`));
             }
 
             let dto = new BoardMembersInfoDto();
@@ -139,7 +139,7 @@ export class BoardServiceImpl implements IBoardService {
     public updateBoardInfo(boardId: string, dto: BoardMemberUpdateDto): Promise<BoardMembersInfoDto> {
         return this.boardRepository.get(boardId).then(async (board) => {
             if (!board) {
-                return Promise.reject(new Error("The board is not exist."));
+                return Promise.reject(new Error(`The board ${boardId.toString()} is not exist.`));
             }
 
             board.boardName = dto.boardName;
@@ -159,7 +159,7 @@ export class BoardServiceImpl implements IBoardService {
 
                 for (let userId of userIds) {
                     let user = await this.userRepository.getBy({userId});
-                    user.boardIds.push(boardObjId); // todo bug storage as a string
+                    user.boardIds.push(boardObjId); // todo use any, so... lol
                     user.boardIds = union(user.boardIds);
 
                     this.userRepository.update(user).catch(err => {

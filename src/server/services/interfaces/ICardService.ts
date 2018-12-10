@@ -1,9 +1,16 @@
 import {ObjectID} from "typeorm";
+import {CardInfoDto} from "..";
 
 /**
  * Kanban board card management service
  */
 export interface ICardService {
+
+    /**
+     * Get specified card info
+     * @param cardId The specified card id.
+     */
+    getCardInfo(cardId: ObjectID): Promise<CardInfoDto>;
 
     /**
      * add new card

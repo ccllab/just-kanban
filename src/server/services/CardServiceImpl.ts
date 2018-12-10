@@ -2,7 +2,14 @@ import {ICardService} from "./interfaces/ICardService";
 import {ObjectID} from "typeorm";
 import {inject, injectable} from "inversify";
 import {TYPES} from "../ioc";
-import {BoardCardEntity, IBoardCardRepository, ICardListRepository, IUserRepository} from "../repository";
+import {
+    BoardCardEntity,
+    IBoardCardRepository,
+    ICardCommentRepository,
+    ICardListRepository,
+    IUserRepository
+} from "../repository";
+import {CardInfoDto} from "./dtos/card/CardInfoDto";
 
 @injectable()
 export class CardServiceImpl implements ICardService {
@@ -13,11 +20,52 @@ export class CardServiceImpl implements ICardService {
      * @param cardRepository card repo
      * @param cardListRepository card list repo
      * @param userRepository user repo
+     * @param commentRepository comment repo
      */
     public constructor(
         @inject(TYPES.IBoardCardRepository) private cardRepository: IBoardCardRepository,
         @inject(TYPES.ICardListRepository) private cardListRepository: ICardListRepository,
-        @inject(TYPES.IUserRepository) private userRepository: IUserRepository) {
+        @inject(TYPES.IUserRepository) private userRepository: IUserRepository,
+        @inject(TYPES.ICardCommentRepository) private commentRepository: ICardCommentRepository) {
+    }
+
+    /**
+     * Get specified card info
+     * @param cardId The specified card id.
+     */
+    public async getCardInfo(cardId: ObjectID): Promise<CardInfoDto> {
+        let card = await this.cardRepository.get(cardId);
+        if (!card) {
+            return Promise.reject(new Error(`The card ${cardId.toString()} is not exist.`));
+        }
+
+        let assignedUser = await this.userRepository.getBy({userId: card.assignedUserId});
+        if (!assignedUser) {
+            return Promise.reject(new Error(`The assignedUser ${card.assignedUserId} is not exist.`));
+        }
+
+        let dto = new CardInfoDto();
+        dto._id = card._id;
+        dto.description = card.description;
+        dto.title = card.title;
+        dto.assignedUser = {
+            userId: assignedUser.userId,
+            username: assignedUser.username
+        };
+
+        for (let commentId of card.comments) {
+            let comment = await this.commentRepository.get(commentId);
+            if (!comment) {
+                return Promise.reject(new Error(`The comment ${commentId.toString()} is not exist.`));
+            }
+
+            dto.comments.push({
+                _id: comment._id,
+                content: comment.content
+            });
+        }
+
+        return Promise.resolve(dto);
     }
 
     /**
@@ -36,7 +84,7 @@ export class CardServiceImpl implements ICardService {
         let card = new BoardCardEntity();
         let assignedUser = await this.userRepository.getBy({userId: dto.assignedUserId});
         if (!assignedUser) {
-            return Promise.reject(new Error("The assigned user is not exist."));
+            return Promise.reject(new Error(`The assigned user ${dto.assignedUserId} is not exist.`));
         }
 
         card.title = dto.title;
@@ -81,7 +129,7 @@ export class CardServiceImpl implements ICardService {
     }> {
         let assignedUser = await this.userRepository.getBy({userId: dto.assignedUserId});
         if (!assignedUser) {
-            return Promise.reject(new Error("The assigned user is not exist."));
+            return Promise.reject(new Error(`The assigned user ${dto.assignedUserId} is not exist.`));
         }
 
         return this.cardRepository.get(cardId).then((card) => {

@@ -29,7 +29,7 @@ export class CardCommentServiceImpl implements ICardCommentService {
         let card = await this.cardRepo.get(cardId);
 
         if (!card) {
-            return Promise.reject(new Error("The card is not exist."));
+            return Promise.reject(new Error(`The card ${cardId.toString()} is not exist.`));
         }
 
         let comment = new CardCommentEntity();

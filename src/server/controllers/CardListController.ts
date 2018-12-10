@@ -22,13 +22,44 @@ export class CardListController extends ApiControllerBase {
     }
 
     /**
+     * Get card lists and its card by specified boardId
+     * @param boardId Board id
+     * @param res response
+     * @param req request
+     */
+    @httpPost('/:boardId')
+    private async getCardListsAndCards(
+        @requestParam("boardId") boardId: ObjectID,
+        @response() res: express.Response,
+        @request() req: express.Request): Promise<express.Response> {
+
+        if (! await this.isAuthenticated()) {
+            return res.status(401).send('Please login, and try again.');
+        }
+
+        if (!boardId) {
+            return Promise.resolve(res.status(400).send({
+                error: "Board id undefined."
+            }));
+        }
+
+        return this.cardListService.getCardListsAndCards(boardId).then((result) => {
+            return res.send(result);
+        }, err => {
+            return res.status(400).send({
+                error: err.message
+            });
+        });
+    }
+
+    /**
      * Create new card list for specified board
      * @param boardId The specified board id
      * @param res response
      * @param req request
      */
     @httpPost('/add/:boardId')
-    public async createCardList(
+    private async createCardList(
         @requestParam("boardId") boardId: ObjectID,
         @response() res: express.Response,
         @request() req: express.Request): Promise<express.Response> {
@@ -61,7 +92,7 @@ export class CardListController extends ApiControllerBase {
      * @param req request
      */
     @httpPost("/newname/:cardListId")
-    public async updateCardListName(
+    private async updateCardListName(
         @requestParam("cardListId") cardListId: ObjectID,
         @response() res: express.Response,
         @request() req: express.Request): Promise<express.Response> {

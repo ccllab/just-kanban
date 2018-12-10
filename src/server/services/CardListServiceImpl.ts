@@ -2,8 +2,15 @@ import {ICardListService} from "./interfaces/ICardListService";
 import {ObjectID} from "typeorm";
 import {inject, injectable} from "inversify";
 import {TYPES} from "../ioc";
-import {CardListEntity, ICardListRepository, IKanbanBoardRepository} from "../repository";
+import {
+    CardListEntity,
+    IBoardCardRepository,
+    ICardListRepository,
+    IKanbanBoardRepository,
+    IUserRepository
+} from "../repository";
 import {union} from 'lodash';
+import {CardListAndCardsDto} from "./dtos/cardList/CardListAndCardsDto";
 
 /**
  * Card list management service impl
@@ -15,10 +22,14 @@ export class CardListServiceImpl implements ICardListService {
      * Constructor
      * @param cardListRepository Card list repo
      * @param boardRepository Board repo
+     * @param cardRepository Board card repo
+     * @param userRepository User repo
      */
     public constructor(
         @inject(TYPES.ICardListRepository) private cardListRepository: ICardListRepository,
-        @inject(TYPES.IKanbanBoardRepository) private boardRepository: IKanbanBoardRepository) {
+        @inject(TYPES.IKanbanBoardRepository) private boardRepository: IKanbanBoardRepository,
+        @inject(TYPES.IBoardCardRepository) private cardRepository: IBoardCardRepository,
+        @inject(TYPES.IUserRepository) private userRepository: IUserRepository) {
     }
 
     /**
@@ -36,7 +47,7 @@ export class CardListServiceImpl implements ICardListService {
 
             this.boardRepository.get(boardId).then((board) => {
                 if (!board) {
-                    return Promise.reject(new Error("The board is not exist"));
+                    return Promise.reject(new Error(`The board ${boardId.toString()} is not exist`));
                 }
 
                 board.cardListIds.push(cardList._id);
@@ -69,7 +80,7 @@ export class CardListServiceImpl implements ICardListService {
 
         return this.cardListRepository.get(cardListId).then((cardList) => {
             if (!cardList) {
-                return Promise.reject(new Error("The card-list is not exist"));
+                return Promise.reject(new Error(`The card-list ${cardListId.toString()} is not exist`));
             }
 
             cardList.name = newName;
@@ -85,5 +96,54 @@ export class CardListServiceImpl implements ICardListService {
         }, err => {
             throw err;
         });
+    }
+
+    /**
+     * Get specified board's card lists and card lists' cards.
+     * @param boardId The specified board id
+     */
+    public async getCardListsAndCards(boardId: ObjectID): Promise<Array<CardListAndCardsDto>> {
+        let board = await this.boardRepository.get(boardId);
+        if (!board) {
+            return Promise.reject(new Error(`The board ${boardId.toString()} is not exist.`));
+        }
+
+        let results: Array<CardListAndCardsDto> = [];
+        for (let cardListId of board.cardListIds) {
+            let cardList = await this.cardListRepository.get(cardListId);
+            if (!cardList) {
+                return Promise.reject(new Error(`The card-list ${cardListId.toString()} is not exist.`));
+            }
+
+            let dto = new CardListAndCardsDto();
+            dto._id = cardList._id;
+            dto.name = cardList.name;
+
+            for (let cardId of cardList.cardIds) {
+                let card = await this.cardRepository.get(cardId);
+                if (!card) {
+                    return Promise.reject(new Error(`The card ${cardId.toString()} is not exist.`));
+                }
+
+                let isAssigned: boolean = card.assignedUserId && card.assignedUserId !== '';
+                let assignedUser = await this.userRepository.getBy({userId: card.assignedUserId});
+                if (isAssigned && !assignedUser) {
+                    return Promise.reject(new Error(`The assigned-user ${card.assignedUserId} is not exist.`));
+                }
+
+                dto.cards.push({
+                    _id: card._id,
+                    title: card.title,
+                    assignedUser: {
+                        userId: isAssigned ? assignedUser.userId : '',
+                        username: isAssigned ? assignedUser.username : ''
+                    }
+                });
+            }
+
+            results.push(dto);
+        }
+
+        return Promise.resolve(results);
     }
 }

@@ -15,3 +15,5 @@ export * from './dtos/JwtPayload';
 export * from './dtos/board/BoardBasicDto';
 export * from './dtos/board/BoardMembersInfoDto';
 export * from './dtos/board/BoardMemberUpdateDto';
+export * from './dtos/cardList/CardListAndCardsDto';
+export * from './dtos/card/CardInfoDto';
