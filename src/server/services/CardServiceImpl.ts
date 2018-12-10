@@ -35,6 +35,9 @@ export class CardServiceImpl implements ICardService {
     }> {
         let card = new BoardCardEntity();
         let assignedUser = await this.userRepository.getBy({userId: dto.assignedUserId});
+        if (!assignedUser) {
+            return Promise.reject(new Error("The assigned user is not exist."));
+        }
 
         card.title = dto.title;
         card.description = dto.description;
@@ -77,6 +80,9 @@ export class CardServiceImpl implements ICardService {
         }
     }> {
         let assignedUser = await this.userRepository.getBy({userId: dto.assignedUserId});
+        if (!assignedUser) {
+            return Promise.reject(new Error("The assigned user is not exist."));
+        }
 
         return this.cardRepository.get(cardId).then((card) => {
             card.title = dto.title;

@@ -35,6 +35,10 @@ export class CardListServiceImpl implements ICardListService {
         return this.cardListRepository.add(cardList).then((cardList) => {
 
             this.boardRepository.get(boardId).then((board) => {
+                if (!board) {
+                    return Promise.reject(new Error("The board is not exist"));
+                }
+
                 board.cardListIds.push(cardList._id);
                 board.cardListIds = union(board.cardListIds);
 
@@ -64,6 +68,9 @@ export class CardListServiceImpl implements ICardListService {
     public updateCardListName(newName: string, cardListId: ObjectID): Promise<{_id: ObjectID, name: string}> {
 
         return this.cardListRepository.get(cardListId).then((cardList) => {
+            if (!cardList) {
+                return Promise.reject(new Error("The card-list is not exist"));
+            }
 
             cardList.name = newName;
 
