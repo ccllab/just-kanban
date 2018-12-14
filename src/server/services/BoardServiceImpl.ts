@@ -5,7 +5,7 @@ import {IKanbanBoardRepository, IUserRepository, KanbanBoardEntity, User} from "
 import {BoardMembersInfoDto} from "./dtos/board/BoardMembersInfoDto";
 import {inject, injectable} from "inversify";
 import {TYPES} from "../ioc";
-import {union} from 'lodash';
+import {uniq} from 'lodash';
 import {BoardMemberUpdateDto} from "./dtos/board/BoardMemberUpdateDto";
 import {ObjectID} from "typeorm";
 import * as mongodb from 'mongodb';
@@ -144,10 +144,10 @@ export class BoardServiceImpl implements IBoardService {
 
             board.boardName = dto.boardName;
 
-            dto.admins.insert = union(dto.admins.insert);
-            dto.admins.remove = union(dto.admins.remove);
-            dto.members.insert = union(dto.members.insert);
-            dto.members.remove = union(dto.members.remove);
+            dto.admins.insert = uniq(dto.admins.insert);
+            dto.admins.remove = uniq(dto.admins.remove);
+            dto.members.insert = uniq(dto.members.insert);
+            dto.members.remove = uniq(dto.members.remove);
 
             /**
              * inner func insert boardId to user.
@@ -160,7 +160,7 @@ export class BoardServiceImpl implements IBoardService {
                 for (let userId of userIds) {
                     let user = await this.userRepository.getBy({userId});
                     user.boardIds.push(boardObjId); // todo use any, so... lol
-                    user.boardIds = union(user.boardIds);
+                    user.boardIds = uniq(user.boardIds);
 
                     this.userRepository.update(user).catch(err => {
                         throw err;
@@ -174,12 +174,19 @@ export class BoardServiceImpl implements IBoardService {
             await insertBoardIdToUser(dto.admins.insert, board.admins);
             await insertBoardIdToUser(dto.members.insert, board.memberIds);
 
+            // push admins' user id to memberIds
+            for (let userId of dto.admins.insert) {
+                let user = await this.userRepository.getBy({userId});
+                board.memberIds.push(user._id);
+                board.memberIds = uniq(board.memberIds);
+            }
+
             // get users that remove from this board(both admins and members)
             let userRemoving = dto.admins.remove.intersect(dto.members.remove);
             for (let userId of userRemoving) {
                 let user = await this.userRepository.getBy({userId});
                 user.boardIds = user.boardIds.objectIdRemove(boardId);
-                user.boardIds = union(user.boardIds);
+                user.boardIds = uniq(user.boardIds);
 
                 this.userRepository.update(user).catch(err => {
                     throw err;
@@ -197,8 +204,8 @@ export class BoardServiceImpl implements IBoardService {
                 board.memberIds = board.memberIds.objectIdRemove(user._id);
             }
 
-            board.admins = union(board.admins);
-            board.memberIds = union(board.memberIds);
+            board.admins = uniq(board.admins);
+            board.memberIds = uniq(board.memberIds);
             let updated = await this.boardRepository.update(board);
 
             return this.getBoardInfo(updated._id);
