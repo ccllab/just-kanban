@@ -21,7 +21,12 @@ module.exports = merge(common, {
         progress: true,
         stats: 'errors-only',
         host: 'localhost',
-        port: '8080',
+        port: '8081',
+        proxy: {
+            '/api': {
+                target: 'http://localhost:8080'
+            }
+        },
         watchOptions: {
             poll: false,
         }

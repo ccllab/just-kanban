@@ -5,11 +5,10 @@
                 Board List
             </div>
             <div class="list">
-                <router-link class="item" v-for="board in boardList" :key="board.name" tag="div" :to="{name:'Board', params: {boardId: board._id}}">
-                    <div class="boardTitle">{{board.name}}</div>
+                <router-link class="item" v-for="board in boardList" :key="board._id" tag="div" :to="{name:'Board', params: {boardId: board._id}}">
+                    <div class="boardTitle">{{board.boardName}}</div>
                     <div class="permissionIcon">
-                        <i class="fas fa-user-secret" v-if="board.isCreator"></i>
-                        <i class="fas fa-user-edit" v-if="board.isCreator || board.isAdmin"></i>
+                        <i class="fas fa-user-edit" v-if="board.isAdmin"></i>
                     </div>
                 </router-link>
                 <div class="item addBoard" @click.stop="showBoardCreator = true">
@@ -25,10 +24,13 @@
 import {Component, Prop, Vue} from 'vue-property-decorator';
 import { Getter, Action } from 'vuex-class'
 
-import gTypes from '../store/boards/getters'
-import aTypes from '../store/boards/actions'
-import BoardCreator from './BoardCreator.vue';
-import { Board } from '../store/boards/types';
+import { Board } from '../models/Board.model'
+import BoardCreator from './BoardCreator.vue'
+import { 
+    types as BoardTypes, 
+    GetBoardListFunc,
+    BoardList as BoardListType 
+} from '../store/board/types'
 
 @Component({
     components: {
@@ -36,8 +38,8 @@ import { Board } from '../store/boards/types';
     }
 })
 export default class BoardList extends Vue {
-    @Getter(gTypes.BOARD_LIST) boardList: Board[]
-    @Action(aTypes.GET_BOARD_LIST) getBoardList
+    @Getter(BoardTypes.BOARD_LIST) boardList: BoardListType
+    @Action(BoardTypes.GET_BOARD_LIST) getBoardList: GetBoardListFunc
 
     public showBoardCreator: boolean = false;
     

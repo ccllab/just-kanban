@@ -8,7 +8,10 @@ import { mutations } from './mutations'
 
 const state: BoardState = {
   boardList: [],
-  currentBoard: null
+  displayedBoard: null,
+  cardLists: [],
+  displayedCard: null,
+  queryedUser: null
 }
 
 export const boards: Module<BoardState, RootState> = {

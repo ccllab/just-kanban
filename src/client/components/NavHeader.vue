@@ -3,7 +3,7 @@
     <div class="container">
       <router-link to="/" class="signlink">Just Kanban</router-link>
       <div class="ctrlBtns">
-        <BoardsCtrlBtn class="boardCtrlBtn" />
+        <BoardsCtrlBtn class="boardCtrlBtn" v-if="isLogin"/>
         <UserCtrlBtn class="userCtrlBtn" />
       </div>
     </div>
@@ -12,6 +12,9 @@
 
 <script lang="ts">
 import {Component, Prop, Vue} from 'vue-property-decorator';
+import { Getter } from 'vuex-class'
+
+import { types as authTypes } from '../store/auth/types'
 import BoardsCtrlBtn from './BoardsCtrlBtn.vue'
 import UserCtrlBtn from './UserCtrlBtn.vue'
 
@@ -22,7 +25,7 @@ import UserCtrlBtn from './UserCtrlBtn.vue'
   }
 })
 export default class NavHeader extends Vue {
-
+  @Getter(authTypes.IS_LOGIN) isLogin: boolean
 }
 </script>
 

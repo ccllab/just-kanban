@@ -1,20 +1,24 @@
 <template>
     <div id="app">
+        <ErrorHintBlock />
         <NavHeader class="navHeader"/>
         <router-view class="viewContainer"/>
     </div>
 </template>
 
 <script lang="ts">
-    import {Component, Vue} from 'vue-property-decorator';
+    import { Component, Vue } from 'vue-property-decorator';
+    
     import NavHeader from './components/NavHeader.vue';
+    import ErrorHintBlock from './components/ErrorHintBlock.vue'
 
     /**
      * Vue app
      */
     @Component({
         components: {
-            NavHeader
+            NavHeader,
+            ErrorHintBlock
         },
     })
     export default class App extends Vue {
@@ -22,7 +26,6 @@
          * Set up config after creat App
          */
         public created(): void {
-            console.log(this.$store)
             this.$cookies.set('vue-cookie-test', 'fuckyouass');
         }
     }
@@ -34,7 +37,7 @@
     }
 
     a {
-        text-decoration: none;
+        text-decoration: none!important;
         color: #17394d;
     }
 
@@ -67,6 +70,17 @@
         .viewContainer {
             flex-grow: 1;
             height: 100%;
+            overflow: hidden;
         }
+    }
+
+    .container {
+        width: auto;
+        max-width: none;
+    }
+
+    .btn-primary {
+        font-weight: bold;
+        background-color: #2A92BF;
     }
 </style>

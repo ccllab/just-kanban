@@ -1,6 +1,6 @@
 import { Module } from 'vuex'
 
-import { AuthState, User } from './types'
+import { AuthState } from './types'
 import { RootState } from '../types'
 import { actions } from './actions'
 import { getters } from './getters'
@@ -8,8 +8,7 @@ import { mutations } from './mutations'
 
 const state: AuthState = {
   user: null,
-  isAuthed: false,
-  token: null
+  isAuthenticated: false
 }
 
 export const auth: Module<AuthState, RootState> = {

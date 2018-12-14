@@ -2,22 +2,23 @@
     <div id="userCtrlBtn">
         <div class="container" @click="iconBtnClick">
             <div class="iconBtn">
-                    <span>K</span>
+                    <span v-if="isLogin">{{ iconName }}</span>
+                    <i class="far fa-address-book" v-if="!isLogin"></i>
             </div>
             <div class="list" v-if="showMenu">
-                <router-link :to="{name: 'Login'}">
+                <router-link :to="{name: 'Login'}" v-if="!isLogin">
                     <div class="item">
                         <i class="fas fa-user"></i>
                         Login
                     </div>
                 </router-link>
-                <router-link :to="{name: 'SignUp'}">
+                <router-link :to="{name: 'SignUp'}" v-if="!isLogin">
                     <div class="item">
                         <i class="fas fa-book-reader"></i>
                         Sign Up
                     </div>
                 </router-link>
-                <div class="item">
+                <div class="item" v-if="isLogin" @click="logoutClick">
                     <i class="fas fa-sign-out-alt"></i>
                     Logout
                 </div>
@@ -27,15 +28,32 @@
 </template>
 
 <script lang="ts">
-import {Component, Prop, Vue} from 'vue-property-decorator';
+import { Component, Prop, Vue } from 'vue-property-decorator';
+import { Getter, Action } from 'vuex-class'
+
+import { types as authTypes, LogoutFunc } from '../store/auth/types'
+import { User } from '../models/User.model'
 
 @Component
 export default class UserCtrlBtn extends Vue {
+    @Getter(authTypes.IS_LOGIN) isLogin: boolean
+    @Getter(authTypes.USER) user: User
+    @Action(authTypes.AUTH_LOGOUT) logout: LogoutFunc
+
     public showMenu: boolean = false;
     public isClicked: boolean = false;
 
+    get iconName(): string {
+        return this.isLogin ? this.user.username.slice(0, 2).toUpperCase() : '';
+    }
+
     public created(): void {
         document.addEventListener('click', this.documentClick);
+    }
+
+    public logoutClick() {
+        this.logout()
+        this.$router.push("/")
     }
 
     public iconBtnClick():void {

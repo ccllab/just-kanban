@@ -59,6 +59,7 @@ $approved: #00B961;
     padding: 5px;
     transition: $ease-out;
     background: #dfe3e6;
+    -webkit-user-select: none;
 
     &.is-moving {
         transform: rotate(4deg) scale(1.1);
@@ -89,6 +90,7 @@ $approved: #00B961;
     height: 100%;
     display: flex;
     flex-direction: column;
+    flex-shrink: 0;
 
     .drag-column-header > h2 {
         width: 100%;
@@ -110,28 +112,28 @@ $approved: #00B961;
         }
     }
 
-    &-on-hold {
+    &:nth-child(4n) {
         .drag-column-header,
         .is-moved .card-item {
             background: $on-hold;
         }
     }
 
-    &-in-progress {
+    &:nth-child(4n+1) {
         .drag-column-header,
         .is-moved .card-item {
             background: $in-progress;
         }
     }
 
-    &-needs-review {
+    &:nth-child(4n+2) {
         .drag-column-header,
         .is-moved .card-item {
             background: $needs-review;
         }
     }
 
-    &-approved {
+    &:nth-child(4n+3) {
         .drag-column-header,
         .is-moved .card-item {
             background: $approved;

@@ -2,17 +2,26 @@ import Vue from 'vue'
 import Vuex, { StoreOptions } from 'vuex'
 
 import { RootState } from './types'
+import { mutations } from './mutations'
+import { getters } from './getters'
+import { actions } from './actions'
 import { auth } from './auth'
-import { boards } from './boards'
-import { cards } from './cards'
+import { boards } from './board'
 
 Vue.use(Vuex)
 
+const state: RootState = {
+  error: ''
+}
+
 const store: StoreOptions<RootState> = {
+  state,
+  getters,
+  actions,
+  mutations,
   modules: {
     auth,
-    boards,
-    cards
+    boards
   },
   strict: true
 }

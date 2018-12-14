@@ -1,21 +1,14 @@
 import { MutationTree } from 'vuex'
 
-import { AuthState, User, MutationsTypes } from './types'
-
-const types: MutationsTypes = {
-  SET_USER: 'setUser',
-  SET_TOKEN: 'setToken'
-}
-
-export default types
+import { AuthState, types } from './types'
+import { User } from '../../models/User.model'
 
 export const mutations: MutationTree<AuthState> = {
   [types.SET_USER](state, payload: User): void {
-    state.isAuthed = !!payload
-    state.user = payload
+    state.user = payload ? payload : null
   },
 
-  [types.SET_TOKEN](state, payload: string): void {
-    state.token = payload ? payload : null
+  [types.SET_IS_AUTHENTICATED](state): void {
+    state.isAuthenticated = true
   }
 }

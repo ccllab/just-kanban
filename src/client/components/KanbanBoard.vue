@@ -1,33 +1,49 @@
 <template>
     <div id="kanbanBoard" v-if="board">
         <div class="boardHeader">
-            <div class="boardName">{{ board.name }}</div>
-            <router-link :to="{name: 'BoardConfig'}" class="config">
+            <div class="boardName">{{ board.boardName }}</div>
+            <router-link :to="{name: 'BoardConfig'}" class="config" v-if="isAdmin">
                 <i class="fas fa-cog"></i>
             </router-link>
-            <div class="memberList">
-                <div class="member">K</div>
-                <div class="member">J</div>
-                <div class="member add">
-                    <i class="fas fa-user-plus"></i>
+            <div class="memberList" >
+                <div class="member" 
+                    v-for="member in board.members" 
+                    :key="member._id">
+                    {{ member.username.slice(0, 2).toUpperCase() }}    
                 </div>
             </div>
         </div>
         <div class="drag-container">
             <div class="drag-list">
-                <div v-for="stage in board.stages" class="drag-column" :class="{['drag-column-' + stage]: true}" :key="stage">
+                <div class="drag-column" 
+                    :class="{['drag-column-' + index]: true}"
+                    v-for="(list, index) in cardLists"
+                    :key="list._id">
                     <span class="drag-column-header">
                         <h2>
-                            <input class="stageName" type="text" :value="stage" placeholder="Enter stage title...">
-                            <router-link class="newCard" :to="{name: 'NewCard'}">+</router-link>
+                            <input class="stageName" type="text" :value="list.name" placeholder="Enter stage title...">
+                            <router-link class="newCard" 
+                                :to="{name: 'NewCard', params: { listId: list._id }}" 
+                                v-if="isAdmin">+</router-link>
                         </h2>
                     </span>
-                    <ul class="drag-inner-list" ref="list" :data-status="stage">
-                        <router-link tag="li" class="drag-item" v-for="block in cardsByStages(stage)" :data-block-id="block._id" :key="block._id" :to="{name: 'CardEdit', params: {cardId: block._id}}">
-                            <BoardCard :boardCard="block"></BoardCard>
+                    <ul class="drag-inner-list" 
+                        ref="list" 
+                        :data-status="list.name" 
+                        :data-list-id="list._id">
+                        <router-link 
+                            tag="li" 
+                            class="drag-item" 
+                            v-for="card in list.cards" 
+                            :data-card-id="card._id"
+                            :data-is-assigned="isAssignedCard(card)"
+                            :key="card._id" 
+                            :to="{name: 'CardEdit', params: { listId: list._id, cardId: card._id}}">
+                            <BoardCard :card="card"></BoardCard>
                         </router-link>
                     </ul>
                 </div>
+                <CardListCreator v-if="isAdmin"/>
             </div>
         </div>
         <router-view />
@@ -41,39 +57,68 @@
     import { Getter, Action } from 'vuex-class'
 
     import BoardCard from './BoardCard.vue';
-    import board_aTypes from '../store/boards/actions'
-    import board_gTypes from '../store/boards/getters'
-    import card_gTypes from '../store/cards/getters'
-    import card_aTypes from '../store/cards/actions'
-    import { Board } from '../store/boards/types'
-    import { Card } from '../store/cards/types'
+    import CardListCreator from './CardListCreator.vue'
+    import { Board } from '../models/Board.model'
+    import { Card } from '../models/Card.model'
+    import { User } from '../models/User.model'
+    import { types as authTypes } from '../store/auth/types'
+    import { 
+        types as boardTypes, 
+        GetBoardInfoFunc, 
+        GetCardListsFunc, 
+        IsAssignedCardFunc,
+        DragCardFunc,
+        CardLists
+    } from '../store/board/types'
 
     /**
      * The KanbanBoard
      */
     @Component({
         components: {
-            BoardCard
+            BoardCard,
+            CardListCreator
         }
     })
     export default class KanbanBoard extends Vue {
-        @Getter(board_gTypes.CURRENT_BOARD) board: Board
-        @Getter(card_gTypes.CARD_LIST_BY_STAGE) cardsByStages: (stage: string) => Card[]
-        @Action(board_aTypes.GET_CURRENT_BOARD) getCurrentBoard
-        @Action(card_aTypes.UPDATE_CARD_STAGE) updateCardStage
+        @Getter(boardTypes.CURRENT_BOARD) board: Board
+        @Getter(authTypes.USER) user: User
+        @Getter(boardTypes.IS_ADMIN) isAdmin: boolean
+        @Getter(boardTypes.CARD_LISTS) cardLists: CardLists
+        @Getter(boardTypes.IS_ASSIGNED_CARD) isAssignedCard: IsAssignedCardFunc
+        @Action(boardTypes.GET_BOARD_INFO) getBoardInfo: GetBoardInfoFunc
+        @Action(boardTypes.GET_CARD_LISTS) getCardLists: GetCardListsFunc
+        @Action(boardTypes.DRAG_CARD) dragCard: DragCardFunc
         @Prop(String) boardId: string
+
+        public async mounted() {
+            let p1 = this.getBoardInfo(this.boardId)
+            let p2 = this.getCardLists(this.boardId)
+            await Promise.all([p1, p2])
+            this.dragulaInit()
+        }
 
         /**
          * Create Dragula instance and bind events when mounted.
          */
-        public async mounted() {
-            await this.getCurrentBoard(this.boardId)
-            // this.createFakeCard()
+        public dragulaInit() {
+            // buffer of storing source list id of moving card
+            let srcListId: string = ''
+            let boardId = this.boardId
 
             // create Dragula instance
             let drag: Dragula.Drake = Dragula({
-                containers: (this.$refs.list) as Element[]
-            });
+                containers: (this.$refs.list) as Element[],
+                moves: (el: any, source: any, handle, sibling) => {
+                    srcListId = source.dataset.listId
+                    let isAssigned: boolean = el.dataset.isAssigned
+                    if (this.isAdmin || isAssigned) {
+                        return true
+                    } else {
+                        return false
+                    }
+                }
+             });
 
             // bind drag event
             drag.on('drag', (el) => {
@@ -81,16 +126,18 @@
             });
 
             // bind drop event
-            drag.on('drop', (block, list) => {
-                let index;
+            drag.on('drop', async (card, list) => {
+                let dstIndex = 0;
+                let dstListId: string = list.dataset.listId
+                let cardId: string = card.dataset.cardId
 
-                for (index = 0; index < list.children.length; index++) {
-                    if (list.children[index].classList.contains('is-moving')) {
+                for (dstIndex = 0; dstIndex < list.children.length; dstIndex++) {
+                    if (list.children[dstIndex].classList.contains('is-moving')) {
                         break;
                     }
                 }
 
-                this.updateCardStage({cardId: block.dataset.blockId, stage: list.dataset.status})
+                this.dragCard({ srcListId, dstListId, cardId, dstIndex })
             });
 
             // bind dragend event
@@ -139,7 +186,7 @@
                 background-color: rgba(0, 0, 0, 0.4);
                 color: white;
                 border-radius: 5px;
-                margin-right: 20px;
+                margin-left: 10px;
                 cursor: pointer;
 
                 &:hover {
@@ -150,6 +197,7 @@
             .memberList {
                 display: flex;
                 align-items: center;
+                margin-left: 10px;
 
                 .member {
                     width: 26px;

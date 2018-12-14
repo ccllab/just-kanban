@@ -7,10 +7,18 @@
                 </div>
                 <div class="inputList">
                     <div class="inputItem">
-                        <input type="email" id="kanbanEmail" placeholder="Email" v-model="email">
+                        <input type="email" 
+                            id="kanbanEmail" 
+                            placeholder="Email" 
+                            v-model="email"
+                            @keydown.enter="loginEventHandler">
                     </div>
                     <div class="inputItem">
-                        <input type="password" id="kanbanPassword" placeholder="Password" v-model="password">
+                        <input type="password" 
+                            id="kanbanPassword" 
+                            placeholder="Password" 
+                            v-model="password"
+                            @keydown.enter="loginEventHandler">
                     </div>
                 </div>
                 <div class="submitBtn">
@@ -25,22 +33,23 @@
 import { Component, Prop, Vue,  } from 'vue-property-decorator';
 import { Action, Getter, Mutation } from 'vuex-class'
 
-import { LoginParameters } from '../store/auth/types'
-import aTypes from '../store/auth/actions'
+import { LoginFunc, types as authTypes } from '../store/auth/types'
 
 @Component
 export default class LoginView extends Vue {
-    @Action(aTypes.AUTH_LOGIN) login
+    @Action(authTypes.AUTH_LOGIN) login: LoginFunc
 
     public email: string = ''
     public password: string = ''
 
     public async loginEventHandler() {
-        let config = {
+        let result = await this.login({
             email: this.email,
-            password: this.password
-        }
-        let result = await this.login(config)
+            password: this.password,
+            isRememberMe: true
+        })
+
+        result && this.$router.push('/')
     }
 }
 </script>

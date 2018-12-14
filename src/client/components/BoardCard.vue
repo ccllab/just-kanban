@@ -1,26 +1,31 @@
 <template>
-    <div class="card-item">
+    <div class="card-item" :class="{ isCanEdit: isBoardAdmin || isAssigned }">
         <div>
-            {{ boardCard.title }}
+            {{ card.title }}
+            <i class="fas fa-briefcase isAssignedIcon" v-if="isAssigned"></i>
         </div>
     </div>
 </template>
 
 <script lang="ts">
     import {Component, Prop, Vue} from 'vue-property-decorator';
-    import {BoardCardModel} from "../models/BoardCard.model";
-    import { Card } from '../store/cards/types'
+    import { Getter } from 'vuex-class'
 
-    /**
-     * The board card in KanbanBoard
-     */
+    import { Card } from '../models/Card.model'
+    import { 
+        types as boardTypes, 
+        IsAssignedCardFunc,
+    } from '../store/board/types'
+
     @Component
     export default class BoardCard extends Vue {
+        @Getter(boardTypes.IS_ASSIGNED_CARD) isAssignedCard: IsAssignedCardFunc
+        @Getter(boardTypes.IS_ADMIN) isBoardAdmin: boolean
+        @Prop() public card: Card;
 
-        /**
-         * The board card info.
-         */
-        @Prop(Card) public boardCard: Card;
+        get isAssigned(): boolean {
+            return this.isAssignedCard(this.card)
+        }
     }
 </script>
 
@@ -31,6 +36,18 @@
         background: white;
         box-shadow: 1px 2px 10px rgba(0, 0, 0, 0.2);
         border-radius: 2px;
-        cursor: pointer;
+        position: relative;
+
+        &.isCanEdit {
+            cursor: pointer;
+        }
+    }
+
+    .isAssignedIcon {
+        position: absolute;
+        font-size: 22px;
+        right: 0;
+        bottom: 0;
+        transform: translate(10%, 35%);
     }
 </style>

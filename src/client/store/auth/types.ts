@@ -1,30 +1,43 @@
-export interface User {
-  _id: string
-}
+import { User } from '../../models/User.model'
 
 export interface AuthState {
   user: User,
-  isAuthed: boolean,
-  token: string
-}
-
-export interface GettersTypes {
-  USER: string,
-  IS_LOGIN: string
-}
-
-export interface ActionsTypes {
-  AUTH_LOGIN: string,
-  AUTH_LOGOUT: string,
-  AUTH_SIGNUP: string
+  isAuthenticated: boolean
 }
 
 export interface LoginParameters {
-  email: string,
+  email: string
   password: string
+  isRememberMe: boolean
+}
+export interface SignupParameters extends User {
+  password: string
+  confirm: string
 }
 
-export interface MutationsTypes {
-  SET_USER: string,
-  SET_TOKEN: string
+export interface LoginFunc {
+  (param: LoginParameters): Promise<boolean>
+}
+export interface SignupFunc {
+  (param: SignupParameters): Promise<boolean>
+}
+export interface LogoutFunc {
+  (): void
+}
+
+export const types = {
+  // actions
+  AUTH_SIGNUP: 'signup',
+  AUTH_LOGIN: 'login',
+  AUTH_LOGOUT: 'logout',
+  AUTH_INIT: 'authInit',
+
+  // getters
+  USER: 'user',
+  IS_LOGIN: 'isLogin',
+  IS_AUTHENTICATED: 'isAuthenticated',
+
+  // mutations
+  SET_USER: 'setUser',
+  SET_IS_AUTHENTICATED: 'setIsAuthenticated'
 }
