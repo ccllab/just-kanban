@@ -9,7 +9,7 @@ import {
     IKanbanBoardRepository,
     IUserRepository
 } from "../repository";
-import {union} from 'lodash';
+import {uniq} from 'lodash';
 import {CardListAndCardsDto} from "./dtos/cardList/CardListAndCardsDto";
 
 /**
@@ -51,7 +51,7 @@ export class CardListServiceImpl implements ICardListService {
                 }
 
                 board.cardListIds.push(cardList._id);
-                board.cardListIds = union(board.cardListIds);
+                board.cardListIds = uniq(board.cardListIds);
 
                 this.boardRepository.update(board).catch(err => {
                     throw err;
