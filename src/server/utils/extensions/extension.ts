@@ -27,10 +27,12 @@ if (!Array.prototype.remove) {
 if (!Array.prototype.objectIdRemove) {
     Array.prototype.objectIdRemove = function(this: ObjectID[], target: string | ObjectID): Array<ObjectID> {
         for (let objectId of this) {
-            if (objectId.toString() === target) {
+            if (objectId.toString() === target.toString()) {
                 return this.remove(objectId);
             }
         }
+
+        return this;
     };
 }
 
