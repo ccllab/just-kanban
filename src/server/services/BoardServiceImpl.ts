@@ -181,9 +181,8 @@ export class BoardServiceImpl implements IBoardService {
                 board.memberIds = uniq(board.memberIds);
             }
 
-            // get users that remove from this board(both admins and members)
-            let userRemoving = dto.admins.remove.intersect(dto.members.remove);
-            for (let userId of userRemoving) {
+            // get users that remove from this board
+            for (let userId of dto.members.remove) {
                 let user = await this.userRepository.getBy({userId});
                 user.boardIds = user.boardIds.objectIdRemove(boardId);
                 user.boardIds = uniq(user.boardIds);
