@@ -146,4 +146,38 @@ export class CardListServiceImpl implements ICardListService {
 
         return Promise.resolve(results);
     }
+
+    /**
+     * Card drag and drop
+     * @param source The cardList info from source.
+     * @param destination The cardList info from destination.
+     */
+    public async updateCardPosition(
+        source: {_id: ObjectID, cards: Array<ObjectID>},
+        destination: {_id: ObjectID, cards: Array<ObjectID>}): Promise<boolean> {
+
+        let sourceCardList = await this.cardListRepository.get(source._id);
+        let destinationCardList = await this.cardListRepository.get(destination._id);
+
+        if (!sourceCardList) {
+            throw new Error(`The source card-list ${source._id.toString()} is not exist.`);
+        }
+
+        if (!destinationCardList) {
+            throw new Error(`The destination card-list ${destination._id.toString()} is not exist.`);
+        }
+
+        sourceCardList.cardIds = source.cards;
+        destinationCardList.cardIds = destination.cards;
+
+        return this.cardListRepository.update(sourceCardList).then(_ => {
+            return this.cardListRepository.update(destinationCardList).then(_ => {
+                return true;
+            }, err => {
+                throw err;
+            });
+        }, err => {
+            throw err;
+        });
+    }
 }

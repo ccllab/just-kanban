@@ -25,4 +25,13 @@ export interface ICardListService {
      * @param boardId The specified board id
      */
     getCardListsAndCards(boardId: ObjectID): Promise<Array<CardListAndCardsDto>>;
+
+    /**
+     * Card drag and drop
+     * @param source The cardList info from source.
+     * @param destination The cardList info from destination.
+     */
+    updateCardPosition(
+        source: {_id: ObjectID, cards: Array<ObjectID>},
+        destination: {_id: ObjectID, cards: Array<ObjectID>}): Promise<boolean>;
 }

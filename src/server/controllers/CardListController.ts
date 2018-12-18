@@ -117,4 +117,29 @@ export class CardListController extends ApiControllerBase {
             });
         });
     }
+
+    /**
+     * Drag and drop, update card position.
+     * @param res response
+     * @param req request
+     */
+    @httpPost('/drag')
+    private async dragAndDrop(
+        @response() res: express.Response,
+        @request() req: express.Request): Promise<express.Response> {
+
+        if (! await this.isAuthenticated()) {
+            return res.status(401).send('Please login, and try again.');
+        }
+
+        let {source, destination} = req.body;
+
+        return this.cardListService.updateCardPosition(source, destination).then(isSuccess => {
+            return res.status(200);
+        }, err => {
+            return res.status(400).send({
+                error: err.message
+            });
+        });
+    }
 }
