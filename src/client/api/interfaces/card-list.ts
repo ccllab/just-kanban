@@ -7,7 +7,7 @@ export interface CardChangeStatusRequest {
     _id: string,
     cards: string[]
   },
-  distination: {
+  destination: {
     _id: string,
     cards: string[]
   }
