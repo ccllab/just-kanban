@@ -195,7 +195,7 @@ export const actions: ActionTree<BoardState, RootState> = {
         _id: param.srcListId,
         cards: state.cardLists.find(list => list._id === param.srcListId).cards.map(card => card._id)
       },
-      distination: {
+      destination: {
         _id: param.dstListId,
         cards: state.cardLists.find(list => list._id === param.dstListId).cards.map(card => card._id)
       }
