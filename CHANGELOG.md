@@ -2,7 +2,7 @@
 
 ## [Unreleased]
 ### Init project - Oct 11, 2018
-- [commit link](https://github.com/ccllab/just-kanban/commits/develop?after=37fe38e8a2b2af260e91c52a8ccc34b3be741ec4+174)
+- [commit link](https://github.com/ccllab/just-kanban/commit/cd90da5a41b88e13b400418fe9468c272fd28f97)
 
 ### 後端 API 完成 - Dec 22, 2018
 - [commit link](https://github.com/ccllab/just-kanban/commit/284b37fa09e9f5c8ad8e009dd0aadd751c911cfc)
