@@ -1,5 +1,5 @@
-import { BaseResponseData } from './base'
-import { User } from '../../models/User.model'
+import { BaseResponseData } from './base';
+import { User } from '../../models/User.model';
 
 export interface SignupRequest extends User {
   password: string
