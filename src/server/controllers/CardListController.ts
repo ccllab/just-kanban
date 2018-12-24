@@ -38,7 +38,9 @@ export class CardListController extends ApiControllerBase {
         let {source, destination} = req.body;
 
         return this.cardListService.updateCardPosition(source, destination).then(isSuccess => {
-            return res.status(200);
+            return res.status(200).send({
+                isSuccess
+            });
         }, err => {
             return res.status(400).send({
                 error: err.message
