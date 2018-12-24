@@ -1,6 +1,5 @@
-import { BaseResponseData } from './base'
-import { User } from '../../models/User.model'
-import { Card } from '../../models/Card.model'
+import { BaseResponseData } from './base';
+import { Card } from '../../models/Card.model';
 
 export interface CardChangeStatusRequest {
   source: {

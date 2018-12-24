@@ -1,4 +1,4 @@
-import { BaseResponseData } from './base'
+import { BaseResponseData } from './base';
 
 export interface CreateCardRequest {
   listId: string,

@@ -1,6 +1,6 @@
-import { BaseResponseData } from './base'
-import { Board } from '../../models/Board.model'
-import { userId } from '../../models/User.model'
+import { BaseResponseData } from './base';
+import { Board } from '../../models/Board.model';
+import { userId } from '../../models/User.model';
 
 export interface CreateBoardRequest {
   boardName: string
