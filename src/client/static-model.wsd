@@ -1,0 +1,114 @@
+@startuml 前端類別圖
+package View <<Folder>> {
+  class LandingView {
+    -loginRouteBtn
+    -signupRouteBtn
+    +loginRouteBtnClick()
+    +signupRouteBtnClick()
+  }
+  class LoginView {
+    -loginBtn
+    +loginBtnClick()
+  }
+  class SignupView {
+    -signupBtn
+    +signupBtnClick()
+  }
+  class BoardListView {
+    -boardList
+    -createBoardBtn
+    +boardClick()
+    +createBoardClick()
+  }
+  class BoardView {
+    -cardList
+    -newCardBtn
+    -addMemberBtn
+    +newCardBtnClick()
+    +cardEditClick()
+    +boardEditClick()
+    +boardAddMemberClick()
+    +cardStatusChange()
+  }
+  class HeaderComponent {
+    +logout()
+    +boardListRouteBtnClick()
+    +createBoardClick()
+  }
+
+  AppViewContainer *-- HeaderComponent
+  HeaderComponent --> BoardListView
+  AppViewContainer *-- RouterViewContainer
+  RouterViewContainer *-- LandingView
+  RouterViewContainer *-- LoginView
+  RouterViewContainer *-- SignupView
+  RouterViewContainer *-- BoardListView
+  RouterViewContainer *-- BoardView
+  LandingView -> LoginView
+  SignupView <- LandingView
+  LoginView --> BoardListView
+  SignupView --> BoardListView
+  BoardListView -> BoardView
+
+  LoginView --> Stores.AuthStore
+  SignupView --> Stores.AuthStore
+  BoardListView --> Stores.BoardStore
+  BoardView --> Stores.BoardStore
+  BoardView --> Stores.CardStore
+}
+
+package Stores <<Folder>> {
+  class AuthStore {
+    +user
+    +token
+    +login()
+    +logout()
+    +signup()
+  }
+  class BoardStore {
+    +boardList
+    +currentBoard
+    +getBoardList()
+    +getBoard()
+    +createBoard()
+    +editBoard()
+    +addMember()
+  }
+  class CardStore {
+    +cardList
+    +addCard()
+    +editCard()
+    +changeCardStatus()
+    +assignMember()
+  }
+
+  AuthStore --> BoardStore
+  AuthStore --> CardStore
+  BoardStore -> CardStore
+
+  ApiHelper.AuthApi <-- AuthStore
+  ApiHelper.BoardApi <-- BoardStore
+  ApiHelper.CardApi <-- CardStore
+}
+
+package ApiHelper <<Folder>> {
+  class AuthApi {
+    +login()
+    +logout()
+    +signup()
+  }
+  class BoardApi {
+    +createBoard()
+    +getBoardList()
+    +getBoardInfo()
+    +editBoard()
+    +addMember()
+  }
+  class CardApi {
+    +createCard()
+    +editCard()
+    +changeCardStatus()
+    +assignMember()
+  }
+}
+@enduml

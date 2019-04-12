@@ -1,41 +1,35 @@
 $ease-out: all .3s cubic-bezier(0.23, 1, 0.32, 1);
-
-ul.drag-list, ul.drag-inner-list {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-}
+$on-hold: #FB7D44;
+$in-progress: #2A92BF;
+$needs-review: #F4CE46;
+$approved: #00B961;
 
 .drag-container {
     max-width: 1000px;
-    margin: 20px auto;
+    margin: 0px auto;
+    flex-grow: 1;
+    display: flex;
+    height: 100%;
+    flex-direction: column;
 }
 
 .drag-list {
     display: flex;
     align-items: flex-start;
+    height: 100%;
+    position: relative;
+    flex-grow: 1;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow-y: scroll;
 
     @media (max-width: 690px) {
         display: block;
     }
-}
 
-.drag-column {
-    flex: 1;
-    margin: 0 10px;
-    position: relative;
-    background: rgba(black, 0.2);
-    overflow: hidden;
-
-    @media (max-width: 690px) {
-        margin-bottom: 30px;
-    }
-
-    h2 {
-        font-size: 0.8rem;
-        margin: 0;
-        text-transform: uppercase;
-        font-weight: 600;
+    &::-webkit-scrollbar {
+        display: none;
     }
 }
 
@@ -44,71 +38,120 @@ ul.drag-list, ul.drag-inner-list {
     align-items: center;
     justify-content: space-between;
     padding: 10px;
+    height: 40px;
+    flex-shrink: 0;
 }
 
 .drag-inner-list {
     min-height: 50px;
-    color: white;
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    flex-grow: 1;
+    overflow-y: scroll;
+
+    &::-webkit-scrollbar {
+        display: none;
+    }
 }
 
 .drag-item {
-    padding: 10px;
-    margin: 10px;
-    height: 100px;
-    background: rgba(black, 0.4);
+    padding: 5px;
     transition: $ease-out;
+    background: #dfe3e6;
+    -webkit-user-select: none;
 
     &.is-moving {
-        transform: scale(1.5);
-        background: rgba(black, 0.8);
+        transform: rotate(4deg) scale(1.1);
+        background: none;
     }
 
+    &:first-child {
+        padding-top: 10px;
+    }
+
+    &:last-child {
+        padding-bottom: 10px;
+        border-bottom-left-radius: 5px;
+        border-bottom-right-radius: 5px;
+    }
 }
 
 .drag-header-more {
     cursor: pointer;
 }
 
-.drag-options {
-    position: absolute;
-    top: 44px;
-    left: 0;
-    width: 100%;
+.drag-column {
+    width: 300px;
+    margin: 0 10px;
+    position: relative;
+    overflow: hidden;
+    border-radius: 5px;
     height: 100%;
-    padding: 10px;
-    transform: translateX(100%);
-    opacity: 0;
-    transition: $ease-out;
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
 
-    &.active {
-        transform: translateX(0);
-        opacity: 1;
+    .drag-column-header > h2 {
+        width: 100%;
+        margin: 0;
+        text-transform: uppercase;
+        font-size: 14px;
+        line-height: 20px;
+        font-weight: 600;
+
+        .stageName {
+            background-color: inherit;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .newCard {
+            float: right;
+            cursor: pointer;
+        }
     }
 
-    &-label {
-        display: block;
-        margin: 0 0 5px 0;
-
-        input {
-            opacity: 0.6;
+    &:nth-child(4n) {
+        .drag-column-header,
+        .is-moved .card-item {
+            background: $on-hold;
         }
+    }
 
-        span {
-            display: inline-block;
-            font-size: 0.9rem;
-            font-weight: 400;
-            margin-left: 5px;
+    &:nth-child(4n+1) {
+        .drag-column-header,
+        .is-moved .card-item {
+            background: $in-progress;
         }
+    }
+
+    &:nth-child(4n+2) {
+        .drag-column-header,
+        .is-moved .card-item {
+            background: $needs-review;
+        }
+    }
+
+    &:nth-child(4n+3) {
+        .drag-column-header,
+        .is-moved .card-item {
+            background: $approved;
+        }
+    }
+
+    @media (max-width: 690px) {
+        margin-bottom: 30px;
     }
 }
 
 /* Dragula CSS  */
 
 .gu-mirror {
-  position: fixed !important;
-  margin: 0 !important;
-  z-index: 9999 !important;
-  opacity: 0.8;
+    position: fixed !important;
+    margin: 0 !important;
+    z-index: 9999 !important;
+    opacity: 0.8;
     list-style-type: none;
 }
 
@@ -124,5 +167,7 @@ ul.drag-list, ul.drag-inner-list {
 }
 
 .gu-transit {
-  opacity: 0.2;
+    opacity: 0.5;
+    transform: none!important;
+    background-color: #dfe3e6!important;
 }

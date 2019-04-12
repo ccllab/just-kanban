@@ -1,5 +1,7 @@
 import * as express from 'express';
-import {IAuthService} from "..";
+import AuthError from "../../services/exceptions/AuthError";
+import {IAuthService} from "../../services";
+import {ILogger} from "../../utils";
 import {inject, injectable} from "inversify";
 import {interfaces} from 'inversify-express-utils';
 import {Principal} from "./Principal";
@@ -18,6 +20,11 @@ export class AppAuthProvider implements interfaces.AuthProvider {
     @inject(TYPES.IAuthService) private readonly authService: IAuthService;
 
     /**
+     * Logger
+     */
+    @inject(TYPES.ILogger) private readonly logger: ILogger;
+
+    /**
      * Get user principal by authToken, and refreshToken.
      * @param req request
      * @param res response
@@ -30,21 +37,24 @@ export class AppAuthProvider implements interfaces.AuthProvider {
         next: express.NextFunction): Promise<interfaces.Principal> {
 
         const authToken: string = req.header('x-auth');
-        const refreshToken: string = req.header('x-auth-refresh');
+        const refreshToken: string = req.header('x-refresh');
 
         return this.authService.getUserAuthByToken(authToken, refreshToken).then((userAuthDto) => {
 
             // set header after get User entity.
             res.set({
                 'x-auth': userAuthDto.accessToken,
-                'x-auth-refresh': userAuthDto.userDetail.refreshToken
+                'x-refresh': userAuthDto.userDetail.refreshToken
             });
 
             return new Principal(userAuthDto.userDetail);
         }).catch((err) => {
 
-            // todo For now return an undefined user for principal, if undefined, then isAuthenticated is false.
-            // todo This will hide error message.
+            // only log unexpected error
+            if (!(err instanceof AuthError)) {
+                this.logger.error(err);
+            }
+
             return new Principal(undefined);
         });
     }

@@ -13,6 +13,10 @@ const registerRepository = (container: Container) => {
 
     // bind Repository
     container.bind<Repository.IUserRepository>(TYPES.IUserRepository).to(Repository.UserRepositoryImpl);
+    container.bind<Repository.IBoardCardRepository>(TYPES.IBoardCardRepository).to(Repository.BoardCardRepositoryImpl);
+    container.bind<Repository.IKanbanBoardRepository>(TYPES.IKanbanBoardRepository).to(Repository.KanbanBoardRepositoryImpl);
+    container.bind<Repository.ICardCommentRepository>(TYPES.ICardCommentRepository).to(Repository.CardCommentRepository);
+    container.bind<Repository.ICardListRepository>(TYPES.ICardListRepository).to(Repository.CardListRepository);
 };
 
 export default registerRepository;

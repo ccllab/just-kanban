@@ -51,7 +51,7 @@ export abstract class GenericMongoRepository<TEntity extends DeepPartial<TEntity
             entity.updatedAt = this.executionContext.dateNow;
         }
 
-        return super.add(entity);
+        return super.update(entity);
     }
 
     /**
