@@ -1,11 +1,10 @@
-import { ActionTree } from 'vuex'
-import * as _ from 'lodash'
-
+import { ActionTree } from 'vuex';
+import * as _ from 'lodash';
 import { Board } from '../../models/Board.model';
 import { Card } from '../../models/Card.model';
-import { User } from '../../models/User.model'
-import { BoardApi, CardListApi, CardApi, AuthApi } from '../../api'
-import { RootState } from '../types'
+import { User } from '../../models/User.model';
+import { BoardApi, CardListApi, CardApi, AuthApi } from '../../api';
+import { RootState } from '../types';
 import { 
   BoardState,
   BoardList,
@@ -20,7 +19,7 @@ import {
   CreateCommentParameters,
   addCommentToCurrentCardParameters,
   types
-} from './types'
+} from './types';
 
 export const actions: ActionTree<BoardState, RootState> = {
   /**
@@ -28,15 +27,17 @@ export const actions: ActionTree<BoardState, RootState> = {
    * @param param0 
    */
   async [types.GET_BOARD_LIST]({ commit }): Promise<boolean> {
-    let resData = await BoardApi.getBoardList()
+    let resData = await BoardApi.getBoardList();
 
     if (resData.result) {
-      let boardList: BoardList = resData.array
-      commit(types.SET_BOARD_LIST, boardList)
-      return true
+      let boardList: BoardList = resData.array;
+      commit(types.SET_BOARD_LIST, boardList);
+
+      return true;
     } else {
-      commit(types.SET_BOARD_LIST , [])
-      return false
+      commit(types.SET_BOARD_LIST , []);
+
+      return false;
     }
   },
 
@@ -46,15 +47,17 @@ export const actions: ActionTree<BoardState, RootState> = {
    * @param boardId 
    */
   async [types.GET_BOARD_INFO]({ commit }, boardId: string): Promise<boolean> {
-    let resData = await BoardApi.getBoardInfo(boardId)
+    let resData = await BoardApi.getBoardInfo(boardId);
 
     if (resData.result) {
-      let board: Board = _.pick(resData, ['_id', 'boardName', 'admins', 'members'])
-      commit(types.SET_CURRENT_BOARD, board)
-      return true
+      let board: Board = _.pick(resData, ['_id', 'boardName', 'admins', 'members']);
+      commit(types.SET_CURRENT_BOARD, board);
+
+      return true;
     } else {
-      commit(types.SET_CURRENT_BOARD, null)
-      return false
+      commit(types.SET_CURRENT_BOARD, null);
+
+      return false;
     }
   },
 
@@ -64,14 +67,16 @@ export const actions: ActionTree<BoardState, RootState> = {
    * @param boardName Board Name
    */
   async [types.CREATE_BOARD]({ commit }, boardName: string): Promise<boolean> {
-    let resData = await BoardApi.createBoard({ boardName })
+    let resData = await BoardApi.createBoard({ boardName });
 
     if (resData.result) {
-      let boardListItem: BoardListItem = _.pick(resData, ['_id', 'boardName', 'isAdmin'])
-      commit(types.INSERT_BOARD_TO_LIST, boardListItem)
-      return true
+      let boardListItem: BoardListItem = _.pick(resData, ['_id', 'boardName', 'isAdmin']);
+      commit(types.INSERT_BOARD_TO_LIST, boardListItem);
+
+      return true;
     } else {
-      return false
+
+      return false;
     }
   },
 
@@ -82,14 +87,16 @@ export const actions: ActionTree<BoardState, RootState> = {
    * @param email 
    */
   async [types.QUERY_USER]({ commit }, email: string): Promise<boolean> {
-    let resData = await AuthApi.queryUserInfo({ email })
+    let resData = await AuthApi.queryUserInfo({ email });
 
     if (resData.result) {
-      let user: User = _.pick(resData, ['userId', 'username', 'email'])
-      commit(types.SET_QUERYED_USER, user)
-      return true
+      let user: User = _.pick(resData, ['userId', 'username', 'email']);
+      commit(types.SET_QUERYED_USER, user);
+
+      return true;
     } else {
-      return false
+
+      return false;
     }
   },
 
@@ -109,14 +116,16 @@ export const actions: ActionTree<BoardState, RootState> = {
         insert: _.differenceWith(board.members, state.displayedBoard.members, _.isEqual).map(user => user.userId),
         remove: _.differenceWith(state.displayedBoard.members, board.members, _.isEqual).map(user => user.userId)     
       }
-    })
+    });
 
     if (resData.result) {
-      let _board: Board = _.pick(resData, ['_id', 'boardName', 'admins', 'members'])
-      commit(types.SET_CURRENT_BOARD, _board)
-      return true
+      let _board: Board = _.pick(resData, ['_id', 'boardName', 'admins', 'members']);
+      commit(types.SET_CURRENT_BOARD, _board);
+
+      return true;
     } else {
-      return false
+
+      return false;
     }
   },
 
@@ -126,15 +135,17 @@ export const actions: ActionTree<BoardState, RootState> = {
    * @param boardId 
    */
   async [types.GET_CARD_LISTS]({ commit }, boardId: string): Promise<boolean> {
-    let resData = await CardListApi.getCardLists(boardId)
+    let resData = await CardListApi.getCardLists(boardId);
 
     if (resData.result) {
-      let cardLists: CardLists = resData.array
-      commit(types.SET_CARD_LISTS, cardLists)
-      return true
+      let cardLists: CardLists = resData.array;
+      commit(types.SET_CARD_LISTS, cardLists);
+
+      return true;
     } else {
-      commit(types.SET_CARD_LISTS, [])
-      return false
+      commit(types.SET_CARD_LISTS, []);
+
+      return false;
     }
   },
 
@@ -144,20 +155,22 @@ export const actions: ActionTree<BoardState, RootState> = {
    * @param cardListName 
    */
   async [types.CREATE_CARD_LIST]({ state, commit, dispatch }, cardListName: string): Promise<boolean> {
-    let currentBoarId = state.displayedBoard._id
-    let resData = await CardListApi.createCardList(currentBoarId, { cardListName })
+    let currentBoarId = state.displayedBoard._id;
+    let resData = await CardListApi.createCardList(currentBoarId, { cardListName });
 
     if (resData.result) {
       let cardList: CardList = {
         ..._.pick(resData, ['_id', 'name']),
         cards: []
-      }
-      commit(types.ADD_NEW_CARD_LIST, cardList)
-      return true
+      };
+      commit(types.ADD_NEW_CARD_LIST, cardList);
+
+      return true;
     } else {
       // 新增卡片列表失敗，重新向 Server 取得卡片列表及卡片資料
-      dispatch(types.GET_CARD_LISTS, currentBoarId)
-      return false
+      dispatch(types.GET_CARD_LISTS, currentBoarId);
+
+      return false;
     }
   },
 
@@ -167,18 +180,20 @@ export const actions: ActionTree<BoardState, RootState> = {
    * @param cardId 
    */
   async [types.GET_CARD_INFO]({ commit }, cardId: string): Promise<boolean> {
-    let resData = await CardApi.getCardInfo(cardId)
+    let resData = await CardApi.getCardInfo(cardId);
 
     if (resData.result) {
       let card: Card = {
         _id: cardId,
         ..._.pick(resData, ['title', 'description', 'assignedUser', 'comments'])
-      }
-      commit(types.SET_CURRENT_CARD, card)
-      return true
+      };
+      commit(types.SET_CURRENT_CARD, card);
+
+      return true;
     } else {
-      commit(types.SET_CURRENT_CARD, null)
-      return false
+      commit(types.SET_CURRENT_CARD, null);
+
+      return false;
     }
   },
 
@@ -188,8 +203,8 @@ export const actions: ActionTree<BoardState, RootState> = {
    * @param param 
    */
   async [types.DRAG_CARD]({ state, commit, dispatch }, param: DragCardParameters): Promise<boolean> {
-    commit(types.UPDATE_CARD_LISTS, param)
-    let currentBoarId = state.displayedBoard._id
+    commit(types.UPDATE_CARD_LISTS, param);
+    let currentBoarId = state.displayedBoard._id;
     let resData = await CardListApi.cardChangeStatus({
       source: {
         _id: param.srcListId,
@@ -199,14 +214,16 @@ export const actions: ActionTree<BoardState, RootState> = {
         _id: param.dstListId,
         cards: state.cardLists.find(list => list._id === param.dstListId).cards.map(card => card._id)
       }
-    })
+    });
 
     if (resData.result) {
-      return true
+
+      return true;
     } else {
       // 新增卡片列表失敗，重新向 Server 取得卡片列表及卡片資料
-      dispatch(types.GET_CARD_LISTS, currentBoarId)
-      return false
+      dispatch(types.GET_CARD_LISTS, currentBoarId);
+
+      return false;
     }
   },
 
@@ -216,20 +233,22 @@ export const actions: ActionTree<BoardState, RootState> = {
    * @param payload 
    */
   async [types.CREATE_CARD]({ commit }, param: CreateCardParameters): Promise<boolean> {
-    let resData = await CardApi.createCard(param)
+    let resData = await CardApi.createCard(param);
 
     if (resData.result) {
       let card: Card = {
         ..._.pick(resData, ['_id', 'title', 'assignedUser'])
-      }
+      };
       let mutationsParam: AddNewCarParameters = {
         listId: param.listId,
         card
-      }
-      commit(types.ADD_NEW_CARD, mutationsParam)
-      return true
+      };
+      commit(types.ADD_NEW_CARD, mutationsParam);
+
+      return true;
     } else {
-      return false
+
+      return false;
     }
   },
 
@@ -240,21 +259,22 @@ export const actions: ActionTree<BoardState, RootState> = {
    * @param param 
    */
   async [types.UPDATE_CARD]({ commit }, param: UpdateCardParameters): Promise<boolean> {
-    let reqParam = _.pick(param, ['listId', 'title', 'description', 'assignedUserId'])
-    let resData = await CardApi.updateCard(param._id, reqParam)
+    let reqParam = _.pick(param, ['listId', 'title', 'description', 'assignedUserId']);
+    let resData = await CardApi.updateCard(param._id, reqParam);
 
     if (resData.result) {
-      let card: Card = _.pick(resData, ['_id', 'title', 'description', 'assignedUser'])
+      let card: Card = _.pick(resData, ['_id', 'title', 'description', 'assignedUser']);
       let mutationsParam: updateCardInListParameters = {
         listId: param.listId,
         cardId: param._id,
         title: param.title,
         assignedUserId: param.assignedUserId
-      }
-      commit(types.SET_CURRENT_CARD, card)
-      commit(types.UPDATE_CARD_IN_LIST, mutationsParam)
+      };
+      commit(types.SET_CURRENT_CARD, card);
+      commit(types.UPDATE_CARD_IN_LIST, mutationsParam);
     } else {
-      return false
+
+      return false;
     }
   },
 
@@ -266,17 +286,19 @@ export const actions: ActionTree<BoardState, RootState> = {
   async [types.CREATE_COMMENT]({ commit }, param: CreateCommentParameters): Promise<boolean> {
     let resData = await CardApi.createCardComment(param.cardId, {
       content: param.content
-    })
+    });
 
     if (resData.result) {
       let mutationsParam: addCommentToCurrentCardParameters = {
         _id: resData._id,
         content: resData.content
-      }
-      commit(types.ADD_COMMENT_TO_CURRENT_CARD, mutationsParam)
-      return true
+      };
+      commit(types.ADD_COMMENT_TO_CURRENT_CARD, mutationsParam);
+
+      return true;
     } else {
-      return false
+
+      return false;
     }
   }
-}
+};

@@ -42,7 +42,7 @@ module.exports = {
             "always"
         ],
         "require-jsdoc": [ // 要求一定要寫 js document
-            "error",
+            "warn",
             {
                 "require": {
                     "FunctionDeclaration": true,
@@ -54,7 +54,7 @@ module.exports = {
             }
         ],
         "valid-jsdoc": [ // 檢驗 js document 格式
-            "error",
+            "warn",
             {
                 "requireReturnType": false, // 允許不寫 return 的型別
                 "requireParamType": false, // 允許不寫參數的型別

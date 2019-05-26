@@ -1,10 +1,9 @@
-import { Module } from 'vuex'
-
-import { BoardState } from './types'
-import { RootState } from '../types'
-import { actions } from './actions'
-import { getters } from './getters'
-import { mutations } from './mutations'
+import { Module } from 'vuex';
+import { BoardState } from './types';
+import { RootState } from '../types';
+import { actions } from './actions';
+import { getters } from './getters';
+import { mutations } from './mutations';
 
 const state: BoardState = {
   boardList: [],
@@ -12,7 +11,7 @@ const state: BoardState = {
   cardLists: [],
   displayedCard: null,
   queryedUser: null
-}
+};
 
 export const boards: Module<BoardState, RootState> = {
   namespaced: false,
@@ -20,4 +19,4 @@ export const boards: Module<BoardState, RootState> = {
   getters,
   actions,
   mutations
-}
+};

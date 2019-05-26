@@ -1,15 +1,14 @@
-import { Module } from 'vuex'
-
-import { AuthState } from './types'
-import { RootState } from '../types'
-import { actions } from './actions'
-import { getters } from './getters'
-import { mutations } from './mutations'
+import { Module } from 'vuex';
+import { AuthState } from './types';
+import { RootState } from '../types';
+import { actions } from './actions';
+import { getters } from './getters';
+import { mutations } from './mutations';
 
 const state: AuthState = {
   user: null,
   isAuthenticated: false
-}
+};
 
 export const auth: Module<AuthState, RootState> = {
   namespaced: false,
@@ -17,4 +16,4 @@ export const auth: Module<AuthState, RootState> = {
   getters,
   actions,
   mutations
-}
+};

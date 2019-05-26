@@ -9,22 +9,22 @@
 
 <script lang="ts">
     import {Component, Prop, Vue} from 'vue-property-decorator';
-    import { Getter } from 'vuex-class'
+    import { Getter } from 'vuex-class';
 
-    import { Card } from '../models/Card.model'
+    import { Card } from '../models/Card.model';
     import { 
         types as boardTypes, 
         IsAssignedCardFunc,
-    } from '../store/board/types'
+    } from '../store/board/types';
 
     @Component
     export default class BoardCard extends Vue {
-        @Getter(boardTypes.IS_ASSIGNED_CARD) isAssignedCard: IsAssignedCardFunc
-        @Getter(boardTypes.IS_ADMIN) isBoardAdmin: boolean
+        @Getter(boardTypes.IS_ASSIGNED_CARD) isAssignedCard: IsAssignedCardFunc;
+        @Getter(boardTypes.IS_ADMIN) isBoardAdmin: boolean;
         @Prop() public card: Card;
 
         get isAssigned(): boolean {
-            return this.isAssignedCard(this.card)
+            return this.isAssignedCard(this.card);
         }
     }
 </script>

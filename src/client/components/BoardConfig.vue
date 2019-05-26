@@ -57,97 +57,97 @@
 </template>
 
 <script lang="ts">
-import {Component, Prop, Vue} from 'vue-property-decorator'
-import { Action, Getter } from 'vuex-class'
-import * as _ from 'lodash'
+import {Component, Prop, Vue} from 'vue-property-decorator';
+import { Action, Getter } from 'vuex-class';
+import * as _ from 'lodash';
 
-import { Board } from '../models/Board.model'
-import { User } from '../models/User.model'
+import { Board } from '../models/Board.model';
+import { User } from '../models/User.model';
 import { 
     types as boardTypes, 
     GetBoardInfoFunc, 
     QueryUserFunc,
-    UpdateBoardFunc 
-} from '../store/board/types'
+    UpdateBoardFunc
+} from '../store/board/types';
 
 @Component
 export default class BoardConfig extends Vue {
-    @Action(boardTypes.GET_BOARD_INFO)  getBoardInfo: GetBoardInfoFunc
-    @Action(boardTypes.QUERY_USER)      queryUser: QueryUserFunc
-    @Action(boardTypes.UPDATE_BOARD)    updateboard: UpdateBoardFunc
+    @Action(boardTypes.GET_BOARD_INFO)  getBoardInfo: GetBoardInfoFunc;
+    @Action(boardTypes.QUERY_USER)      queryUser: QueryUserFunc;
+    @Action(boardTypes.UPDATE_BOARD)    updateboard: UpdateBoardFunc;
 
-    @Getter(boardTypes.CURRENT_BOARD)   board: Board
-    @Getter(boardTypes.IS_ADMIN)        isAdmin: boolean
-    @Getter(boardTypes.QUERYED_USER)    queryedUser: User
+    @Getter(boardTypes.CURRENT_BOARD)   board: Board;
+    @Getter(boardTypes.IS_ADMIN)        isAdmin: boolean;
+    @Getter(boardTypes.QUERYED_USER)    queryedUser: User;
 
-    @Prop(String) boardId: string
+    @Prop(String) boardId: string;
 
     /**
      * 暫存介面上 board 更新之內容
      */
-    public copyedBoard: Board = null
+    public copyedBoard: Board = null;
 
     /**
      * 欲查詢某用戶的 email
      */
-    public email: string = ''
+    public email: string = '';
 
     /**
      * 指示有無更新過內容
      */
     get isEdited(): boolean {
-        if (!this.board || !this.copyedBoard) return
+        if (!this.board || !this.copyedBoard) return;
 
-        return !_.isEqual(this.board, this.copyedBoard)
+        return !_.isEqual(this.board, this.copyedBoard);
     }
 
     public async  mounted() {
-        await this.getBoardInfo(this.boardId)
-        this.copyedBoard = _.cloneDeep(this.board)
+        await this.getBoardInfo(this.boardId);
+        this.copyedBoard = _.cloneDeep(this.board);
     }
 
     public deleteAdmin(userId: string) {
-        let index = this.copyedBoard.admins.findIndex(user => user.userId === userId)
+        let index = this.copyedBoard.admins.findIndex(user => user.userId === userId);
         if (index !== -1) {
-            this.copyedBoard.admins.splice(index, 1)
+            this.copyedBoard.admins.splice(index, 1);
         }
     }
 
     public addAdmin(userId: string) {
-        let isExist = this.copyedBoard.admins.findIndex(user => user.userId === userId) !== -1
-        if (isExist) return
+        let isExist = this.copyedBoard.admins.findIndex(user => user.userId === userId) !== -1;
+        if (isExist) return;
 
-        let user = this.copyedBoard.members.find(user => user.userId === userId)
-        if (!user) return
+        let user = this.copyedBoard.members.find(user => user.userId === userId);
+        if (!user) return;
 
-        this.copyedBoard.admins.push(user)
+        this.copyedBoard.admins.push(user);
     }
 
     public deleteMember(userId: string) {
-        this.deleteAdmin(userId)
-        let index = this.copyedBoard.members.findIndex(user => user.userId === userId)
+        this.deleteAdmin(userId);
+        let index = this.copyedBoard.members.findIndex(user => user.userId === userId);
         if (index !== -1) {
-            this.copyedBoard.members.splice(index, 1)
+            this.copyedBoard.members.splice(index, 1);
         }
     }
 
     public async addMember() {
-        if (!this.email) return
+        if (!this.email) return;
 
-        let result = await this.queryUser(this.email)
+        let result = await this.queryUser(this.email);
         if (result || this.queryedUser) {
-            this.email = ''
-            this.copyedBoard.members.push(this.queryedUser)
+            this.email = '';
+            this.copyedBoard.members.push(this.queryedUser);
         }
     }
 
     public async updateClick() {
-        let result = await this.updateboard(this.copyedBoard)
-        this.copyedBoard = _.cloneDeep(this.board)
+        let result = await this.updateboard(this.copyedBoard);
+        this.copyedBoard = _.cloneDeep(this.board);
     }
 
     public close(): void {
-        this.$router.push({name: 'Board', params: {boardId: this.boardId}})
+        this.$router.push({name: 'Board', params: {boardId: this.boardId}});
     }
 }
 </script>

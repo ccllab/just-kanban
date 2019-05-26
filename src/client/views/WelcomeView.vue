@@ -16,7 +16,7 @@
     import {Component, Vue} from 'vue-property-decorator';
 
     @Component
-    export default class WelcomeVuew extends Vue {
+    export default class WelcomeView extends Vue {
 
     }
 </script>

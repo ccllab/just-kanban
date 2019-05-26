@@ -46,39 +46,37 @@
 
 <script lang="ts">
 import {Component, Prop, Vue} from 'vue-property-decorator';
-import { Action, Getter } from 'vuex-class'
-
-import { Card } from "../models/Card.model";
+import { Action, Getter } from 'vuex-class';
 import { Board } from '../models/Board.model';
 import { userId } from '../models/User.model';
-import { types as boardTypes, CreateCardFunc } from '../store/board/types'
+import { types as boardTypes, CreateCardFunc } from '../store/board/types';
 
 @Component
 export default class CardEditor extends Vue {
-	@Getter(boardTypes.CURRENT_BOARD) board: Board
-	@Action(boardTypes.CREATE_CARD) createCard: CreateCardFunc
-	@Prop() listId: string
+	@Getter(boardTypes.CURRENT_BOARD) board: Board;
+	@Action(boardTypes.CREATE_CARD) createCard: CreateCardFunc;
+	@Prop() listId: string;
 
-	public assignedUserId: userId = ''
-	public title: string = ''
-	public description: string = ''
+	public assignedUserId: userId = '';
+	public title: string = '';
+	public description: string = '';
 	
 	public async btnSaveClick(): Promise<void> {
 		// 至少 title 不可空白
-		if (!this.title) return
+		if (!this.title) return;
 
-		let { listId, title, description, assignedUserId } = this
+		let { listId, title, description, assignedUserId } = this;
 		let result = await this.createCard({
 			listId,
 			title,
 			description,
 			assignedUserId
-        })
-        if (result) this.close()
+        });
+        if (result) this.close();
 	}
 
     public close(): void {
-        this.$router.push({ name: 'Board', params: { boardId: this.board._id }})
+        this.$router.push({ name: 'Board', params: { boardId: this.board._id }});
     }
 }
 </script>

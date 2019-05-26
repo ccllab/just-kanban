@@ -14,31 +14,31 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component } from 'vue-property-decorator'
-import { Action } from 'vuex-class'
+import { Vue, Component } from 'vue-property-decorator';
+import { Action } from 'vuex-class';
 
-import { types as boardTypes, CreateCardListsFunc } from '../store/board/types'
+import { types as boardTypes, CreateCardListsFunc } from '../store/board/types';
 
 @Component
 export default class CardListCreator extends Vue {
-  @Action(boardTypes.CREATE_CARD_LIST) createCardList: CreateCardListsFunc
+  @Action(boardTypes.CREATE_CARD_LIST) createCardList: CreateCardListsFunc;
 
-  public listName: string = ''
-  public isEditing: boolean = false
+  public listName: string = '';
+  public isEditing: boolean = false;
 
   public mounted() {
     window.addEventListener("click", () => {
-      this.isEditing = false
-    })
+      this.isEditing = false;
+    });
   }
 
   public async btnAddClick() {
-    if (!this.listName) return
+    if (!this.listName) return;
     
-    let result = await this.createCardList(this.listName)
+    let result = await this.createCardList(this.listName);
     if (result) {
-      this.listName = ''
-      this.isEditing = false
+      this.listName = '';
+      this.isEditing = false;
     }
   }
 }

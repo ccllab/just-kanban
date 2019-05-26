@@ -10,37 +10,37 @@ export class Token {
   /**
    * Http header name to send and recieve the token value
    */
-  tokenName: string
+  public tokenName: string;
 
   /**
    * The key name in storage to access the token value
    */
-  aliasName?: string
+  public aliasName?: string;
 
   /**
    * Token storage util
    */
-  storage?: IStorage
+  public storage?: IStorage
 }
 
 export class TokenManager {
   /**
    * instances of token
    */
-  private static tokens: Token[] = []
+  private static tokens: Token[] = [];
 
   /**
    * The default storage to store token
    */
-  private static defaultStorage: IStorage = null
+  private static defaultStorage: IStorage = null;
 
   /**
    * Register the token to token list.
    * @param token 
    */
   public static register(...tokens: Token[]): void {
-    this.tokens.push(...tokens)
-    this.tokens = _.uniqWith<Token>(this.tokens, _.isEqual)
+    this.tokens.push(...tokens);
+    this.tokens = _.uniqWith<Token>(this.tokens, _.isEqual);
   }
 
   /**
@@ -48,7 +48,7 @@ export class TokenManager {
    * @param storage 
    */
   public static setDefaultStorage(storage: IStorage) {
-    this.defaultStorage = storage
+    this.defaultStorage = storage;
   }
 
   /**
@@ -57,15 +57,16 @@ export class TokenManager {
    * @param tokenValue 
    */
   public static set(tokenName: string, tokenValue: string): boolean {
-    let token: Token = this.tokens.find(token => token.tokenName === tokenName)
-    if (!token) return false
+    let token: Token = this.tokens.find(token => token.tokenName === tokenName);
+    if (!token) return false;
 
-    let storage = token.storage || this.defaultStorage
-    if (!storage) return false
+    let storage = token.storage || this.defaultStorage;
+    if (!storage) return false;
 
-    let key = token.aliasName || token.tokenName
-    storage.set(key, tokenValue)
-    return true
+    let key = token.aliasName || token.tokenName;
+    storage.set(key, tokenValue);
+
+    return true;
   }
 
   /**
@@ -73,15 +74,16 @@ export class TokenManager {
    * @param tokenName 
    */
   public static get(tokenName): string {
-    let token: Token = this.tokens.find(token => token.tokenName === tokenName)
-    if (!token) return null
+    let token: Token = this.tokens.find(token => token.tokenName === tokenName);
+    if (!token) return null;
 
-    let storage = token.storage || this.defaultStorage
-    if (!storage) return null
+    let storage = token.storage || this.defaultStorage;
+    if (!storage) return null;
 
-    let key = token.aliasName || token.tokenName
-    let value = storage.get(key)
-    return value || null
+    let key = token.aliasName || token.tokenName;
+    let value = storage.get(key);
+
+    return value || null;
   }
 
   /**
@@ -91,14 +93,14 @@ export class TokenManager {
   public static clear(...tokenNames: string[]): void {
     let tokens: Token[] = !tokenNames.length ? 
       this.tokens : 
-      this.tokens.filter(token => _.includes(tokenNames, token.tokenName))
+      this.tokens.filter(token => _.includes(tokenNames, token.tokenName));
 
     tokens.forEach(token => {
-      let storage = token.storage || this.defaultStorage
-      if (!storage) return
+      let storage = token.storage || this.defaultStorage;
+      if (!storage) return;
 
-      let key = token.aliasName || token.tokenName
-      storage.remove(key)
-    })
+      let key = token.aliasName || token.tokenName;
+      storage.remove(key);
+    });
   }
 }

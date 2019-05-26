@@ -10,7 +10,7 @@ module.exports = {
     "logging": false,
     "logger": "file",
     "entities": [
-        "build/src/server/repository/entity/*.entity.js"
+        "build/repository/entity/*.entity.js"
     ],
     "migrations": [],
     "subscribers": [

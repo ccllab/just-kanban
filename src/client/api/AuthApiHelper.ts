@@ -12,7 +12,7 @@ export const AuthApi: IAuthApiHelper = {
       * @param param parameter
       * @returns ApiRequestor
       */
-    signup(param) {
+    signUp(param) {
         return ApiRequestor.request({
             url: '/api/user',
             method: 'POST',

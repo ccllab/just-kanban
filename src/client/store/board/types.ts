@@ -1,6 +1,6 @@
-import { userId, User } from '../../models/User.model'
-import { Board } from '../../models/Board.model'
-import { Card } from '../../models/Card.model'
+import { userId, User } from '../../models/User.model';
+import { Board } from '../../models/Board.model';
+import { Card } from '../../models/Card.model';
 
 export interface BoardState {
   boardList: BoardList,
@@ -117,4 +117,4 @@ export const types = {
   ADD_NEW_CARD: 'addNewCard',
   UPDATE_CARD_IN_LIST: 'updateCardInList',
   ADD_COMMENT_TO_CURRENT_CARD: 'addComment2CurrentCard'
-}
+};
