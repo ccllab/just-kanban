@@ -64,56 +64,55 @@
 
 <script lang="ts">
 import {Component, Prop, Vue} from 'vue-property-decorator';
-import { Action, Getter } from 'vuex-class'
-import * as _ from 'lodash'
-
+import { Action, Getter } from 'vuex-class';
+import * as _ from 'lodash';
 import { Card } from "../models/Card.model";
 import { Board } from '../models/Board.model';
-import { userId } from '../models/User.model';
 import { 
     types as boardTypes, 
     GetCardInfoFunc, 
     UpdateCardFunc ,
     CreateCommentFunc
-} from '../store/board/types'
+} from '../store/board/types';
 
 @Component
 export default class CardEditor extends Vue {
-    @Getter(boardTypes.CURRENT_BOARD) board: Board
-    @Getter(boardTypes.CURRENT_CARD) card: Card
-	@Action(boardTypes.GET_CARD_INFO) getCardInfo: GetCardInfoFunc
-    @Action(boardTypes.UPDATE_CARD) updateCard: UpdateCardFunc
-    @Action(boardTypes.CREATE_COMMENT) createComment: CreateCommentFunc
-    @Prop() cardId: string
-    @Prop() listId: string
+    @Getter(boardTypes.CURRENT_BOARD) board: Board;
+    @Getter(boardTypes.CURRENT_CARD) card: Card;
+	@Action(boardTypes.GET_CARD_INFO) getCardInfo: GetCardInfoFunc;
+    @Action(boardTypes.UPDATE_CARD) updateCard: UpdateCardFunc;
+    @Action(boardTypes.CREATE_COMMENT) createComment: CreateCommentFunc;
+    @Prop() cardId: string;
+    @Prop() listId: string;
     
-    public copyedCard: Card = null
-    public assignedUserId: string = ''
-    public comment: string = ''
+    public copyedCard: Card = null;
+    public assignedUserId: string = '';
+    public comment: string = '';
 
     get comments() {
-        return this.copyedCard.comments ? this.copyedCard.comments.reverse() : []
+        return this.copyedCard.comments ? this.copyedCard.comments.reverse() : [];
     }
 
     get isEdited(): boolean {
-        if (!this.copyedCard) return false
+        if (!this.copyedCard) return false;
+
         return this.copyedCard.title !== this.card.title ||
             this.copyedCard.description !== this.card.description ||
-            this.assignedUserId !== this.card.assignedUser.userId
+            this.assignedUserId !== this.card.assignedUser.userId;
     }
 
     public async  mounted() {
-        let result = await this.getCardInfo(this.cardId)
+        let result = await this.getCardInfo(this.cardId);
 
         if (result) {
-            this.copyedCard = _.cloneDeep(this.card)
-            this.assignedUserId = this.card.assignedUser.userId
+            this.copyedCard = _.cloneDeep(this.card);
+            this.assignedUserId = this.card.assignedUser.userId;
         }
     }
 
 	public async btnSaveClick(): Promise<void> {
 		// 至少 title 不可空白
-		if (!this.copyedCard.title) return
+		if (!this.copyedCard.title) return;
 
         let result = await this.updateCard({
             _id: this.copyedCard._id,
@@ -121,30 +120,30 @@ export default class CardEditor extends Vue {
             title: this.copyedCard.title,
             description: this.copyedCard.description,
             assignedUserId: this.assignedUserId
-        })
+        });
 
-        this.copyedCard = _.cloneDeep(this.card)
-        this.assignedUserId = this.card.assignedUser.userId
+        this.copyedCard = _.cloneDeep(this.card);
+        this.assignedUserId = this.card.assignedUser.userId;
     }
     
     public async btnAddCommentClick() {
-        let commentContent = this.comment
-        let cardId = this.cardId
+        let commentContent = this.comment;
+        let cardId = this.cardId;
 
-        if (!commentContent) return
+        if (!commentContent) return;
         let result = await this.createComment({
             cardId,
             content: commentContent
-        })
+        });
 
         if (result) {
-            this.comment = ''
-            this.copyedCard.comments = _.cloneDeep(this.card.comments)
+            this.comment = '';
+            this.copyedCard.comments = _.cloneDeep(this.card.comments);
         }
     }
 
     public close(): void {
-        this.$router.push({ name: 'Board', params: { boardId: this.board._id }})
+        this.$router.push({ name: 'Board', params: { boardId: this.board._id }});
     }
 }
 </script>

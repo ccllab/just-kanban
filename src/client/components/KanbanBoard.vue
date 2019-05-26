@@ -53,15 +53,12 @@
 <script lang="ts">
     import {Component, Prop, Vue} from 'vue-property-decorator';
     import * as Dragula from 'dragula';
-    import {debounce} from 'lodash';
-    import { Getter, Action } from 'vuex-class'
-
+    import { Getter, Action } from 'vuex-class';
     import BoardCard from './BoardCard.vue';
-    import CardListCreator from './CardListCreator.vue'
-    import { Board } from '../models/Board.model'
-    import { Card } from '../models/Card.model'
-    import { User } from '../models/User.model'
-    import { types as authTypes } from '../store/auth/types'
+    import CardListCreator from './CardListCreator.vue';
+    import { Board } from '../models/Board.model';
+    import { User } from '../models/User.model';
+    import { types as authTypes } from '../store/auth/types';
     import { 
         types as boardTypes, 
         GetBoardInfoFunc, 
@@ -69,7 +66,7 @@
         IsAssignedCardFunc,
         DragCardFunc,
         CardLists
-    } from '../store/board/types'
+    } from '../store/board/types';
 
     /**
      * The KanbanBoard
@@ -81,21 +78,21 @@
         }
     })
     export default class KanbanBoard extends Vue {
-        @Getter(boardTypes.CURRENT_BOARD) board: Board
-        @Getter(authTypes.USER) user: User
-        @Getter(boardTypes.IS_ADMIN) isAdmin: boolean
-        @Getter(boardTypes.CARD_LISTS) cardLists: CardLists
-        @Getter(boardTypes.IS_ASSIGNED_CARD) isAssignedCard: IsAssignedCardFunc
-        @Action(boardTypes.GET_BOARD_INFO) getBoardInfo: GetBoardInfoFunc
-        @Action(boardTypes.GET_CARD_LISTS) getCardLists: GetCardListsFunc
-        @Action(boardTypes.DRAG_CARD) dragCard: DragCardFunc
-        @Prop(String) boardId: string
+        @Getter(boardTypes.CURRENT_BOARD) board: Board;
+        @Getter(authTypes.USER) user: User;
+        @Getter(boardTypes.IS_ADMIN) isAdmin: boolean;
+        @Getter(boardTypes.CARD_LISTS) cardLists: CardLists;
+        @Getter(boardTypes.IS_ASSIGNED_CARD) isAssignedCard: IsAssignedCardFunc;
+        @Action(boardTypes.GET_BOARD_INFO) getBoardInfo: GetBoardInfoFunc;
+        @Action(boardTypes.GET_CARD_LISTS) getCardLists: GetCardListsFunc;
+        @Action(boardTypes.DRAG_CARD) dragCard: DragCardFunc;
+        @Prop(String) boardId: string;
 
         public async mounted() {
-            let p1 = this.getBoardInfo(this.boardId)
-            let p2 = this.getCardLists(this.boardId)
-            await Promise.all([p1, p2])
-            this.dragulaInit()
+            let p1 = this.getBoardInfo(this.boardId);
+            let p2 = this.getCardLists(this.boardId);
+            await Promise.all([p1, p2]);
+            this.dragulaInit();
         }
 
         /**
@@ -103,20 +100,17 @@
          */
         public dragulaInit() {
             // buffer of storing source list id of moving card
-            let srcListId: string = ''
-            let boardId = this.boardId
+            let srcListId: string = '';
+            let boardId = this.boardId;
 
             // create Dragula instance
             let drag: Dragula.Drake = Dragula({
                 containers: (this.$refs.list) as Element[],
                 moves: (el: any, source: any, handle, sibling) => {
-                    srcListId = source.dataset.listId
-                    let isAssigned: boolean = el.dataset.isAssigned
-                    if (this.isAdmin || isAssigned) {
-                        return true
-                    } else {
-                        return false
-                    }
+                    srcListId = source.dataset.listId;
+                    let isAssigned: boolean = el.dataset.isAssigned;
+
+                    return this.isAdmin || isAssigned;
                 }
              });
 
@@ -128,8 +122,8 @@
             // bind drop event
             drag.on('drop', async (card, list) => {
                 let dstIndex = 0;
-                let dstListId: string = list.dataset.listId
-                let cardId: string = card.dataset.cardId
+                let dstListId: string = list.dataset.listId;
+                let cardId: string = card.dataset.cardId;
 
                 for (dstIndex = 0; dstIndex < list.children.length; dstIndex++) {
                     if (list.children[dstIndex].classList.contains('is-moving')) {
@@ -137,7 +131,7 @@
                     }
                 }
 
-                this.dragCard({ srcListId, dstListId, cardId, dstIndex })
+                this.dragCard({ srcListId, dstListId, cardId, dstIndex });
             });
 
             // bind dragend event

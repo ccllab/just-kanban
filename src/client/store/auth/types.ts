@@ -1,4 +1,4 @@
-import { User } from '../../models/User.model'
+import { User } from '../../models/User.model';
 
 export interface AuthState {
   user: User,
@@ -27,7 +27,7 @@ export interface LogoutFunc {
 
 export const types = {
   // actions
-  AUTH_SIGNUP: 'signup',
+  AUTH_SIGNUP: 'signUp',
   AUTH_LOGIN: 'login',
   AUTH_LOGOUT: 'logout',
   AUTH_INIT: 'authInit',
@@ -40,4 +40,4 @@ export const types = {
   // mutations
   SET_USER: 'setUser',
   SET_IS_AUTHENTICATED: 'setIsAuthenticated'
-}
+};

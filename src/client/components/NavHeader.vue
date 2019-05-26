@@ -11,12 +11,11 @@
 </template>
 
 <script lang="ts">
-import {Component, Prop, Vue} from 'vue-property-decorator';
-import { Getter } from 'vuex-class'
-
-import { types as authTypes } from '../store/auth/types'
-import BoardsCtrlBtn from './BoardsCtrlBtn.vue'
-import UserCtrlBtn from './UserCtrlBtn.vue'
+import {Component, Vue} from 'vue-property-decorator';;
+import { Getter } from 'vuex-class';
+import { types as authTypes } from '../store/auth/types';
+import BoardsCtrlBtn from './BoardsCtrlBtn.vue';
+import UserCtrlBtn from './UserCtrlBtn.vue';
 
 @Component({
   components: {

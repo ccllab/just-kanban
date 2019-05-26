@@ -1,5 +1,4 @@
 import KanbanView from '../views/KanbanView.vue'
-
 import KanbanBoard from '../components/KanbanBoard.vue';
 import BoardList from '../components/BoardList.vue';
 import CardEditor from '../components/CardEditor.vue';
@@ -50,4 +49,4 @@ export default {
             }
         }]
     }]
-}
+};

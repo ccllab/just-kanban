@@ -30,26 +30,25 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue,  } from 'vue-property-decorator';
-import { Action, Getter, Mutation } from 'vuex-class'
-
-import { LoginFunc, types as authTypes } from '../store/auth/types'
+import { Component, Vue,  } from 'vue-property-decorator';
+import { Action } from 'vuex-class';
+import { LoginFunc, types as authTypes } from '../store/auth/types';
 
 @Component
 export default class LoginView extends Vue {
-    @Action(authTypes.AUTH_LOGIN) login: LoginFunc
+    @Action(authTypes.AUTH_LOGIN) login: LoginFunc;
 
-    public email: string = ''
-    public password: string = ''
+    public email: string = '';
+    public password: string = '';
 
     public async loginEventHandler() {
         let result = await this.login({
             email: this.email,
             password: this.password,
             isRememberMe: true
-        })
+        });
 
-        result && this.$router.push('/')
+        result && this.$router.push('/');
     }
 }
 </script>

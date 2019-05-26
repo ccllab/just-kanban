@@ -19,7 +19,7 @@ services:
     image: mongo:latest
     container_name: DockerMongoDB
     volumes:
-      - data-volume:/data/db
+      - ${MONGODB_HOST_DIR}:/data/db
     ports:
       - "${MONGODB_PORT}:${MONGODB_PORT}"
     networks:
@@ -28,6 +28,3 @@ services:
 networks:
   justkanban-dev:
     driver: bridge
-
-volumes:
-  data-volume:

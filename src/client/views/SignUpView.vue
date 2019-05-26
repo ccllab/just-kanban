@@ -31,28 +31,27 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from 'vue-property-decorator';
-import { Action } from 'vuex-class'
-import * as _ from 'lodash'
-
-import { types as authTypes, SignupFunc } from '../store/auth/types'
+import { Component, Vue } from 'vue-property-decorator';
+import { Action } from 'vuex-class';
+import * as _ from 'lodash';
+import { types as authTypes, SignupFunc } from '../store/auth/types';
 
 @Component
 export default class LoginView extends Vue {
-    @Action(authTypes.AUTH_SIGNUP) signup: SignupFunc
+    @Action(authTypes.AUTH_SIGNUP) signup: SignupFunc;
 
-    public userId: string = ''
-    public username: string = ''
-    public email: string = ''
-    public password: string = ''
-    public confirm: string = ''
+    public userId: string = '';
+    public username: string = '';
+    public email: string = '';
+    public password: string = '';
+    public confirm: string = '';
 
     public async signupClick() {
-        let parameters = _.pick(this, ['userId', 'username', 'email', 'password', 'confirm'])
+        let parameters = _.pick(this, ['userId', 'username', 'email', 'password', 'confirm']);
         let result = await this.signup(parameters)
 
         if (result) {
-            this.$router.push({ name: 'BoardList' })
+            this.$router.push({ name: 'BoardList' });
         }
     }
 }

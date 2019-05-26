@@ -20,9 +20,8 @@ export interface GetUserResponseData extends BaseResponseData, User {}
 export interface QueryUserResponseData extends BaseResponseData, User {}
 
 export interface IAuthApiHelper {
-  signup(param: SignupRequest): Promise<SignupResponseData>;
+  signUp(param: SignupRequest): Promise<SignupResponseData>;
   login(param: LoginRequest): Promise<LoginResponseData>;
   getUserInfo(): Promise<GetUserResponseData>;
   queryUserInfo(param: QueryUserRequest): Promise<QueryUserResponseData>;
 }
-

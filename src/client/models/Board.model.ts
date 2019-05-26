@@ -1,4 +1,4 @@
-import { User } from '../models/User.model'
+import { User } from './User.model';
 
 /**
  * Kanban board information.
@@ -7,17 +7,17 @@ export class Board {
     /**
      * Board's Object ID
      */
-    public _id: string
+    public _id: string;
 
     /**
      * Board's name
      */
-    public boardName: string
+    public boardName: string;
 
     /**
      * Board's admin users
      */
-    public admins: User[]
+    public admins: User[];
 
     /**
      * Board's members

@@ -1,29 +1,29 @@
-import { User } from './User.model'
+import { User } from './User.model';
 
 export class Card {
   /**
  * Card ObjectID
  */
-  _id: string
+  public _id: string;
 
   /**
    * Card's title
    */
-  title: string
+  public title: string;
 
   /**
    * User who assigned to this card
    */
-  assignedUser: User
+  public assignedUser: User;
   
   /**
    * Card's description
    */
-  description?: string
+  public description?: string;
 
   /**
    * Card's comments
    */
-  comments?: { _id: string, content: string }[]
+  public comments?: { _id: string, content: string }[]
 }
 

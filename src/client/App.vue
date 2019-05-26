@@ -8,9 +8,8 @@
 
 <script lang="ts">
     import { Component, Vue } from 'vue-property-decorator';
-    
     import NavHeader from './components/NavHeader.vue';
-    import ErrorHintBlock from './components/ErrorHintBlock.vue'
+    import ErrorHintBlock from './components/ErrorHintBlock.vue';
 
     /**
      * Vue app
@@ -26,7 +25,7 @@
          * Set up config after creat App
          */
         public created(): void {
-            this.$cookies.set('vue-cookie-test', 'fuckyouass');
+            this.$cookies.set('vue-cookie-test', 'vue-cookie-test');
         }
     }
 </script>

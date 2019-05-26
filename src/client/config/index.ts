@@ -7,4 +7,4 @@ export const TokenConfig = {
     key: 'x-refresh',
     alias: 'JdOdkE'
   }
-}
+};

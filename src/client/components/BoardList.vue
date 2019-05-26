@@ -21,16 +21,14 @@
 </template>
 
 <script lang="ts">
-import {Component, Prop, Vue} from 'vue-property-decorator';
-import { Getter, Action } from 'vuex-class'
-
-import { Board } from '../models/Board.model'
-import BoardCreator from './BoardCreator.vue'
+import {Component, Vue} from 'vue-property-decorator';
+import { Getter, Action } from 'vuex-class';
+import BoardCreator from './BoardCreator.vue';
 import { 
     types as BoardTypes, 
     GetBoardListFunc,
     BoardList as BoardListType 
-} from '../store/board/types'
+} from '../store/board/types';
 
 @Component({
     components: {
@@ -38,13 +36,13 @@ import {
     }
 })
 export default class BoardList extends Vue {
-    @Getter(BoardTypes.BOARD_LIST) boardList: BoardListType
-    @Action(BoardTypes.GET_BOARD_LIST) getBoardList: GetBoardListFunc
+    @Getter(BoardTypes.BOARD_LIST) boardList: BoardListType;
+    @Action(BoardTypes.GET_BOARD_LIST) getBoardList: GetBoardListFunc;
 
     public showBoardCreator: boolean = false;
     
     public mounted() {
-        this.getBoardList()
+        this.getBoardList();
     }
 }
 </script>

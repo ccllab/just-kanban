@@ -29,16 +29,16 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
-import { Getter, Action } from 'vuex-class'
+import { Getter, Action } from 'vuex-class';
 
-import { types as authTypes, LogoutFunc } from '../store/auth/types'
-import { User } from '../models/User.model'
+import { types as authTypes, LogoutFunc } from '../store/auth/types';
+import { User } from '../models/User.model';
 
 @Component
 export default class UserCtrlBtn extends Vue {
-    @Getter(authTypes.IS_LOGIN) isLogin: boolean
-    @Getter(authTypes.USER) user: User
-    @Action(authTypes.AUTH_LOGOUT) logout: LogoutFunc
+    @Getter(authTypes.IS_LOGIN) isLogin: boolean;
+    @Getter(authTypes.USER) user: User;
+    @Action(authTypes.AUTH_LOGOUT) logout: LogoutFunc;
 
     public showMenu: boolean = false;
     public isClicked: boolean = false;
@@ -52,8 +52,8 @@ export default class UserCtrlBtn extends Vue {
     }
 
     public logoutClick() {
-        this.logout()
-        this.$router.push("/")
+        this.logout();
+        this.$router.push("/");
     }
 
     public iconBtnClick():void {

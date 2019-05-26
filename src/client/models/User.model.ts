@@ -7,15 +7,15 @@ export class User {
   /**
    * User's ID
    */
-  userId: userId
+  public userId: userId;
 
   /**
    * User's name
    */
-  username: string
+  public username: string;
 
   /**
    * User's Email
    */
-  email?: string
+  public email?: string
 }
