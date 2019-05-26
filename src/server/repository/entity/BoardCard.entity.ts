@@ -1,4 +1,4 @@
-import {BaseEntity, Column, Entity, ObjectIdColumn} from "typeorm";
+import {BaseEntity, Column, Entity, ObjectID, ObjectIdColumn} from "typeorm";
 import {Exclude} from "class-transformer";
 import {ICreatedAtUpdateAt} from "./ICreatedAtUpdateAt";
 
@@ -14,7 +14,7 @@ export class BoardCardEntity extends BaseEntity implements ICreatedAtUpdateAt {
      * pk
      */
     @ObjectIdColumn()
-    public _id: string;
+    public _id: ObjectID;
 
     /**
      * The user id that assigned for this task board card.
@@ -23,24 +23,40 @@ export class BoardCardEntity extends BaseEntity implements ICreatedAtUpdateAt {
     public assignedUserId: string;
 
     /**
-     * The card id before this boardCard.
-     *
-     * Empty if this boardCard is first.
-     */
-    @Column()
-    public preCardId: string;
-
-    /**
      * Board block title
      */
     @Column()
     public title: string;
 
     /**
-     * Board block status
+     * The color label
      */
     @Column()
-    public status: string;
+    public label: number;
+
+    /**
+     * Task description
+     */
+    @Column()
+    public description: string;
+
+    /**
+     * The comment ids
+     */
+    @Column()
+    public comments: Array<ObjectID> = [];
+
+    /**
+     * The userId that create this card.
+     */
+    @Column()
+    public createdBy: string;
+
+    /**
+     * The userId that update this card.
+     */
+    @Column()
+    public updatedBy: string;
 
     /**
      * The date time for create board card.
@@ -56,7 +72,6 @@ export class BoardCardEntity extends BaseEntity implements ICreatedAtUpdateAt {
     @Column({
         type: "date"
     })
-
     public updatedAt: Date;
 
     /**

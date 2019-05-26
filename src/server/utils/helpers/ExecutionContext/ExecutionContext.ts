@@ -1,4 +1,4 @@
-import '../../extensions/dateExtension'; // import extension method
+import '../../extensions/extension'; // import extension method
 import {IExecutionContext} from "./IExecutionContext";
 import {injectable} from "inversify";
 

@@ -1,10 +1,11 @@
 import AuthError from "./exceptions/AuthError";
 import {IAuthService} from "./interfaces/IAuthService";
 import {inject, injectable} from "inversify";
-import {IUserRepository, JwtPayload, User} from "../repository";
+import {IUserRepository, User} from "../repository";
 import {sign, verify} from "jsonwebtoken";
 import {TYPES} from "../ioc";
 import {UserAuthenticationDto} from "./dtos/UserAuthenticationDto";
+import {JwtPayload} from "./dtos/JwtPayload";
 
 /**
  * The implementation for authentication service
@@ -51,10 +52,12 @@ export class AuthServiceImpl implements IAuthService {
     public async getUserAuthByToken(accessToken: string, refreshToken: string): Promise<UserAuthenticationDto> {
         const {SECRET_KEY} = process.env;
         let payload = new JwtPayload(null, null);
+        let dto = new UserAuthenticationDto();
 
         // verify authToken first.
         try {
             payload = verify(accessToken, SECRET_KEY) as JwtPayload;
+            dto.accessToken = accessToken;
         } catch (err) {
             // Get user by refreshToken which is storage in database.
             let user = await this.userRepository.getBy({refreshToken});
@@ -73,13 +76,12 @@ export class AuthServiceImpl implements IAuthService {
 
                 // update payload
                 Object.assign(payload, updated);
+                dto.accessToken = this.newAccessToken(payload.username, payload.email);
             } catch (err) {
                 throw new AuthError(err.message);
             }
         }
 
-        let dto = new UserAuthenticationDto();
-        dto.accessToken = this.newAccessToken(payload.username, payload.email);
         dto.userDetail = await this.userRepository.getBy({username:payload.username, email:payload.email});
 
         return Promise.resolve(dto);

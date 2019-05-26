@@ -19,8 +19,7 @@
     "experimentalDecorators": true
   },
   "include": [
-    "./src/**/*",
-    "./test/**/*"
+    "./src/server/**/*"
   ],
   "exclude": [
     "node_modules",
