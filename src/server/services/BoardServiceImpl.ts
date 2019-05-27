@@ -159,7 +159,7 @@ export class BoardServiceImpl implements IBoardService {
 
                 for (let userId of userIds) {
                     let user = await this.userRepository.getBy({userId});
-                    user.boardIds.push(boardObjId); // todo use any, so... lol
+                    user.boardIds.push(boardObjId);
                     user.boardIds = uniq(user.boardIds);
 
                     this.userRepository.update(user).catch(err => {
