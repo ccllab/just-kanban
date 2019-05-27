@@ -3,10 +3,10 @@ module.exports = {
     parserOptions: {
         ecmaVersion: "2017",
         sourceType: "module",
-        parser: "typescript-eslint-parser"
+        parser: "@typescript-eslint/parser"
     },
     plugins: [
-        "typescript",
+        "@typescript-eslint",
         "vue"
     ],
     rules: {
@@ -64,18 +64,18 @@ module.exports = {
         /**
          * typescript 擴充規則
          */
-        "typescript/explicit-member-accessibility": "error", // 所有類別成員強制聲明存取權限
-        "typescript/class-name-casing": "error", // class 與 interface 名稱強制大駝峰
-        "typescript/interface-name-prefix": [ // interface 名稱前面強制加 "I"
+        "@typescript-eslint/explicit-member-accessibility": "error", // 所有類別成員強制聲明存取權限
+        "@typescript-eslint/class-name-casing": "error", // class 與 interface 名稱強制大駝峰
+        "@typescript-eslint/interface-name-prefix": [ // interface 名稱前面強制加 "I"
             "warn",
             "always"
         ],
-        "typescript/adjacent-overload-signatures": "error", // method 多載要群組化
-        "typescript/type-annotation-spacing": [ // 類型聲明空格 e.g. "let a: string"
+        "@typescript-eslint/adjacent-overload-signatures": "error", // method 多載要群組化
+        "@typescript-eslint/type-annotation-spacing": [ // 類型聲明空格 e.g. "let a: string"
             "warn",
             { "before": false, "after": true }
         ],
-        "typescript/member-ordering": [ // 類別成員排序
+        "@typescript-eslint/member-ordering": [ // 類別成員排序
             "error",
             {
                 "default": [
@@ -100,8 +100,8 @@ module.exports = {
                 ]
             }
         ],
-        "typescript/no-array-constructor": "warn", // Array 的建構子強制使用泛型參數
-        "typescript/no-use-before-define": "warn", // 禁止使用未定義之變數
-        "typescript/no-explicit-any": "warn",
+        "@typescript-eslint/no-array-constructor": "warn", // Array 的建構子強制使用泛型參數
+        "@typescript-eslint/no-use-before-define": "warn", // 禁止使用未定義之變數
+        "@typescript-eslint/no-explicit-any": "warn",
     }
 };
