@@ -117,6 +117,7 @@
             // bind drag event
             drag.on('drag', (el) => {
                 el.classList.add('is-moving');
+                this.$socket.emit('card_dragging');
             });
 
             // bind drop event
@@ -132,6 +133,7 @@
                 }
 
                 this.dragCard({ srcListId, dstListId, cardId, dstIndex });
+                this.$socket.emit('card_dragged');
             });
 
             // bind dragend event

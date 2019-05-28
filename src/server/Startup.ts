@@ -140,7 +140,15 @@ export default class Startup {
         this.socketInstance.on('connection', (socket) => {
             this.logger.log(`Server: User ${socket.id} connected.`);
 
-            socket.emit('notification_message', {message: `Welcome To JustKanban`, duration: 3000});
+            socket.emit('notification_message', {message: `Welcome To JustKanban`, duration: 2000});
+
+            socket.on('card_dragging', () => {
+                socket.emit('notification_message', {message: `Dragging~`, duration: 1500});
+            });
+
+            socket.on('card_dragged', () => {
+                socket.broadcast.emit('notification_message', {message: `Board has been updated. Please refresh`, duration: 3000});
+            });
         });
     }
 }

@@ -10,6 +10,9 @@
       "dom.iterable",
       "scripthost"
     ],
+    "typeRoots": [
+      "./node_modules/@types"
+    ],
     "allowJs": true,
     "noImplicitAny": false,
     "removeComments": true,
