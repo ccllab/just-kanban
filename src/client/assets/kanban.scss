@@ -22,14 +22,14 @@ $approved: #00B961;
     list-style-type: none;
     margin: 0;
     padding: 0;
-    overflow-y: scroll;
+    overflow-y: hidden;
 
     @media (max-width: 690px) {
         display: block;
     }
 
     &::-webkit-scrollbar {
-        display: none;
+        // display: none;
     }
 }
 

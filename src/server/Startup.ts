@@ -120,21 +120,25 @@ export default class Startup {
         // build express server
         this.serverInstance = http.createServer(expressServer.build());
 
-        // build socket io.
-        this.socketInstance = socketIO(this.serverInstance);
-        this.socketInstance.on('connection', (socket) => {
-
-            this.logger.log('New user connected.');
-
-            socket.on('disconnect', () => {
-                this.logger.log('User was disconnect.');
-            });
-        });
+        // config socket io.
+        this.configSocketIO();
 
         // boot express server
         this.serverInstance.listen(this.port, () => {
 
             this.logger.log(`Listening on port:${this.port}.`);
+        });
+    }
+
+    /**
+     * Socket.IO config
+     */
+    private configSocketIO(): void {
+
+        // build socket io.
+        this.socketInstance = socketIO(this.serverInstance);
+        this.socketInstance.on('connection', (socket) => {
+            this.logger.log(`User ${socket.id} connected.`);
         });
     }
 }

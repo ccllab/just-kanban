@@ -75,6 +75,7 @@
     "qs": "^6.7.0",
     "reflect-metadata": "^0.1.13",
     "socket.io": "^2.2.0",
+    "socket.io-client": "^2.2.0",
     "typeorm": "^0.2.17",
     "typeorm-encrypted": "^0.5.1",
     "vue": "^2.6.10",
@@ -82,6 +83,7 @@
     "vue-cookies": "^1.5.13",
     "vue-property-decorator": "^8.1.1",
     "vue-router": "^3.0.6",
+    "vue-socket.io": "^3.0.7",
     "vuex": "^3.1.1",
     "vuex-class": "^0.3.2",
     "winston": "^3.2.1"
