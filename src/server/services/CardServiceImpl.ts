@@ -154,4 +154,40 @@ export class CardServiceImpl implements ICardService {
             throw err;
         });
     }
+
+    /**
+     * delete specified card
+     * @param cardId The specified card id.
+     * @param cardListId The card list id that card storage.
+     * @return The card deleted.
+     */
+    public async deleteCard(cardId: ObjectID, cardListId: ObjectID): Promise<BoardCardEntity> {
+        let card = await this.cardRepository.get(cardId);
+        if (!card) {
+            return Promise.reject(new Error(`The card ${cardId.toString()} is not exist.`));
+        }
+
+        card.comments.forEach(async (id) => {
+            let comment = await this.commentRepository.get(id);
+            this.commentRepository.delete(comment).catch(err => {
+                throw err;
+            });
+        });
+
+        this.cardRepository.delete(card).catch(err => {
+            throw err;
+        });
+
+        let cardList = await this.cardListRepository.get(cardListId);
+        if (!cardList) {
+            return Promise.reject(new Error(`The cardList ${cardListId.toString()} is not exist.`));
+        }
+
+        cardList.cardIds.objectIdRemove(cardId);
+        this.cardListRepository.update(cardList).catch(err => {
+            throw err;
+        });
+
+        return Promise.resolve(card);
+    }
 }

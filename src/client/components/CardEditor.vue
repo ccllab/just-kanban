@@ -85,19 +85,19 @@ export default class CardEditor extends Vue {
     @Prop() cardId: string;
     @Prop() listId: string;
     
-    public copyedCard: Card = null;
+    public copiedCard: Card = null;
     public assignedUserId: string = '';
     public comment: string = '';
 
     get comments() {
-        return this.copyedCard.comments ? this.copyedCard.comments.reverse() : [];
+        return this.copiedCard.comments ? this.copiedCard.comments.reverse() : [];
     }
 
     get isEdited(): boolean {
-        if (!this.copyedCard) return false;
+        if (!this.copiedCard) return false;
 
-        return this.copyedCard.title !== this.card.title ||
-            this.copyedCard.description !== this.card.description ||
+        return this.copiedCard.title !== this.card.title ||
+            this.copiedCard.description !== this.card.description ||
             this.assignedUserId !== this.card.assignedUser.userId;
     }
 
@@ -105,24 +105,24 @@ export default class CardEditor extends Vue {
         let result = await this.getCardInfo(this.cardId);
 
         if (result) {
-            this.copyedCard = _.cloneDeep(this.card);
+            this.copiedCard = _.cloneDeep(this.card);
             this.assignedUserId = this.card.assignedUser.userId;
         }
     }
 
 	public async btnSaveClick(): Promise<void> {
 		// 至少 title 不可空白
-		if (!this.copyedCard.title) return;
+		if (!this.copiedCard.title) return;
 
         let result = await this.updateCard({
-            _id: this.copyedCard._id,
+            _id: this.copiedCard._id,
             listId: this.listId,
-            title: this.copyedCard.title,
-            description: this.copyedCard.description,
+            title: this.copiedCard.title,
+            description: this.copiedCard.description,
             assignedUserId: this.assignedUserId
         });
 
-        this.copyedCard = _.cloneDeep(this.card);
+        this.copiedCard = _.cloneDeep(this.card);
         this.assignedUserId = this.card.assignedUser.userId;
     }
     
@@ -138,7 +138,7 @@ export default class CardEditor extends Vue {
 
         if (result) {
             this.comment = '';
-            this.copyedCard.comments = _.cloneDeep(this.card.comments);
+            this.copiedCard.comments = _.cloneDeep(this.card.comments);
         }
     }
 
