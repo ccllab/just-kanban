@@ -15,7 +15,7 @@ export default class NotificationMessageModule implements Module<MessageState, R
     };
 
     public actions: ActionTree<MessageState, RootState> = {
-        socket_notificationMessage({commit}, payload: { message: string, duration: number }) {
+        [types.SHOW_MESSAGE]({commit}, payload: { message: string, duration: number }) {
             commit(types.SET_MESSAGE, payload.message);
 
             if (payload.duration) {
@@ -27,7 +27,7 @@ export default class NotificationMessageModule implements Module<MessageState, R
     };
 
     public mutations: MutationTree<MessageState> = {
-        SOCKET_NOTIFICATION_MESSAGE(state, message: string) {
+        [types.SET_MESSAGE](state, message: string) {
             state.message = message;
         }
     };
