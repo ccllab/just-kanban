@@ -11,7 +11,7 @@
 <script lang="ts">
   import { Component, Vue } from 'vue-property-decorator';
   import { Getter } from 'vuex-class';
-  import { types } from '../store/types';
+  import { types } from '../store/error/types';
 
   @Component
   export default class ErrorHintBlock extends Vue {

@@ -1,14 +1,17 @@
+import * as io from 'socket.io-client';
 import Vue from 'vue';
 import store from './store';
 import router from './router';
 import App from './App.vue';
-import VueCookies from './utils/cookies/VueCookies';
+import VueSocketio from 'vue-socket.io-extended';
+import VueCookies from './utils/VueCookies';
 import { ApiRequestor } from './utils/ApiRequestor';
 import { HttpErrorProcessor, AuthTokenProccessor } from './api/middle-process' ;
 import { Token, TokenManager } from './utils/TokenManager';
 import { TokenConfig } from './config';
 
 Vue.config.productionTip = false;
+Vue.use(VueSocketio, io(process.env.SERVER_HOST_URL));
 Vue.use(VueCookies, {
     expires: '3d',
     path: '/'
