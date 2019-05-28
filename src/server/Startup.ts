@@ -138,7 +138,9 @@ export default class Startup {
         // build socket io.
         this.socketInstance = socketIO(this.serverInstance);
         this.socketInstance.on('connection', (socket) => {
-            this.logger.log(`User ${socket.id} connected.`);
+            this.logger.log(`Server: User ${socket.id} connected.`);
+
+            socket.emit('notification_message', {message: `Welcome To JustKanban`, duration: 3000});
         });
     }
 }

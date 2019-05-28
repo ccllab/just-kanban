@@ -8,6 +8,7 @@ import { types as authTypes } from '../../store/auth/types';
  * @param res res
  */
 export const HttpErrorProcessor: failMiddleProcess = (res) => {
+
   switch (res.response.status) {
     case 401:
       let isAuthenticated = store.getters[authTypes.IS_AUTHENTICATED];

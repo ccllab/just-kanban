@@ -1,4 +1,4 @@
-import {ActionTree, Commit, GetterTree, Module, MutationTree} from "vuex";
+import {ActionTree, GetterTree, Module, MutationTree} from "vuex";
 import {RootState} from "../types";
 import {types} from './types';
 import {ErrorState} from "./types";

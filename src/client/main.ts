@@ -11,7 +11,7 @@ import { Token, TokenManager } from './utils/TokenManager';
 import { TokenConfig } from './config';
 
 Vue.config.productionTip = false;
-Vue.use(VueSocketio, io(process.env.SERVER_HOST_URL));
+Vue.use(VueSocketio, io(process.env.SERVER_HOST_URL), {store});
 Vue.use(VueCookies, {
     expires: '3d',
     path: '/'
