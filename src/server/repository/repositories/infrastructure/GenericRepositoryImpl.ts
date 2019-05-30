@@ -94,8 +94,7 @@ export abstract class GenericRepositoryImpl<TEntity extends DeepPartial<TEntity>
         runInTransaction: (entityManager: EntityManager) => Promise<TEntity>,
         isolationLevel: IsolationLevel = IsolationLevel.ReadUncommitted): Promise<TEntity> {
 
-        // todo wait for typeorm 0.2.8, then pass isolation level to transaction()
-        return this.dbConnection.manager.transaction(runInTransaction);
+        return this.dbConnection.manager.transaction(isolationLevel, runInTransaction);
     }
 
     /**

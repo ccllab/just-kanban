@@ -48,12 +48,11 @@ export class User extends BaseEntity implements ICreatedAtUpdateAt {
      */
     @Column(<ExtendedColumnOptions>{
         nullable: false,
-        // encrypt: {
-        //     key: 'd85117047fd06d3afa79b6e44ee3a52eb426fc24c3a2e3667732e8da0342b4da',
-        //     algorithm: 'aes-128-cbc',
-        //     iv: 'a183j48dje94jnb1',
-        //     ivLength: 16
-        // },
+        encrypt: {
+            key: '3445768f48481eeb9c8304ce0b48481eeb9c8304ce0a5e3cb5e3cb58479fff32',
+            algorithm: 'aes-256-cbc',
+            ivLength: 16
+        },
         length: 90
     })
     public password: string;
