@@ -2,12 +2,12 @@
   "name": "just-kanban",
   "version": "1.0.0",
   "description": "A kanban board application build by node.js and vue.js, following SOLID principles",
-  "main": "build/main.js",
+  "main": "build/server/main.js",
   "author": {
     "name": "shengLin-alex, Jay, TJChiang"
   },
   "scripts": {
-    "start": "node build/main.js",
+    "start": "node build/server/main.js",
     "dev": "webpack-dev-server --inline --config webpack.dev.js",
     "build-dev": "npm run tsc && npm run webpack-dev",
     "build-prod": "npm run tsc && npm run webpack-prod",

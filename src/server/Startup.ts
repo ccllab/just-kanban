@@ -89,7 +89,7 @@ export default class Startup {
                 null,
                 AppAuthProvider
             );
-        const staticFolderPath = path.join(__dirname, '..', 'public');
+        const staticFolderPath = path.resolve(__dirname, '../../public');
 
         // set additional config for express application
         expressServer.setConfig(app => {
