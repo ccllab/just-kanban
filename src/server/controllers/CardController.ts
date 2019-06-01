@@ -1,5 +1,5 @@
 import ApiControllerBase from "./ApiControllerBase";
-import {controller, httpPatch, httpPost, request, requestParam, response} from "inversify-express-utils";
+import {controller, httpDelete, httpPatch, httpPost, request, requestParam, response} from "inversify-express-utils";
 import {inject} from "inversify";
 import {TYPES} from "../ioc";
 import {ICardCommentService, ICardService} from "../services";
@@ -148,6 +148,31 @@ export class CardController extends ApiControllerBase {
         let {content} = req.body;
 
         return this.cardCommentService.addComment(cardId, content).then((result) => {
+            return res.send(result);
+        }, (err) => {
+            return res.status(400).send({
+                error: err.message
+            });
+        });
+    }
+
+    /**
+     * Delete specified card
+     * @param res response
+     * @param req request
+     */
+    @httpDelete('/')
+    private async deleteCard(
+        @response() res: express.Response,
+        @request() req: express.Request): Promise<express.Response> {
+
+        if (! await this.isAuthenticated()) {
+            return res.status(401).send('Please login, and try again.');
+        }
+
+        let {cardId, cardListId} = req.body;
+
+        return this.cardService.deleteCard(cardId, cardListId).then(result => {
             return res.send(result);
         }, (err) => {
             return res.status(400).send({

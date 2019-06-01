@@ -1,29 +1,22 @@
-import Vue from 'vue'
-import Vuex, { StoreOptions } from 'vuex'
+import Vue from 'vue';
+import Vuex, { StoreOptions } from 'vuex';
+import { RootState } from './types';
+import AuthModule from "./auth/AuthModule";
+import BoardModule from "./board/BoardModule";
+import ErrorModule from "./error/ErrorModule";
+import NotificationMessageModule from "./socket/NotificationMessageModule";
 
-import { RootState } from './types'
-import { mutations } from './mutations'
-import { getters } from './getters'
-import { actions } from './actions'
-import { auth } from './auth'
-import { boards } from './board'
-
-Vue.use(Vuex)
-
-const state: RootState = {
-  error: ''
-}
+Vue.use(Vuex);
 
 const store: StoreOptions<RootState> = {
-  state,
-  getters,
-  actions,
-  mutations,
+  state: {},
   modules: {
-    auth,
-    boards
+    authModule: new AuthModule(),
+    boardModule: new BoardModule(),
+    errorModule: new ErrorModule(),
+    messageModule: new NotificationMessageModule()
   },
   strict: true
-}
+};
 
-export default new Vuex.Store<RootState>(store)
+export default new Vuex.Store<RootState>(store);

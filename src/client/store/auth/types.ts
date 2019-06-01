@@ -10,7 +10,7 @@ export interface LoginParameters {
   password: string
   isRememberMe: boolean
 }
-export interface SignupParameters extends User {
+export interface SignUpParameters extends User {
   password: string
   confirm: string
 }
@@ -18,8 +18,8 @@ export interface SignupParameters extends User {
 export interface LoginFunc {
   (param: LoginParameters): Promise<boolean>
 }
-export interface SignupFunc {
-  (param: SignupParameters): Promise<boolean>
+export interface SignUpFunc {
+  (param: SignUpParameters): Promise<boolean>
 }
 export interface LogoutFunc {
   (): void

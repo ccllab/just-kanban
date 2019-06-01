@@ -9,11 +9,6 @@ import {injectable} from 'inversify';
 export abstract class BaseDbProvider implements IDbProvider {
 
     /**
-     * Define database connection name
-     */
-    public abstract connectionName: string;
-
-    /**
      * Get specified db connection by connection name.
      * @returns db connection
      */
@@ -21,4 +16,9 @@ export abstract class BaseDbProvider implements IDbProvider {
 
         return getConnection(this.connectionName);
     }
+
+    /**
+     * Define database connection name
+     */
+    public abstract connectionName: string;
 }

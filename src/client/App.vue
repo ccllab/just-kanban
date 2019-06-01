@@ -1,6 +1,7 @@
 <template>
     <div id="app">
         <ErrorHintBlock />
+        <NotificationBlock />
         <NavHeader class="navHeader"/>
         <router-view class="viewContainer"/>
     </div>
@@ -10,6 +11,7 @@
     import { Component, Vue } from 'vue-property-decorator';
     import NavHeader from './components/NavHeader.vue';
     import ErrorHintBlock from './components/ErrorHintBlock.vue';
+    import NotificationBlock from './components/NotificationBlock.vue';
 
     /**
      * Vue app
@@ -17,7 +19,8 @@
     @Component({
         components: {
             NavHeader,
-            ErrorHintBlock
+            ErrorHintBlock,
+            NotificationBlock
         },
     })
     export default class App extends Vue {
