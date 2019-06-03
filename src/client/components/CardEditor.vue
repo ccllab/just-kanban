@@ -1,9 +1,9 @@
 <template>
     <div id="cardCreator" @click="close">
-        <div class="container" @click.stop="" v-if="board && copyedCard">
+        <div class="container" @click.stop="" v-if="board && copiedCard">
             <div class="title">
                 <i class="icon far fa-credit-card"></i>
-                <input type="text" placeholder="Add title for this card..." v-model="copyedCard.title">   
+                <input type="text" placeholder="Add title for this card..." v-model="copiedCard.title">
             </div>
             <div class="content">
                 <div class="left">
@@ -11,7 +11,7 @@
                         <i class="icon fas fa-align-left"></i>
                         <div class="wrapper">
                             <div class="wrapperTitle">Description</div>
-                            <textarea type="text" v-model="copyedCard.description" placeholder="Add a more detailed description..."></textarea>
+                            <textarea type="text" v-model="copiedCard.description" placeholder="Add a more detailed description..."></textarea>
                         </div>
                     </div>
                     <div class="comment">
@@ -21,7 +21,7 @@
                             <textarea type="text" placeholder="Write a Comment..." v-model="comment"></textarea>
                             <button class="btn btn-primary btn-add-comment" @click.stop="btnAddCommentClick" v-if="comment">Add</button>
                             <div class="comment-list">
-                                <div class="comment-item" 
+                                <div class="comment-item"
                                     v-for="comment in comments"
                                     :key="comment._id">
                                     {{ comment.content }}
@@ -37,13 +37,13 @@
 							Assign Member
 						</div>
 						<div class="members">
-							<label class="member" 
+							<label class="member"
 								:id="`member-${member.userId}`"
 								v-for="member in board.members"
 								:key="member.userId">
-								<input type="radio" 
-									name="assignedUser" 
-									:value="member.userId" 
+								<input type="radio"
+									name="assignedUser"
+									:value="member.userId"
 									v-model="assignedUserId"
 									:for="`member-${member.userId}`"
                                     :checked="member.userId === assignedUserId">
@@ -55,7 +55,7 @@
 					</div>
                 </div>
             </div>
-            <button class="btn btn-primary btn-save" 
+            <button class="btn btn-primary btn-save"
                 @click.stop="btnSaveClick"
                 v-if="isEdited">Save</button>
         </div>
@@ -68,9 +68,9 @@ import { Action, Getter } from 'vuex-class';
 import * as _ from 'lodash';
 import { Card } from "../models/Card.model";
 import { Board } from '../models/Board.model';
-import { 
-    types as boardTypes, 
-    GetCardInfoFunc, 
+import {
+    types as boardTypes,
+    GetCardInfoFunc,
     UpdateCardFunc ,
     CreateCommentFunc
 } from '../store/board/types';
@@ -84,20 +84,20 @@ export default class CardEditor extends Vue {
     @Action(boardTypes.CREATE_COMMENT) createComment: CreateCommentFunc;
     @Prop() cardId: string;
     @Prop() listId: string;
-    
-    public copyedCard: Card = null;
+
+    public copiedCard: Card = null;
     public assignedUserId: string = '';
     public comment: string = '';
 
     get comments() {
-        return this.copyedCard.comments ? this.copyedCard.comments.reverse() : [];
+        return this.copiedCard.comments ? this.copiedCard.comments.reverse() : [];
     }
 
     get isEdited(): boolean {
-        if (!this.copyedCard) return false;
+        if (!this.copiedCard) return false;
 
-        return this.copyedCard.title !== this.card.title ||
-            this.copyedCard.description !== this.card.description ||
+        return this.copiedCard.title !== this.card.title ||
+            this.copiedCard.description !== this.card.description ||
             this.assignedUserId !== this.card.assignedUser.userId;
     }
 
@@ -105,27 +105,27 @@ export default class CardEditor extends Vue {
         let result = await this.getCardInfo(this.cardId);
 
         if (result) {
-            this.copyedCard = _.cloneDeep(this.card);
+            this.copiedCard = _.cloneDeep(this.card);
             this.assignedUserId = this.card.assignedUser.userId;
         }
     }
 
 	public async btnSaveClick(): Promise<void> {
 		// 至少 title 不可空白
-		if (!this.copyedCard.title) return;
+		if (!this.copiedCard.title) return;
 
         let result = await this.updateCard({
-            _id: this.copyedCard._id,
+            _id: this.copiedCard._id,
             listId: this.listId,
-            title: this.copyedCard.title,
-            description: this.copyedCard.description,
+            title: this.copiedCard.title,
+            description: this.copiedCard.description,
             assignedUserId: this.assignedUserId
         });
 
-        this.copyedCard = _.cloneDeep(this.card);
+        this.copiedCard = _.cloneDeep(this.card);
         this.assignedUserId = this.card.assignedUser.userId;
     }
-    
+
     public async btnAddCommentClick() {
         let commentContent = this.comment;
         let cardId = this.cardId;
@@ -138,7 +138,7 @@ export default class CardEditor extends Vue {
 
         if (result) {
             this.comment = '';
-            this.copyedCard.comments = _.cloneDeep(this.card.comments);
+            this.copiedCard.comments = _.cloneDeep(this.card.comments);
         }
     }
 
@@ -282,7 +282,7 @@ export default class CardEditor extends Vue {
                 margin-right: 5px;
                 cursor: pointer;
 			}
-			
+
 			input[type=radio] {
 				display: none;
 

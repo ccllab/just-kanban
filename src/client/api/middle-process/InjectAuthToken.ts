@@ -1,4 +1,4 @@
-import { beforeRequestPeocess } from '../../utils/ApiRequestor';
+import { beforeRequestProcess } from '../../utils/ApiRequestor';
 import { TokenManager } from '../../utils/TokenManager';
 import { TokenConfig } from '../../config';
 
@@ -6,7 +6,7 @@ import { TokenConfig } from '../../config';
  * InjectAuthToken
  * @param config config
  */
-const InjectAuthToken: beforeRequestPeocess = (config) => {
+const InjectAuthToken: beforeRequestProcess = (config) => {
   let authKey = TokenConfig.auth.key;
   let refreshKey = TokenConfig.refresh.key;
 

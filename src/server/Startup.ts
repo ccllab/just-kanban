@@ -89,7 +89,7 @@ export default class Startup {
                 null,
                 AppAuthProvider
             );
-        const staticFolderPath = path.join(__dirname, '..', 'public');
+        const staticFolderPath = path.resolve(__dirname, '../../public');
 
         // set additional config for express application
         expressServer.setConfig(app => {
@@ -120,21 +120,35 @@ export default class Startup {
         // build express server
         this.serverInstance = http.createServer(expressServer.build());
 
-        // build socket io.
-        this.socketInstance = socketIO(this.serverInstance);
-        this.socketInstance.on('connection', (socket) => {
-
-            this.logger.log('New user connected.');
-
-            socket.on('disconnect', () => {
-                this.logger.log('User was disconnect.');
-            });
-        });
+        // config socket io.
+        this.configSocketIO();
 
         // boot express server
         this.serverInstance.listen(this.port, () => {
 
             this.logger.log(`Listening on port:${this.port}.`);
+        });
+    }
+
+    /**
+     * Socket.IO config
+     */
+    private configSocketIO(): void {
+
+        // build socket io.
+        this.socketInstance = socketIO(this.serverInstance);
+        this.socketInstance.on('connection', (socket) => {
+            this.logger.log(`Server: User ${socket.id} connected.`);
+
+            socket.emit('notification_message', {message: `Welcome To JustKanban`, duration: 2000});
+
+            socket.on('card_dragging', () => {
+                socket.emit('notification_message', {message: `Dragging~`, duration: 1500});
+            });
+
+            socket.on('card_dragged', () => {
+                socket.broadcast.emit('notification_message', {message: `Board has been updated. Please refresh`, duration: 3000});
+            });
         });
     }
 }

@@ -2,13 +2,13 @@ import axios, { AxiosRequestConfig, AxiosResponse, AxiosError } from 'axios';
 
 export type successMiddleProcess = (res: AxiosResponse) => void
 export type failMiddleProcess = (res: AxiosError) => void
-export type beforeRequestPeocess = (config: AxiosRequestConfig) => void
+export type beforeRequestProcess = (config: AxiosRequestConfig) => void
 
 export class ApiRequestor {
   private static resSuccessMiddleProcesses: successMiddleProcess[] = [];
   private static resFailMiddleProcesses: failMiddleProcess[] = [];
 
-  public static request(config: AxiosRequestConfig, beforeReq?: beforeRequestPeocess): Promise<any> {
+  public static request(config: AxiosRequestConfig, beforeReq?: beforeRequestProcess): Promise<any> {
     beforeReq && beforeReq(config);
 
     return axios(config)

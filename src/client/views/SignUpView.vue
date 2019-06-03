@@ -34,11 +34,11 @@
 import { Component, Vue } from 'vue-property-decorator';
 import { Action } from 'vuex-class';
 import * as _ from 'lodash';
-import { types as authTypes, SignupFunc } from '../store/auth/types';
+import { types as authTypes, SignUpFunc } from '../store/auth/types';
 
 @Component
 export default class LoginView extends Vue {
-    @Action(authTypes.AUTH_SIGNUP) signup: SignupFunc;
+    @Action(authTypes.AUTH_SIGNUP) signup: SignUpFunc;
 
     public userId: string = '';
     public username: string = '';

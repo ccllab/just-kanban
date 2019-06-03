@@ -10,7 +10,9 @@
       "dom.iterable",
       "scripthost"
     ],
-    "allowJs": true,
+    "typeRoots": [
+      "./node_modules/@types"
+    ],
     "noImplicitAny": false,
     "removeComments": true,
     "sourceMap": true,
@@ -19,7 +21,7 @@
     "experimentalDecorators": true
   },
   "include": [
-    "./src/server/**/*"
+    "./src/**/*"
   ],
   "exclude": [
     "node_modules",

@@ -101,7 +101,7 @@ export class AuthServiceImpl implements IAuthService {
         }
 
         let dto = new UserAuthenticationDto();
-        dto.userDetail = await this.userRepository.update(this.injectNewRefreshToken(user, isRememberMe));
+        dto.userDetail = await this.userRepository.update(this.injectNewRefreshToken(user, isRememberMe)); // todo 這邊update的時候會把解密的密碼寫回資料庫導致錯誤
         dto.accessToken = this.newAccessToken(user.username, user.email);
 
         return Promise.resolve(dto);
