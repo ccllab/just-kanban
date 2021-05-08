@@ -76,7 +76,7 @@
     "reflect-metadata": "^0.1.13",
     "socket.io": "^2.2.0",
     "socket.io-client": "^2.2.0",
-    "typeorm": "^0.2.17",
+    "typeorm": "^0.2.25",
     "typeorm-encrypted": "^0.5.1",
     "vue": "^2.6.10",
     "vue-class-component": "^7.1.0",
