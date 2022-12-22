@@ -66,7 +66,7 @@
     "flatted": "^2.0.0",
     "inversify": "^5.0.1",
     "inversify-express-utils": "^6.3.2",
-    "jsonwebtoken": "^8.5.1",
+    "jsonwebtoken": "^9.0.0",
     "kaop-ts": "^4.1.1",
     "linqts": "^1.12.2",
     "lodash": "^4.17.11",
